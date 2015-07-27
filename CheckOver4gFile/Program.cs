@@ -16,7 +16,7 @@ namespace CheckOver4gFile
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CheckOver4g());
+            Application.Run(new Form1());
         }
     }
 }

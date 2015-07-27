@@ -54,7 +54,6 @@
             this.txtFrom.Name = "txtFrom";
             this.txtFrom.Size = new System.Drawing.Size(384, 33);
             this.txtFrom.TabIndex = 1;
-            this.txtFrom.TextChanged += new System.EventHandler(this.txtFrom_TextChanged);
             // 
             // label2
             // 
@@ -65,7 +64,6 @@
             this.label2.Size = new System.Drawing.Size(105, 24);
             this.label2.TabIndex = 3;
             this.label2.Text = "原始路徑：";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // btnStart
             // 
