@@ -27,7 +27,7 @@ namespace CheckOver4gFile
         /// <param name="patch"></param>
         /// <param name="rarPatch"></param>
         /// <param name="rarName"></param>
-        public void CompressRAR(string patch, string rarPatch, string rarName)
+        public void CompressRAR(string RARpatch, string SourcePatch)
         {
             string the_rar;
             RegistryKey the_Reg;
@@ -45,18 +45,18 @@ namespace CheckOver4gFile
                 //Directory.CreateDirectory(patch);
                 //命令参数
                 //the_Info = " a    " + rarName + " " + @"C:Test?70821.txt"; //文件压缩
-                the_Info = " a -r    " + rarName + " " + patch + " "; 
+                the_Info = " a -r -ep1 -v3g  " + RARpatch + ".rar " + SourcePatch + " "; 
                 the_StartInfo = new ProcessStartInfo();
                 the_StartInfo.FileName = the_rar;
                 the_StartInfo.Arguments = the_Info;
                 //the_StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 //打包文件存放目录
-                the_StartInfo.WorkingDirectory = rarPatch;
+                //the_StartInfo.WorkingDirectory = rarPatch;
                 the_Process = new Process();
                 the_Process.StartInfo = the_StartInfo;
                 the_Process.Start();
-                the_Process.WaitForExit();
-                the_Process.Close();
+                //the_Process.WaitForExit();
+                //the_Process.Close();
             }
             catch (Exception ex)
             {
