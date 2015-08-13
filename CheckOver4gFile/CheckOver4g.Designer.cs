@@ -34,6 +34,7 @@
             this.btnBrowser = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.lstFiles = new System.Windows.Forms.ListBox();
+            this.btnRAR = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStart
@@ -64,6 +65,7 @@
             this.txtFrom.Name = "txtFrom";
             this.txtFrom.Size = new System.Drawing.Size(384, 22);
             this.txtFrom.TabIndex = 8;
+            this.txtFrom.Text = "D:\\!testRAR";
             // 
             // btnBrowser
             // 
@@ -85,11 +87,23 @@
             this.lstFiles.Size = new System.Drawing.Size(799, 232);
             this.lstFiles.TabIndex = 12;
             // 
+            // btnRAR
+            // 
+            this.btnRAR.Location = new System.Drawing.Point(845, 8);
+            this.btnRAR.Margin = new System.Windows.Forms.Padding(6);
+            this.btnRAR.Name = "btnRAR";
+            this.btnRAR.Size = new System.Drawing.Size(138, 46);
+            this.btnRAR.TabIndex = 13;
+            this.btnRAR.Text = "RAR壓縮各檔案資料夾(切3g大小)";
+            this.btnRAR.UseVisualStyleBackColor = true;
+            this.btnRAR.Click += new System.EventHandler(this.btnRAR_Click);
+            // 
             // CheckOver4g
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(950, 352);
+            this.ClientSize = new System.Drawing.Size(1068, 555);
+            this.Controls.Add(this.btnRAR);
             this.Controls.Add(this.lstFiles);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.label2);
@@ -110,6 +124,7 @@
         private System.Windows.Forms.Button btnBrowser;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.ListBox lstFiles;
+        private System.Windows.Forms.Button btnRAR;
     }
 }
 

@@ -88,6 +88,61 @@ namespace CheckOver4gFile
 
         }
 
+        private void btnRAR_Click(object sender, EventArgs e)
+        {
+            DirectoryInfo di = new DirectoryInfo(txtFrom.Text);
+
+
+            string sPath = "";
+            
+            FileInfo[] afi = di.GetFiles();
+            DirectoryInfo[] adi = di.GetDirectories();
+
+
+            clsWinrar oRar = new clsWinrar();
+
+            foreach (FileInfo fi in afi)
+            {
+                //取得目錄
+                sPath = fi.DirectoryName;
+                string sRarName = fi.Name;
+
+                oRar.CompressRAR(fi.FullName, sPath, sRarName);
+                
+            }
+
+            
+
+            
+
+
+
+            //string sfileFullName = string.Empty;
+            //foreach (FileInfo fi in new DirectoryInfo(txtFrom.Text).GetFiles("*.*", SearchOption.AllDirectories))
+            //{
+            //    //decimal a = Math.Round((decimal)f.Length / 1024, 5);//K byte
+            //    //decimal a = Math.Round((decimal)fi.Length / (1024 * 1024), 5);//M byte
+            //    decimal a = Math.Round((decimal)fi.Length / (1024 * 1024 * 1024), 10);//G byte
+
+            //    //大於500mb 就搬移檔案
+            //    if (a > 4)
+            //    {
+            //        //if (!File.Exists(txtFrom.Text + @"\" + fi.Name))
+            //        //{
+            //        //    fi.MoveTo(txtFrom.Text + @"\" + fi.Name);
+            //        //}
+            //        sfileFullName = fi.FullName;
+
+
+            //        lstFiles.Items.Add(fi.FullName);
+
+
+            //    }
+            //}
+
+            MessageBox.Show("執行完畢！");
+        }
+
 
 
 

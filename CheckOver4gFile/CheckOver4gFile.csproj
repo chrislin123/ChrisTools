@@ -50,6 +50,7 @@
     <Compile Include="CheckOver4g.Designer.cs">
       <DependentUpon>CheckOver4g.cs</DependentUpon>
     </Compile>
+    <Compile Include="clsWinrar.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CheckOver4g.resx">
