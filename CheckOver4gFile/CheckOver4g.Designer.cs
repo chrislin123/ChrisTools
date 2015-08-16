@@ -35,6 +35,7 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.lstFiles = new System.Windows.Forms.ListBox();
             this.btnRAR = new System.Windows.Forms.Button();
+            this.chkWait = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnStart
@@ -98,11 +99,22 @@
             this.btnRAR.UseVisualStyleBackColor = true;
             this.btnRAR.Click += new System.EventHandler(this.btnRAR_Click);
             // 
+            // chkWait
+            // 
+            this.chkWait.AutoSize = true;
+            this.chkWait.Location = new System.Drawing.Point(856, 60);
+            this.chkWait.Name = "chkWait";
+            this.chkWait.Size = new System.Drawing.Size(72, 16);
+            this.chkWait.TabIndex = 14;
+            this.chkWait.Text = "是否等待";
+            this.chkWait.UseVisualStyleBackColor = true;
+            // 
             // CheckOver4g
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1068, 555);
+            this.Controls.Add(this.chkWait);
             this.Controls.Add(this.btnRAR);
             this.Controls.Add(this.lstFiles);
             this.Controls.Add(this.btnStart);
@@ -125,6 +137,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.ListBox lstFiles;
         private System.Windows.Forms.Button btnRAR;
+        private System.Windows.Forms.CheckBox chkWait;
     }
 }
 

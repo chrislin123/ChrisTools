@@ -28,30 +28,6 @@ namespace CheckOver4gFile
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-
-            string ss = string.Empty;
-
-            string stest;
-
-
-            stest = "11111";
-
-
-            ss = "fafsafasfas";
-
-
-            //listView1.Items.Add(new ListViewItem("123"));
-
-            //listBox1.Items.Add(new ListViewItem("123"));
-
-
-            //listBox1.Items.Add("456");
-            
-
-
-            //return;
-
-
             string sfileFullName = string.Empty;
             foreach (FileInfo fi in new DirectoryInfo(txtFrom.Text).GetFiles("*.*", SearchOption.AllDirectories))
             {
@@ -76,16 +52,6 @@ namespace CheckOver4gFile
             }
 
             MessageBox.Show("執行完畢！");
-
-
-            //if (chkOpen.Checked)
-            //{
-            //    //開啟檔案總管
-            //    string file = @"C:\Windows\explorer.exe";
-            //    string argument = @"/select, " + sfileFullName;
-            //    System.Diagnostics.Process.Start(file, argument);
-            //}
-
         }
 
         private void btnRAR_Click(object sender, EventArgs e)
@@ -93,34 +59,30 @@ namespace CheckOver4gFile
             DirectoryInfo di = new DirectoryInfo(txtFrom.Text);
 
 
-            string sPath = "";
+            string sPath = txtFrom.Text.Trim();
             
             FileInfo[] afi = di.GetFiles();
             DirectoryInfo[] adi = di.GetDirectories();
-
-
             clsWinrar oRar = new clsWinrar();
 
-            
+            oRar.Wait = chkWait.Checked;
             
             foreach (FileInfo fi in afi)
             {
                 //取得目錄
-                sPath = fi.DirectoryName;
+                //sPath = fi.DirectoryName;
                 string sRarName = fi.Name.Replace(fi.Extension,"");
 
-                oRar.CompressRAR( sPath + @"\"+ sRarName,fi.FullName);
-                
+                oRar.CompressRAR(sPath + @"\" + sRarName.Trim(), fi.FullName);
             }
 
             foreach (DirectoryInfo odi in adi)
             {
                 //取得目錄
                 //sPath = di.FullName;
-                string sRarName = odi.Name;
+                string sRarName = odi.Name.Trim().Replace(" ", "");
 
                 oRar.CompressRAR(sPath + @"\" + sRarName, odi.FullName);
-
             }
 
             

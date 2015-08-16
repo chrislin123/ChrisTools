@@ -11,6 +11,15 @@ namespace CheckOver4gFile
 {
     class clsWinrar
     {
+        private bool _Wait = false;
+
+        public bool Wait
+        {
+            get { return _Wait; }
+            set { _Wait = value; }
+        }
+
+
         /// <summary>
         /// 是否安装了Winrar
         /// </summary>
@@ -45,7 +54,7 @@ namespace CheckOver4gFile
                 //Directory.CreateDirectory(patch);
                 //命令参数
                 //the_Info = " a    " + rarName + " " + @"C:Test?70821.txt"; //文件压缩
-                the_Info = " a -r -ep1 -v3g  " + RARpatch + ".rar " + SourcePatch + " "; 
+                the_Info = " a -r -ep1 -v3g  " + RARpatch + @".rar """ + SourcePatch + @""" "; 
                 the_StartInfo = new ProcessStartInfo();
                 the_StartInfo.FileName = the_rar;
                 the_StartInfo.Arguments = the_Info;
@@ -55,8 +64,12 @@ namespace CheckOver4gFile
                 the_Process = new Process();
                 the_Process.StartInfo = the_StartInfo;
                 the_Process.Start();
-                //the_Process.WaitForExit();
-                //the_Process.Close();
+                if (_Wait)
+                {
+                    the_Process.WaitForExit();
+                    the_Process.Close();  
+                }
+                
             }
             catch (Exception ex)
             {
