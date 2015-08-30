@@ -54,7 +54,14 @@ namespace CheckOver4gFile
                 //Directory.CreateDirectory(patch);
                 //命令参数
                 //the_Info = " a    " + rarName + " " + @"C:Test?70821.txt"; //文件压缩
-                the_Info = " a -r -ep1 -v3g  " + RARpatch + @".rar """ + SourcePatch + @""" "; 
+                
+                //批次壓縮成3G
+                //the_Info = " a -r -ep1 -v3g  " + RARpatch + @".rar """ + SourcePatch + @""" ";
+
+                //批次壓縮成990mb
+                the_Info = " a -r -ep1 -v990m  " + RARpatch + @".rar """ + SourcePatch + @""" "; 
+
+
                 the_StartInfo = new ProcessStartInfo();
                 the_StartInfo.FileName = the_rar;
                 the_StartInfo.Arguments = the_Info;
