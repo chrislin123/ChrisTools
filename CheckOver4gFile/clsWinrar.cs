@@ -12,6 +12,20 @@ namespace CheckOver4gFile
     class clsWinrar
     {
         private bool _Wait = false;
+        MyEnum _size = MyEnum.g3;
+
+        public enum MyEnum
+        {
+            g3,
+            m900
+        }
+
+        public MyEnum size
+        {
+            get { return _size; }
+            set { _size = value; }
+        }
+
 
         public bool Wait
         {
@@ -41,7 +55,7 @@ namespace CheckOver4gFile
             string the_rar;
             RegistryKey the_Reg;
             object the_Obj;
-            string the_Info;
+            string the_Info= string.Empty;
             ProcessStartInfo the_StartInfo;
             Process the_Process;
             try
@@ -54,12 +68,20 @@ namespace CheckOver4gFile
                 //Directory.CreateDirectory(patch);
                 //命令参数
                 //the_Info = " a    " + rarName + " " + @"C:Test?70821.txt"; //文件压缩
-                
-                //批次壓縮成3G
-                //the_Info = " a -r -ep1 -v3g  " + RARpatch + @".rar """ + SourcePatch + @""" ";
 
-                //批次壓縮成990mb
-                the_Info = " a -r -ep1 -v990m  " + RARpatch + @".rar """ + SourcePatch + @""" "; 
+
+                if (_size == MyEnum.g3)
+                {
+                    //批次壓縮成3G
+                    the_Info = " a -r -ep1 -v3g  " + RARpatch + @".rar """ + SourcePatch + @""" ";
+                }
+                else if (_size == MyEnum.m900)
+                {
+                    //批次壓縮成990mb
+                    the_Info = " a -r -ep1 -v990m  " + RARpatch + @".rar """ + SourcePatch + @""" "; 
+                }              
+
+                
 
 
                 the_StartInfo = new ProcessStartInfo();

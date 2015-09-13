@@ -36,6 +36,10 @@
             this.lstFiles = new System.Windows.Forms.ListBox();
             this.btnRAR = new System.Windows.Forms.Button();
             this.chkWait = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rm900 = new System.Windows.Forms.RadioButton();
+            this.rg3 = new System.Windows.Forms.RadioButton();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
@@ -109,11 +113,45 @@
             this.chkWait.Text = "是否等待";
             this.chkWait.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rm900);
+            this.groupBox1.Controls.Add(this.rg3);
+            this.groupBox1.Location = new System.Drawing.Point(856, 147);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(200, 100);
+            this.groupBox1.TabIndex = 17;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox1";
+            // 
+            // rm900
+            // 
+            this.rm900.AutoSize = true;
+            this.rm900.Location = new System.Drawing.Point(58, 58);
+            this.rm900.Name = "rm900";
+            this.rm900.Size = new System.Drawing.Size(51, 16);
+            this.rm900.TabIndex = 18;
+            this.rm900.Text = "900M";
+            this.rm900.UseVisualStyleBackColor = true;
+            // 
+            // rg3
+            // 
+            this.rg3.AutoSize = true;
+            this.rg3.Checked = true;
+            this.rg3.Location = new System.Drawing.Point(58, 27);
+            this.rg3.Name = "rg3";
+            this.rg3.Size = new System.Drawing.Size(37, 16);
+            this.rg3.TabIndex = 17;
+            this.rg3.TabStop = true;
+            this.rg3.Text = "3G";
+            this.rg3.UseVisualStyleBackColor = true;
+            // 
             // CheckOver4g
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1068, 555);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.chkWait);
             this.Controls.Add(this.btnRAR);
             this.Controls.Add(this.lstFiles);
@@ -123,6 +161,8 @@
             this.Controls.Add(this.btnBrowser);
             this.Name = "CheckOver4g";
             this.Text = "判斷資料夾中大於4g的檔案功能";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,6 +178,9 @@
         private System.Windows.Forms.ListBox lstFiles;
         private System.Windows.Forms.Button btnRAR;
         private System.Windows.Forms.CheckBox chkWait;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton rm900;
+        private System.Windows.Forms.RadioButton rg3;
     }
 }
 

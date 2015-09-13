@@ -66,6 +66,16 @@ namespace CheckOver4gFile
             clsWinrar oRar = new clsWinrar();
 
             oRar.Wait = chkWait.Checked;
+            if (rg3.Checked == true)
+            {
+                oRar.size = clsWinrar.MyEnum.g3;
+            }
+
+            if (rm900.Checked == true)
+            {
+                oRar.size = clsWinrar.MyEnum.m900;
+            }
+
             
             foreach (FileInfo fi in afi)
             {
