@@ -73,12 +73,12 @@ namespace CheckOver4gFile
                 if (_size == MyEnum.g3)
                 {
                     //批次壓縮成3G
-                    the_Info = " a -r -ep1 -v3g  " + RARpatch + @".rar """ + SourcePatch + @""" ";
+                    the_Info = " a -r -ep1 -v3g -IBCK " + RARpatch + @".rar """ + SourcePatch + @""" ";
                 }
                 else if (_size == MyEnum.m900)
                 {
                     //批次壓縮成990mb
-                    the_Info = " a -r -ep1 -v990m  " + RARpatch + @".rar """ + SourcePatch + @""" "; 
+                    the_Info = " a -r -ep1 -v990m -IBCK  " + RARpatch + @".rar """ + SourcePatch + @""" "; 
                 }              
 
                 
