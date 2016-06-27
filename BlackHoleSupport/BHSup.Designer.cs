@@ -38,6 +38,7 @@
             this.lblNoR = new System.Windows.Forms.Label();
             this.txthtml = new System.Windows.Forms.TextBox();
             this.btnTest = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -143,11 +144,23 @@
             this.btnTest.UseVisualStyleBackColor = true;
             this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("新細明體", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(455, 168);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(308, 48);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "幹，被鎖了！";
+            // 
             // BHSup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1334, 779);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.txthtml);
             this.Controls.Add(this.lblNoR);
@@ -178,6 +191,7 @@
         private System.Windows.Forms.Label lblNoR;
         private System.Windows.Forms.TextBox txthtml;
         private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Label label4;
     }
 }
 
