@@ -14,7 +14,7 @@ namespace BlackHoleSupport
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new BHSup());
+            Application.Run(new Form1());
         }
     }
 }
