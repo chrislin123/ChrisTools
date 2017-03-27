@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChrisTools", "ChrisTools\ChrisTools.csproj", "{000CFCBC-D615-4E00-A211-601ACB350D3C}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckOver4gFile", "CheckOver4gFile\CheckOver4gFile.csproj", "{A310DAF3-3384-4844-9C78-28906485C09A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackHoleSupport", "BlackHoleSupport\BlackHoleSupport.csproj", "{F923A1C0-2683-4853-9873-6810E95F4C52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaRouting", "MegaRouting\MegaRouting.csproj", "{DEE67A40-7DEB-4FB5-B5B2-38B754A85646}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{F923A1C0-2683-4853-9873-6810E95F4C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F923A1C0-2683-4853-9873-6810E95F4C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F923A1C0-2683-4853-9873-6810E95F4C52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEE67A40-7DEB-4FB5-B5B2-38B754A85646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEE67A40-7DEB-4FB5-B5B2-38B754A85646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEE67A40-7DEB-4FB5-B5B2-38B754A85646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEE67A40-7DEB-4FB5-B5B2-38B754A85646}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
