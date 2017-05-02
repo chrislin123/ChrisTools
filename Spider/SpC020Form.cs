@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using HtmlAgilityPack;
 using System.Net;
 using Microsoft.VisualBasic;
+using System.Text.RegularExpressions;
 
 namespace Spider
 {
@@ -88,53 +89,8 @@ namespace Spider
         }
       }
 
-      int iIndex = 0;
-      foreach (string item in imgList)
-      {
-        iIndex++;
+      ShowMsg("完成");
 
-        //if (iIndex < 500)
-        //{ 
-        //  continue;
-        //}
-
-        string surl1 = "https://wiki.52poke.com" + item;
-        string[] sSplit = item.Split('/');
-
-        string sFileName = sSplit[sSplit.Length - 1];
-
-        ShowMsg("取得明細資料");
-
-        HtmlWeb webClient1 = new HtmlWeb();
-        HtmlAgilityPack.HtmlDocument doc1 = webClient.Load(surl1);
-
-        HtmlNode imaHref;
-        imaHref = doc1.DocumentNode.SelectSingleNode(
-          string.Format(@"//img[contains(@alt,'{0}') and contains(@alt,'.png')]", sFileName));
-
-        if (imaHref == null)
-        {
-          continue;
-        }
-
-        string sSrc = imaHref.GetAttributeValue("data-url", "");
-
-        if (sSrc == "")
-        {
-          continue;
-        }
-
-        string sImgUrl = "http:" + sSrc;
-
-        string[] TempSplit = sImgUrl.Split('/');
-
-        //string sImgFileName = FormatFileName(TempSplit[TempSplit.Length - 1]);
-
-        //ShowMsg(sImgFileName);
-
-        //依照圖片路徑下載
-        //DoSaveImage(sImgUrl, sImgFileName);
-      }
     }
 
     private void ShowMsg(string sMsg)
@@ -152,10 +108,95 @@ namespace Spider
     private string ConvTraditionalChinese(string sSource)
     {
       string sResult = sSource;
-      
+
       sResult = Microsoft.VisualBasic.Strings.StrConv(sSource, Microsoft.VisualBasic.VbStrConv.TraditionalChinese, 2052);
 
+      //sResult = Microsoft.VisualBasic.Strings.StrConv(sSource, Microsoft.VisualBasic.VbStrConv.Narrow, 1028);
+
+      //var ncrString = toNCR(sSource);
+
+      //var convString = Microsoft.VisualBasic.Strings.StrConv(
+      //  sSource, Microsoft.VisualBasic.VbStrConv.Narrow, 2052);
+
+      //sResult = fromNCR(convString);
+
       return sResult;
+    }
+
+    
+    //private string ConvTraditionalChinese(string sSource)
+    //{
+    //  string sResult = sSource;
+
+
+    //  var ncrString = toNCR(sSource);
+
+    //  var convString = Microsoft.VisualBasic.Strings.StrConv(
+    //    ncrString, Microsoft.VisualBasic.VbStrConv.TraditionalChinese, 2052);
+
+    //  sResult = fromNCR(convString);
+
+    //  return sResult;
+    //}
+
+    /// <summary>
+    /// 繁體轉簡體
+    /// </summary>
+    /// <param name="sSource"></param>
+    /// <returns></returns>
+    //private string ConvSimplifiedChinese(string sSource)
+    //{
+    //  string sResult = sSource;
+
+
+    //  var ncrString = toNCR(sSource);
+
+    //  var convString = Microsoft.VisualBasic.Strings.StrConv(
+    //    ncrString, Microsoft.VisualBasic.VbStrConv.Narrow, 1028);
+
+    //  sResult = fromNCR(convString);
+
+    //  return sResult;
+    //}
+
+
+    ////REF: http://blog.darkthread.net/blogs/darkthreadtw/archive/2007/04/21/733.aspx
+    //static string toNCR(string input)
+    //{
+    //  StringBuilder sb = new StringBuilder();
+    //  Encoding big5 = Encoding.GetEncoding("big5");
+    //  foreach (char c in input)
+    //  {
+    //    //強迫轉碼成Big5，看會不會變成問號
+    //    string cInBig5 = big5.GetString(big5.GetBytes(new char[] { c }));
+    //    //原來不是問號，轉碼後變問號，判定為難字
+    //    if (c != '?' && cInBig5 == "?")
+    //      sb.AppendFormat("&#{0};", Convert.ToInt32(c));
+    //    else
+    //      sb.Append(c);
+    //  }
+    //  return sb.ToString();
+    //}
+
+    //static string fromNCR(string input)
+    //{
+    //  return Regex.Replace(input, "&#(?<ncr>\\d+?);", (m) =>
+    //  {
+    //    return Convert.ToChar(int.Parse(m.Groups["ncr"].Value)).ToString();
+    //  });
+    //}
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+      string ssss = "黑暗执行緒犇ＡＢＣ１２３";
+
+
+
+      ssss = ConvTraditionalChinese(ssss);
+
+
+
+
     }
   }
 }
