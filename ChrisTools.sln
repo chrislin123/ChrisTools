@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackHoleSupport", "BlackHo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaRouting", "MegaRouting\MegaRouting.csproj", "{DEE67A40-7DEB-4FB5-B5B2-38B754A85646}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spider", "Spider\Spider.csproj", "{74E27CED-1619-428B-8F79-6F04C6620828}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{DEE67A40-7DEB-4FB5-B5B2-38B754A85646}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEE67A40-7DEB-4FB5-B5B2-38B754A85646}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEE67A40-7DEB-4FB5-B5B2-38B754A85646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74E27CED-1619-428B-8F79-6F04C6620828}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74E27CED-1619-428B-8F79-6F04C6620828}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74E27CED-1619-428B-8F79-6F04C6620828}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74E27CED-1619-428B-8F79-6F04C6620828}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
