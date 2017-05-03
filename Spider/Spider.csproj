@@ -49,6 +49,10 @@
       <HintPath>..\packages\Google.Apis.Core.1.25.0\lib\net45\Google.Apis.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Google.Apis.Drive.v3, Version=1.25.0.840, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Drive.v3.1.25.0.840\lib\net45\Google.Apis.Drive.v3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Google.Apis.PlatformServices, Version=1.25.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.1.25.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
       <Private>True</Private>
@@ -97,6 +101,12 @@
     <Compile Include="SpC010Form.Designer.cs">
       <DependentUpon>SpC010Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="SpC040Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpC040Form.Designer.cs">
+      <DependentUpon>SpC040Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="SpC030Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +133,9 @@
     </Compile>
     <EmbeddedResource Include="SpC010Form.resx">
       <DependentUpon>SpC010Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpC040Form.resx">
+      <DependentUpon>SpC040Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SpC030Form.resx">
       <DependentUpon>SpC030Form.cs</DependentUpon>

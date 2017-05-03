@@ -35,5 +35,11 @@ namespace Spider
       SpC030Form newSpC030Form = new SpC030Form();
       newSpC030Form.ShowDialog(this);
     }
+
+    private void button4_Click(object sender, EventArgs e)
+    {
+      SpC040Form newSpC040Form = new SpC040Form();
+      newSpC040Form.ShowDialog(this);
+    }
   }
 }
