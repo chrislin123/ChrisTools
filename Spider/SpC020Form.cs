@@ -12,14 +12,115 @@ using System.Net;
 using Microsoft.VisualBasic;
 using System.Text.RegularExpressions;
 
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Spider
 {
   public partial class SpC020Form : Form
   {
+    static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
+    //應用程式的名字需要英文
+    static string ApplicationName = "Get Google SheetData with Google Sheets API";
+    static string sheetName = "Test123";
+
+
+
     public SpC020Form()
     {
       InitializeComponent();
     }
+
+
+    private void SpC020Form_Load(object sender, EventArgs e)
+    {
+      try
+      {
+        UserCredential credential;
+
+        using (var stream =
+            new FileStream(@"c:\\client_id.json", FileMode.Open, FileAccess.Read))
+        {
+          string credPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+          credPath = Path.Combine(credPath, ".credentials/sheets.googleapis.com-dotnet-quickstart.json");
+          credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+              GoogleClientSecrets.Load(stream).Secrets,
+              Scopes,
+              //"chris.lin.tw123@gmail.com",
+              "user",
+              CancellationToken.None,
+              new FileDataStore(credPath, true)).Result;
+          ShowMsg("Credential file saved to: " + credPath);
+          //Console.WriteLine("Credential file saved to: " + credPath);
+        }
+
+        // Create Google Sheets API service.
+        var service = new SheetsService(new BaseClientService.Initializer()
+        {
+          HttpClientInitializer = credential,
+          ApplicationName = ApplicationName,
+        });
+
+        // Define request parameters.
+        //String spreadsheetId = "1SyfODMfB1t7kpZ-CscOUIXdl6wHoHwYsxIjsbzMfzSk";
+        String spreadsheetId = "1bMZnuVDOL8mNKw6wivVp-yg_4nupLLE5ACEGG2OtgE8";
+        String range = "工作表1!A1:C4";
+        SpreadsheetsResource.ValuesResource.GetRequest request =
+                service.Spreadsheets.Values.Get(spreadsheetId, range);
+
+        Spreadsheet ss = new Spreadsheet();
+        
+        //ss.Properties.Title = "我的建立測試";
+        SpreadsheetsResource.CreateRequest cRequest = service.Spreadsheets.Create(ss);
+        Spreadsheet RespSS = cRequest.Execute();
+       
+        
+
+        //service.Spreadsheets.Create()
+
+
+        // Prints the names and majors of students in a sample spreadsheet:
+        // https://docs.google.com/spreadsheets/d/1SyfODMfB1t7kpZ-CscOUIXdl6wHoHwYsxIjsbzMfzSk/edit
+        ValueRange response = request.Execute();
+        IList<IList<Object>> values = response.Values;
+        if (values != null && values.Count > 0)
+        {
+          foreach (var row in values)
+          {
+            foreach (var col in row)
+            {
+              ShowMsg(string.Format("{0} ", col));
+              //Console.Write("{0} ", col);
+            }
+            //Console.WriteLine();
+            //或是以下寫法
+            //Console.WriteLine("{0}, {1}, {2}", row[0], row[1], row[2]);
+          }
+        }
+        else
+        {
+          //Console.WriteLine("No data found.");
+        }
+        //Console.Read();
+      }
+      catch (Exception ex)
+      {
+        ShowMsg(ex.ToString());
+        //throw;
+      }
+      
+    }
+
+
+    
+
 
     private void StartButton_Click(object sender, EventArgs e)
     {
@@ -28,8 +129,6 @@ namespace Spider
 
     public void ProcStart()
     {
-      
-
       string surl = "https://wiki.52poke.com/wiki/%E5%AE%9D%E5%8F%AF%E6%A2%A6%E5%88%97%E8%A1%A8%EF%BC%88%E6%8C%89%E5%85%A8%E5%9B%BD%E5%9B%BE%E9%89%B4%E7%BC%96%E5%8F%B7%EF%BC%89/%E7%AE%80%E5%8D%95%E7%89%88";
 
       HtmlWeb webClient = new HtmlWeb();
@@ -70,7 +169,7 @@ namespace Spider
         if (link.ChildNodes.Count == 2)
         {
           HtmlNode GpNode = link.SelectNodes(@"./td")[0];
-          sGp = GpNode.InnerText.Replace("\n", ""); ;
+          sGp = GpNode.InnerText.Replace("\n", "").Replace("第", "").Replace("世代", "");
         }
         //內容
         if (link.ChildNodes.Count == 8)
@@ -80,10 +179,10 @@ namespace Spider
           HtmlNode NameNode = link.SelectNodes(@"./td")[3].SelectSingleNode(@"./a");
           
           DataRow NewRow = ListTable.NewRow();
-          NewRow["no"] = NumNode.InnerText.Replace("\n", "").Replace("#", "");
-          NewRow["name"] = NameNode.InnerText.Replace("\n", "");
-          NewRow["namec"] = ConvTraditionalChinese(NameCNode.InnerText.Replace("\n", ""));
-          NewRow["group"] = sGp;
+          NewRow["no"] = NumNode.InnerText.Replace("\n", "").Replace("#", "").Trim();
+          NewRow["name"] = NameNode.InnerText.Replace("\n", "").Trim();
+          NewRow["namec"] = ConvTraditionalChinese(NameCNode.InnerText.Replace("\n", "").Trim());
+          NewRow["group"] = TcNumToNum(sGp.Trim());
 
           ListTable.Rows.Add(NewRow);
         }
@@ -91,6 +190,32 @@ namespace Spider
 
       ShowMsg("完成");
 
+    }
+
+    private string TcNumToNum(string sSource)
+    {
+      string sResult = "";
+
+      if (sSource == "一")
+        sResult = "1";
+      if (sSource == "二")
+        sResult = "2";
+      if (sSource == "三")
+        sResult = "3";
+      if (sSource == "四")
+        sResult = "4";
+      if (sSource == "五")
+        sResult = "5";
+      if (sSource == "六")
+        sResult = "6";
+      if (sSource == "七")
+        sResult = "7";
+      if (sSource == "八")
+        sResult = "8";
+      if (sSource == "九")
+        sResult = "9";
+
+      return sResult;
     }
 
     private void ShowMsg(string sMsg)
@@ -189,14 +314,10 @@ namespace Spider
     private void button1_Click(object sender, EventArgs e)
     {
       string ssss = "黑暗执行緒犇ＡＢＣ１２３";
-
-
-
+      
       ssss = ConvTraditionalChinese(ssss);
 
-
-
-
     }
+
   }
 }
