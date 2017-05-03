@@ -31,7 +31,7 @@ namespace Spider
   {
     static string[] Scopes = { DriveService.Scope.Drive, DriveService.Scope.DriveFile, SheetsService.Scope.Spreadsheets, SheetsService.Scope.Drive };
     //應用程式的名字需要英文
-    static string ApplicationName = "Get Google SheetData with Google Sheets API";    
+    static string ApplicationName = "Get Google SheetData with Google Sheets API";
     static string UserCredentFilePath = @"c:\\client_id.json";
 
     public SpC040Form()
@@ -42,10 +42,10 @@ namespace Spider
 
     private void SpC040Form_Load(object sender, EventArgs e)
     {
-       
+
     }
 
-    
+
     private void ShowMsg(string sMsg)
     {
       richTextBox1.AppendText(sMsg + Environment.NewLine);
@@ -65,23 +65,36 @@ namespace Spider
         IList<Data.File> gFiles = getChildFolderByID(sID).Files;
 
 
+
+        List<FileContent> gFileContents = new List<FileContent>();
         foreach (Data.File item in gFiles)
         {
-          ShowMsg(string.Format("{0} ({1}) ({2}) ({3})", item.Name ,item.Id, item.WebViewLink,item.WebContentLink));
+          FileContent TempContent = new FileContent();
+
+
+          TempContent.ParentFile = item;
+
+          ShowMsg(string.Format("{0} ({1}) ({2}) ({3})", item.Name, item.Id, item.WebViewLink, item.WebContentLink));
 
 
           IList<Data.File> LoopFiles = getChildFolderByID(item.Id).Files;
-
+          TempContent.ChildFiles = LoopFiles;
 
           foreach (Data.File LoopItem in LoopFiles)
           {
             ShowMsg(string.Format("== {0} ({1}) ({2}) ({3})", LoopItem.Name, LoopItem.Id, LoopItem.WebViewLink, LoopItem.WebContentLink));
           }
 
+          gFileContents.Add(TempContent);
+
         }
 
-        return;
+        //ToDo 寫入Google SpreadSheet
+        //WriteToSheet();
 
+
+
+        return;
 
         FilesResource.ListRequest listRequest = service.Files.List();
         listRequest.PageSize = 10;
@@ -96,7 +109,7 @@ namespace Spider
         {
           foreach (var file in files)
           {
-            
+
             var absPath = AbsPath(file);
             ShowMsg(string.Format("{0} ({1})", absPath, file.Id));
             //Console.WriteLine("{0} ({1})", absPath, file.Id);
@@ -162,7 +175,7 @@ namespace Spider
       Request.Fields = "nextPageToken, files(id, name, parents, webViewLink, webContentLink)";
 
 
-     gFiles = Request.Execute();
+      gFiles = Request.Execute();
 
 
       return gFiles;
@@ -252,7 +265,7 @@ namespace Spider
 
     //private void UpdateRow(SheetsService service)
     //{
-      
+
     //    ValueRange rVR;
     //    String sRange;
     //    int rowNumber = 1;
@@ -287,7 +300,7 @@ namespace Spider
     //    updateRequest.ValueInputOption
     //        = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
     //    UpdateValuesResponse uUVR = updateRequest.Execute();
-      
+
     //}
 
     private void ReadButton_Click(object sender, EventArgs e)
@@ -302,8 +315,8 @@ namespace Spider
         //String range = "工作表1!A1:C4";
         //SpreadsheetsResource.ValuesResource.GetRequest request =
         //        service.Spreadsheets.Values.Get(spreadsheetId, range);
-        
-        
+
+
         //// Prints the names and majors of students in a sample spreadsheet:
         //// https://docs.google.com/spreadsheets/d/1SyfODMfB1t7kpZ-CscOUIXdl6wHoHwYsxIjsbzMfzSk/edit
         //ValueRange response = request.Execute();
@@ -322,12 +335,12 @@ namespace Spider
         //{
         //  //Console.WriteLine("No data found.");
         //}
-        
+
       }
       catch (Exception ex)
       {
         ShowMsg(ex.ToString());
-        
+
       }
     }
 
@@ -358,8 +371,22 @@ namespace Spider
       catch (Exception ex)
       {
         ShowMsg(ex.ToString());
-        
+
       }
     }
+  }
+
+
+  public class FileContent{
+    public string ID = "";
+    public string Name = "";
+    public string WebViewLink = "";
+    public string parent = "";
+    public string WebContentLink = "";
+
+
+    public Data.File ParentFile;
+
+    public IList<Data.File> ChildFiles;
   }
 }
