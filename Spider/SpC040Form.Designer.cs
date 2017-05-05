@@ -29,9 +29,8 @@
     private void InitializeComponent()
     {
       this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-      this.AddButton = new System.Windows.Forms.Button();
-      this.ReadButton = new System.Windows.Forms.Button();
       this.WriteButton = new System.Windows.Forms.Button();
+      this.SheetButton = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // richTextBox1
@@ -42,45 +41,34 @@
       this.richTextBox1.TabIndex = 3;
       this.richTextBox1.Text = "";
       // 
-      // AddButton
-      // 
-      this.AddButton.Location = new System.Drawing.Point(12, 12);
-      this.AddButton.Name = "AddButton";
-      this.AddButton.Size = new System.Drawing.Size(75, 23);
-      this.AddButton.TabIndex = 2;
-      this.AddButton.Text = "AddSheet";
-      this.AddButton.UseVisualStyleBackColor = true;
-      this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
-      // 
-      // ReadButton
-      // 
-      this.ReadButton.Location = new System.Drawing.Point(93, 12);
-      this.ReadButton.Name = "ReadButton";
-      this.ReadButton.Size = new System.Drawing.Size(75, 23);
-      this.ReadButton.TabIndex = 4;
-      this.ReadButton.Text = "Read";
-      this.ReadButton.UseVisualStyleBackColor = true;
-      this.ReadButton.Click += new System.EventHandler(this.ReadButton_Click);
-      // 
       // WriteButton
       // 
-      this.WriteButton.Location = new System.Drawing.Point(174, 12);
+      this.WriteButton.Location = new System.Drawing.Point(12, 12);
       this.WriteButton.Name = "WriteButton";
-      this.WriteButton.Size = new System.Drawing.Size(75, 23);
+      this.WriteButton.Size = new System.Drawing.Size(106, 23);
       this.WriteButton.TabIndex = 5;
-      this.WriteButton.Text = "Write";
+      this.WriteButton.Text = "ReadDriveToSheet";
       this.WriteButton.UseVisualStyleBackColor = true;
       this.WriteButton.Click += new System.EventHandler(this.WriteButton_Click);
+      // 
+      // SheetButton
+      // 
+      this.SheetButton.Location = new System.Drawing.Point(124, 12);
+      this.SheetButton.Name = "SheetButton";
+      this.SheetButton.Size = new System.Drawing.Size(75, 23);
+      this.SheetButton.TabIndex = 6;
+      this.SheetButton.Text = "WriteSheet";
+      this.SheetButton.UseVisualStyleBackColor = true;
+      this.SheetButton.Click += new System.EventHandler(this.SheetButton_Click);
       // 
       // SpC040Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(467, 269);
+      this.Controls.Add(this.SheetButton);
       this.Controls.Add(this.WriteButton);
-      this.Controls.Add(this.ReadButton);
       this.Controls.Add(this.richTextBox1);
-      this.Controls.Add(this.AddButton);
       this.Name = "SpC040Form";
       this.Text = "SpC040Form";
       this.Load += new System.EventHandler(this.SpC040Form_Load);
@@ -91,8 +79,7 @@
     #endregion
 
     private System.Windows.Forms.RichTextBox richTextBox1;
-    private System.Windows.Forms.Button AddButton;
-    private System.Windows.Forms.Button ReadButton;
     private System.Windows.Forms.Button WriteButton;
+    private System.Windows.Forms.Button SheetButton;
   }
 }

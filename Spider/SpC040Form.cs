@@ -57,22 +57,23 @@ namespace Spider
     {
       try
       {
+        ShowMsg("Open Drive");
         var service = OpenDrive();
 
 
-
+        ShowMsg("Get child folder");
         string sID = "0B8avjAsawlWoay1XV1MwOGxsQ2M";
         IList<Data.File> gFiles = getChildFolderByID(sID).Files;
 
 
-
+        ShowMsg("Prepare file content list");
         List<FileContent> gFileContents = new List<FileContent>();
         foreach (Data.File item in gFiles)
         {
           FileContent TempContent = new FileContent();
 
 
-          TempContent.ParentFile = item;
+          TempContent.MainFile = item;
 
           ShowMsg(string.Format("{0} ({1}) ({2}) ({3})", item.Name, item.Id, item.WebViewLink, item.WebContentLink));
 
@@ -89,10 +90,12 @@ namespace Spider
 
         }
 
+        ShowMsg("Start write to sheet");
         //ToDo 寫入Google SpreadSheet
-        //WriteToSheet();
+        WriteToSheet(gFileContents);
 
 
+        ShowMsg("Finish");
 
         return;
 
@@ -104,7 +107,7 @@ namespace Spider
         IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
             .Files;
         ShowMsg("Files:");
-        //Console.WriteLine("Files:");
+        
         if (files != null && files.Count > 0)
         {
           foreach (var file in files)
@@ -112,14 +115,14 @@ namespace Spider
 
             var absPath = AbsPath(file);
             ShowMsg(string.Format("{0} ({1})", absPath, file.Id));
-            //Console.WriteLine("{0} ({1})", absPath, file.Id);
+            
           }
         }
         else
         {
-          //Console.WriteLine("No files found.");
+          
         }
-        //Console.Read();
+        
 
 
 
@@ -145,6 +148,84 @@ namespace Spider
       }
     }
 
+    private void WriteToSheet(List<FileContent> gFileContents)
+    {
+      string spreadsheetId = "1F5X3OTabV0Fq4o6Q0LzMx7T6aTZydDwViEfQRkXUwCA";
+      string sheetName = "工作表1";
+
+
+      ShowMsg("Open sheet");
+      
+      var service = OpenSheet();
+
+      ShowMsg("Prepare sheet range data");
+      //ValueRange rVR;
+      String sRange;
+      int rowNumber = 0;
+      List<IList<object>> TotalList = new List<IList<object>>();
+
+      DateTime dt = DateTime.Now; 
+      
+      //資料更新時間
+      TotalList.Add(new List<object>() {
+        "資料更新時間："
+        , DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
+        , "解壓縮密碼：pass@word1" });
+      rowNumber++;
+
+      //清單資料
+      foreach (FileContent LoopContent in gFileContents)
+      { 
+        TotalList.Add(new List<object>() { LoopContent.MainFile.Name, "", "" });
+        rowNumber++;
+
+        foreach (Data.File LoopFile in LoopContent.ChildFiles)
+        {
+          TotalList.Add(new List<object>() { "", LoopFile.Name, LoopFile.WebViewLink });
+          rowNumber++;
+        }
+      }
+
+
+      //設定讀取A欄最後一行位置
+      //sRange = String.Format("{0}!A:A", sheetName);
+      //SpreadsheetsResource.ValuesResource.GetRequest getRequest
+      //    = service.Spreadsheets.Values.Get(spreadsheetId, sRange);
+      //rVR = getRequest.Execute(); //到Google sheet讀取內容
+      //IList<IList<Object>> values = rVR.Values; //最後一行位置
+
+      //寫入新資料
+      //if (values != null && values.Count > 0) rowNumber = values.Count + 1; //添加一行
+      sRange = String.Format("{0}!A1:C{1}", sheetName, rowNumber);  //指定寫入位置
+
+      //sRange = String.Format("{0}!A1:C2", sheetName, rowNumber);  //指定寫入位置
+
+      //設定寫入
+      ValueRange valueRange = new ValueRange();
+      valueRange.Range = sRange;
+      valueRange.MajorDimension = "ROWS";//ROWS或COLUMNS
+
+      //取得當前時間
+      //DateTime dt = new DateTime();
+      //dt = DateTime.Now;
+      //List<object> oblist = new List<object>() { String.Format("{0}", rowNumber), dt.ToString("HH:mm:ss") };
+      //List<object> oblist2 = new List<object>() { "test1", "test2" };
+
+      //List<IList<object>> TotalList = new List<IList<object>>();
+      //TotalList.Add(oblist);
+      //TotalList.Add(oblist2);
+      //寫入時間
+      //valueRange.Values = new List<IList<object>> { oblist };
+      valueRange.Values = TotalList;
+
+      ShowMsg("Write sheet range data");
+      //執行寫入動作
+      SpreadsheetsResource.ValuesResource.UpdateRequest updateRequest
+          = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, sRange);
+      updateRequest.ValueInputOption
+          = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+      UpdateValuesResponse uUVR = updateRequest.Execute();
+    }
 
     private Data.FileList getChildFolderByID(string ID) {
 
@@ -167,11 +248,14 @@ namespace Spider
       ParamList.Add("trashed=false");
       ParamList.Add(string.Format("'{0}' in parents", ID));
 
+      //搜尋條件
       Request.Q = string.Join(" and ", ParamList);
 
+      //排序
       Request.OrderBy = "name";
 
       //Request.Fields = "parents";
+      //取得那些資料欄位
       Request.Fields = "nextPageToken, files(id, name, parents, webViewLink, webContentLink)";
 
 
@@ -250,7 +334,7 @@ namespace Spider
             "user",
             CancellationToken.None,
             new FileDataStore(credPath, true)).Result;
-        Console.WriteLine("Credential file saved to: " + credPath);
+        
       }
 
       //建立一個API服務，設定請求參數
@@ -263,45 +347,76 @@ namespace Spider
       return service;
     }
 
-    //private void UpdateRow(SheetsService service)
-    //{
+    private SheetsService OpenSheet()
+    {
+      UserCredential credential;
+      using (var stream = new FileStream(UserCredentFilePath, FileMode.Open, FileAccess.Read))
+      {
+        string credPath = Path.Combine
+            (System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),
+             ".credentials/sheets.googleapis.com-dotnet-quickstart.json");
 
-    //    ValueRange rVR;
-    //    String sRange;
-    //    int rowNumber = 1;
+        //存儲憑證到credPath
+        credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+            GoogleClientSecrets.Load(stream).Secrets,
+            Scopes,
+            "user",
+            CancellationToken.None,
+            new FileDataStore(credPath, true)).Result;
+        
+      }
 
-    //    //設定讀取A欄最後一行位置
-    //    sRange = String.Format("{0}!A:A", sheetName);
-    //    SpreadsheetsResource.ValuesResource.GetRequest getRequest
-    //        = service.Spreadsheets.Values.Get(spreadsheetId, sRange);
-    //    rVR = getRequest.Execute(); //到Google sheet讀取內容
-    //    IList<IList<Object>> values = rVR.Values; //最後一行位置
+      //建立一個API服務，設定請求參數
+      var service = new SheetsService(new BaseClientService.Initializer()
+      {
+        HttpClientInitializer = credential,
+        ApplicationName = ApplicationName,
+      });
+      return service;
+    }
 
-    //    //寫入新資料
-    //    if (values != null && values.Count > 0) rowNumber = values.Count + 1; //添加一行
-    //    sRange = String.Format("{0}!A{1}:B{1}", sheetName, rowNumber);  //指定寫入位置
+    private void UpdateRow(SheetsService service)
+    {
+      string spreadsheetId = "";
+      string sheetName = "";
+      
 
-    //    //設定寫入
-    //    ValueRange valueRange = new ValueRange();
-    //    valueRange.Range = sRange;
-    //    valueRange.MajorDimension = "ROWS";//ROWS或COLUMNS
+      ValueRange rVR;
+      String sRange;
+      int rowNumber = 1;
 
-    //    //取得當前時間
-    //    DateTime dt = new DateTime();
-    //    dt = DateTime.Now;
-    //    List<object> oblist = new List<object>() { String.Format("{0}", rowNumber), dt.ToString("HH:mm:ss") };
-    //    //寫入時間
-    //    valueRange.Values = new List<IList<object>> { oblist };
-    //    Console.WriteLine("{0}, {1}", oblist[0], oblist[1]);
+      //設定讀取A欄最後一行位置
+      sRange = String.Format("{0}!A:A", sheetName);
+      SpreadsheetsResource.ValuesResource.GetRequest getRequest
+          = service.Spreadsheets.Values.Get(spreadsheetId, sRange);
+      rVR = getRequest.Execute(); //到Google sheet讀取內容
+      IList<IList<Object>> values = rVR.Values; //最後一行位置
 
-    //    //執行寫入動作
-    //    SpreadsheetsResource.ValuesResource.UpdateRequest updateRequest
-    //        = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, sRange);
-    //    updateRequest.ValueInputOption
-    //        = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
-    //    UpdateValuesResponse uUVR = updateRequest.Execute();
+      //寫入新資料
+      if (values != null && values.Count > 0) rowNumber = values.Count + 1; //添加一行
+      sRange = String.Format("{0}!A{1}:B{1}", sheetName, rowNumber);  //指定寫入位置
 
-    //}
+      //設定寫入
+      ValueRange valueRange = new ValueRange();
+      valueRange.Range = sRange;
+      valueRange.MajorDimension = "ROWS";//ROWS或COLUMNS
+
+      //取得當前時間
+      DateTime dt = new DateTime();
+      dt = DateTime.Now;
+      List<object> oblist = new List<object>() { String.Format("{0}", rowNumber), dt.ToString("HH:mm:ss") };
+      //寫入時間
+      valueRange.Values = new List<IList<object>> { oblist };
+      
+
+      //執行寫入動作
+      SpreadsheetsResource.ValuesResource.UpdateRequest updateRequest
+          = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, sRange);
+      updateRequest.ValueInputOption
+          = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+      UpdateValuesResponse uUVR = updateRequest.Execute();
+
+    }
 
     private void ReadButton_Click(object sender, EventArgs e)
     {
@@ -333,7 +448,7 @@ namespace Spider
         //}
         //else
         //{
-        //  //Console.WriteLine("No data found.");
+        
         //}
 
       }
@@ -348,7 +463,10 @@ namespace Spider
     {
       try
       {
-        var service = OpenDrive();
+
+        ShowMsg(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+
+        //var service = OpenDrive();
 
         //string sheetName = string.Format("{0} {1}", DateTime.Now.Month, DateTime.Now.Day);
         //var addSheetRequest = new AddSheetRequest();
@@ -374,18 +492,16 @@ namespace Spider
 
       }
     }
+
+    private void SheetButton_Click(object sender, EventArgs e)
+    {
+      WriteToSheet(null);
+    }
   }
 
 
   public class FileContent{
-    public string ID = "";
-    public string Name = "";
-    public string WebViewLink = "";
-    public string parent = "";
-    public string WebContentLink = "";
-
-
-    public Data.File ParentFile;
+    public Data.File MainFile;
 
     public IList<Data.File> ChildFiles;
   }
