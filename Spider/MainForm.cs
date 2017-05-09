@@ -17,17 +17,18 @@ namespace Spider
       InitializeComponent();
     }
 
-    private void button2_Click(object sender, EventArgs e)
+    private void button1_Click(object sender, EventArgs e)
     {
       SpC010Form newSpC010Form = new SpC010Form();
       newSpC010Form.ShowDialog(this);
-
+      
     }
 
-    private void button1_Click(object sender, EventArgs e)
+    private void button2_Click(object sender, EventArgs e)
     {
       SpC020Form newSpC020Form = new SpC020Form();
       newSpC020Form.ShowDialog(this);
+
     }
 
     private void button3_Click(object sender, EventArgs e)

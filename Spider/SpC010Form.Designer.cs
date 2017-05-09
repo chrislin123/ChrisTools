@@ -32,6 +32,8 @@
       this.richTextBox1 = new System.Windows.Forms.RichTextBox();
       this.FileSavePathText = new System.Windows.Forms.TextBox();
       this.FileSavePathButton = new System.Windows.Forms.Button();
+      this.label1 = new System.Windows.Forms.Label();
+      this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
       this.SuspendLayout();
       // 
       // StartButton
@@ -58,6 +60,7 @@
       this.FileSavePathText.Name = "FileSavePathText";
       this.FileSavePathText.Size = new System.Drawing.Size(243, 22);
       this.FileSavePathText.TabIndex = 2;
+      this.FileSavePathText.Text = "F:\\temp\\image";
       // 
       // FileSavePathButton
       // 
@@ -69,11 +72,28 @@
       this.FileSavePathButton.UseVisualStyleBackColor = true;
       this.FileSavePathButton.Click += new System.EventHandler(this.FileSavePathButton_Click);
       // 
+      // label1
+      // 
+      this.label1.AutoSize = true;
+      this.label1.Location = new System.Drawing.Point(13, 257);
+      this.label1.Name = "label1";
+      this.label1.Size = new System.Drawing.Size(33, 12);
+      this.label1.TabIndex = 5;
+      this.label1.Text = "label1";
+      // 
+      // backgroundWorker2
+      // 
+      this.backgroundWorker2.WorkerReportsProgress = true;
+      this.backgroundWorker2.WorkerSupportsCancellation = true;
+      this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
+      this.backgroundWorker2.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker2_ProgressChanged);
+      // 
       // SpC010Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(469, 262);
+      this.ClientSize = new System.Drawing.Size(469, 280);
+      this.Controls.Add(this.label1);
       this.Controls.Add(this.FileSavePathButton);
       this.Controls.Add(this.FileSavePathText);
       this.Controls.Add(this.richTextBox1);
@@ -91,5 +111,7 @@
     private System.Windows.Forms.RichTextBox richTextBox1;
     private System.Windows.Forms.TextBox FileSavePathText;
     private System.Windows.Forms.Button FileSavePathButton;
+    private System.Windows.Forms.Label label1;
+    private System.ComponentModel.BackgroundWorker backgroundWorker2;
   }
 }
