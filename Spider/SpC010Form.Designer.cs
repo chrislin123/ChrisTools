@@ -33,7 +33,6 @@
       this.FileSavePathText = new System.Windows.Forms.TextBox();
       this.FileSavePathButton = new System.Windows.Forms.Button();
       this.label1 = new System.Windows.Forms.Label();
-      this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
       this.SuspendLayout();
       // 
       // StartButton
@@ -81,13 +80,6 @@
       this.label1.TabIndex = 5;
       this.label1.Text = "label1";
       // 
-      // backgroundWorker2
-      // 
-      this.backgroundWorker2.WorkerReportsProgress = true;
-      this.backgroundWorker2.WorkerSupportsCancellation = true;
-      this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
-      this.backgroundWorker2.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker2_ProgressChanged);
-      // 
       // SpC010Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -112,6 +104,5 @@
     private System.Windows.Forms.TextBox FileSavePathText;
     private System.Windows.Forms.Button FileSavePathButton;
     private System.Windows.Forms.Label label1;
-    private System.ComponentModel.BackgroundWorker backgroundWorker2;
   }
 }

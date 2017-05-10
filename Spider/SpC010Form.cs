@@ -37,36 +37,7 @@ namespace Spider
       return;
 
 
-      ////ProcStart();
-     
-
-      //ProcStart();
-
-      int iLenth = 0;
-      while (true)
-      {
-        if (iLenth == 10) break;
-
-        BackgroundWorker bw = new BackgroundWorker();
-        //回報進程
-        bw.WorkerReportsProgress = true;
-        //加入DoWork
-        bw.DoWork += new DoWorkEventHandler(bk_DoWork);
-        //加入bk_ProgressChanged
-        bw.ProgressChanged += new ProgressChangedEventHandler(bk_ProgressChanged);
-
-        bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bk_RunWorkerCompleted);
-        //傳遞參數
-        object i = new object();
-        //執行程序
-        bw.RunWorkerAsync(i);
-
-        //加入清單
-        BackgroundList.Add(bw);
-
-        iLenth++;
-      }
-
+      ////ProcStart();     
       
     }
 
@@ -163,6 +134,7 @@ namespace Spider
 
     public void ProcStartBw()
     {
+
       string surl = "https://wiki.52poke.com/wiki/%E5%AE%9D%E5%8F%AF%E6%A2%A6%E5%88%97%E8%A1%A8%EF%BC%88%E6%8C%89%E5%85%A8%E5%9B%BD%E5%9B%BE%E9%89%B4%E7%BC%96%E5%8F%B7%EF%BC%89/%E7%AE%80%E5%8D%95%E7%89%88";
 
       HtmlWeb webClient = new HtmlWeb();
@@ -189,83 +161,87 @@ namespace Spider
       ShowMsg("彙整連結");
 
       //取得連結清單
-      List<string> imgList = new List<string>();
-      
+      List<InfoContent> InfoList = new List<InfoContent>();
+      //List<string> imgList = new List<string>();
+      //List<string> NumList = new List<string>();
+
       //foreach (HtmlNode link in docStockContext.DocumentNode.SelectNodes("//a[@href]"))
       foreach (HtmlNode link in docStockContext.DocumentNode.SelectNodes("./tr"))
       {
         if (link.ChildNodes.Count == 8)
         {
+          InfoContent oIC = new InfoContent();
+          //取得編號
+          HtmlNode NumHref = link.SelectNodes(@"./td")[0];
+          oIC.Num = NumHref.InnerText.Trim().Replace("#", "").Replace("/n", "");
+          
+          //取得連結
           HtmlNode imaHref = link.SelectNodes(@"./td")[3].SelectSingleNode(@"./a");
+          oIC.Url = imaHref.GetAttributeValue("href", "");
 
-          imgList.Add(imaHref.GetAttributeValue("href", ""));
+          InfoList.Add(oIC);
         }
       }
 
-      //for (int i = 0; i < 100; i++)
-      //{
-      //  imgList.Add("");
-      //}
+      BackgroundWorker bw = new BackgroundWorker();
+      //回報進程
+      bw.WorkerReportsProgress = true;
+      //加入DoWork
+      bw.DoWork += new DoWorkEventHandler(Proc_DoWork);
+      //加入ProgressChanged
+      bw.ProgressChanged += new ProgressChangedEventHandler(Proc_ProgressChanged);
+      //加入RunWorkerCompleted
+      bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerCompleted);
+      //傳遞參數
+      object i = new object();
+      //執行程序
+      bw.RunWorkerAsync(InfoList);
+
+      ShowMsg("啟動。");      
+    }
 
 
+    private void bk_DoWork(object sender, DoWorkEventArgs e)
+    {
+      //參數
+      InfoContent oIC = e.Argument as InfoContent;
+      string sUrl = oIC.Url;    
 
-      backgroundWorker2.RunWorkerAsync(imgList);
-      
-      //int iLenth = 0;
-      
-
-
-
-
-      ShowMsg("完成。");
-
-
-
-
-
-
-
-      return;
-
-
-
-
-
-
-      int iIndex = 0;
-      foreach (string item in imgList)
+      try
       {
-        iIndex++;
-
-        //if (iIndex < 500)
-        //{ 
-        //  continue;
-        //}
-
-        string surl1 = "https://wiki.52poke.com" + item;
-        string[] sSplit = item.Split('/');
+        string surl1 = "https://wiki.52poke.com" + sUrl;
+        string[] sSplit = sUrl.Split('/');
 
         string sFileName = sSplit[sSplit.Length - 1];
 
-        ShowMsg("取得明細資料");
+        //ShowMsg("取得明細資料");
 
-        HtmlWeb webClient1 = new HtmlWeb();
+        HtmlWeb webClient = new HtmlWeb();
+        HtmlAgilityPack.HtmlWeb.PreRequestHandler handler = delegate (HttpWebRequest request)
+        {
+          request.Headers[HttpRequestHeader.AcceptEncoding] = "gzip, deflate";
+          request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+          request.CookieContainer = new System.Net.CookieContainer();
+          return true;
+        };
+
+        webClient.PreRequest += handler;
         HtmlAgilityPack.HtmlDocument doc1 = webClient.Load(surl1);
 
         HtmlNode imaHref;
         imaHref = doc1.DocumentNode.SelectSingleNode(
-          string.Format(@"//img[contains(@alt,'{0}') and contains(@alt,'.png')]", sFileName));
+          string.Format(@"//img[contains(@alt,'{0}') and contains(@alt,'.png')]", oIC.Num));
 
-        if (imaHref == null)
-        {
-          continue;
-        }
+        //if (imaHref == null)
+        //{
+        //  return;
+        //}
 
         string sSrc = imaHref.GetAttributeValue("data-url", "");
 
         if (sSrc == "")
         {
-          continue;
+          return;
         }
 
         string sImgUrl = "http:" + sSrc;
@@ -274,80 +250,16 @@ namespace Spider
 
         string sImgFileName = FormatFileName(TempSplit[TempSplit.Length - 1]);
 
-        ShowMsg(sImgFileName);
+        //ShowMsg(sImgFileName);
 
         //依照圖片路徑下載
         DoSaveImage(sImgUrl, sImgFileName);
       }
-
-      ShowMsg("完成。");
-    }
-
-
-    private void bk_DoWork(object sender, DoWorkEventArgs e)
-    {
-      string item = e.Argument.ToString();
-
-      string surl1 = "https://wiki.52poke.com" + item;
-      string[] sSplit = item.Split('/');
-
-      string sFileName = sSplit[sSplit.Length - 1];
-
-      //ShowMsg("取得明細資料");
-
-      HtmlWeb webClient = new HtmlWeb();
-      HtmlAgilityPack.HtmlWeb.PreRequestHandler handler = delegate (HttpWebRequest request)
+      catch (Exception ex)
       {
-        request.Headers[HttpRequestHeader.AcceptEncoding] = "gzip, deflate";
-        request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-        request.CookieContainer = new System.Net.CookieContainer();
-        return true;
-      };
 
-      webClient.PreRequest += handler;
-      HtmlAgilityPack.HtmlDocument doc1 = webClient.Load(surl1);
-
-      HtmlNode imaHref;
-      imaHref = doc1.DocumentNode.SelectSingleNode(
-        string.Format(@"//img[contains(@alt,'{0}') and contains(@alt,'.png')]", sFileName));
-
-      if (imaHref == null)
-      {
-        return;
+        throw;
       }
-
-      string sSrc = imaHref.GetAttributeValue("data-url", "");
-
-      if (sSrc == "")
-      {
-        return;
-      }
-
-      string sImgUrl = "http:" + sSrc;
-
-      string[] TempSplit = sImgUrl.Split('/');
-
-      string sImgFileName = FormatFileName(TempSplit[TempSplit.Length - 1]);
-
-      //ShowMsg(sImgFileName);
-
-      //依照圖片路徑下載
-      DoSaveImage(sImgUrl, sImgFileName);
-
-      
-      //Guid gd = Guid.NewGuid();
-
-      //Random outerRnd = new Random(); //Random class 要放在 loop 外才可以!
-      //for (int i = 0; i < 10; i++)
-      //{
-      //  Thread.Sleep(outerRnd.Next(50, 1000));
-
-      //  BackgroundWorker dobw = sender as BackgroundWorker;
-      //  dobw.ReportProgress(1, gd.ToString() + "==" + i.ToString());
-
-
-      //  string ssss = string.Empty;
-      //}
     }
 
     private void bk_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -357,13 +269,89 @@ namespace Spider
 
     private void bk_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
-      BackgroundList.Remove(sender as BackgroundWorker);
+      try
+      {
+        BackgroundList.Remove(sender as BackgroundWorker);
+      }
+      catch (Exception ex)
+      {
+
+        throw;
+      }
+      
       
       //ShowMsg(DateTime.Now.ToString());
     }
 
 
+    private void Proc_DoWork(object sender, DoWorkEventArgs e)
+    {
+      List<InfoContent> InfoList = e.Argument as List<InfoContent>;
+      int iMax = 10;
+      int iRunIndex = 0;
 
+      while (true)
+      {
+        Thread.Sleep(100);
+
+        ////最後一筆且背景執行序完成時結束
+        //if (iRunIndex == bwimgList.Count && BackgroundList.Count() == 0) break;
+
+        //最後一筆，不繼續執行
+        if (iRunIndex == InfoList.Count) break;
+
+        //加入序列
+        if (BackgroundList.Count < iMax)
+        {
+
+          BackgroundWorker bw = new BackgroundWorker();
+          //回報進程
+          bw.WorkerReportsProgress = true;
+          //加入DoWork
+          bw.DoWork += new DoWorkEventHandler(bk_DoWork);
+          //加入bk_ProgressChanged
+          bw.ProgressChanged += new ProgressChangedEventHandler(bk_ProgressChanged);
+
+          bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bk_RunWorkerCompleted);
+          //傳遞參數
+          InfoContent sParam = InfoList[iRunIndex];
+          //object e = new object();
+
+          //執行程序
+          bw.RunWorkerAsync(sParam);
+
+          //加入清單
+          BackgroundList.Add(bw);
+
+          //iLenth++;
+          iRunIndex++;
+        }
+
+        //回報訊息
+        List<string> sJoin = new List<string>();
+        sJoin.Add(iRunIndex.ToString());
+        sJoin.Add(InfoList.Count().ToString());
+        sJoin.Add(BackgroundList.Count().ToString());
+
+        BackgroundWorker bw1 = sender as BackgroundWorker;
+        bw1.ReportProgress(1, string.Join(",", sJoin));
+
+      }
+    }
+
+    private void Proc_ProgressChanged(object sender, ProgressChangedEventArgs e)
+    {
+      string[] sSplit = e.UserState.ToString().Split(',');
+
+
+      string sMsg = "進度:{0} / 總數:{1}, 同步執行數:{2}";
+
+      label1.Text = string.Format(sMsg, sSplit);
+    }
+    private void Proc_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    {
+      ShowMsg("下載完成。");
+    }
 
 
 
@@ -410,70 +398,13 @@ namespace Spider
       richTextBox1.Refresh();
     }
   
-    private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
-    {
+  
+  }
 
-      List<string> bwimgList = e.Argument as List<string>;
-      int iMax = 10;
-      int iRunIndex = 0;
-
-      while (true)
-      {
-        Thread.Sleep(100);
-        //最後一筆結束
-        if (iRunIndex == bwimgList.Count) break;
-
-        //加入序列
-        if (BackgroundList.Count < iMax)
-        {
-
-          BackgroundWorker bw = new BackgroundWorker();
-          //回報進程
-          bw.WorkerReportsProgress = true;
-          //加入DoWork
-          bw.DoWork += new DoWorkEventHandler(bk_DoWork);
-          //加入bk_ProgressChanged
-          bw.ProgressChanged += new ProgressChangedEventHandler(bk_ProgressChanged);
-
-          bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bk_RunWorkerCompleted);
-          //傳遞參數
-          string sParam = bwimgList[iRunIndex];
-          //object e = new object();
-
-          //執行程序
-          bw.RunWorkerAsync(sParam);
-
-          //加入清單
-          BackgroundList.Add(bw);
-
-          //iLenth++;
-          iRunIndex++;
-        }
-
-        List<string> sJoin = new List<string>();
-        sJoin.Add(iRunIndex.ToString());
-        sJoin.Add(bwimgList.Count().ToString());
-        sJoin.Add(BackgroundList.Count().ToString());
-
-        BackgroundWorker bw1 = sender as BackgroundWorker;
-        bw1.ReportProgress(1, string.Join(",", sJoin));
-
-      }
-    }
-
-    private void backgroundWorker2_ProgressChanged(object sender, ProgressChangedEventArgs e)
-    {
-      string[] sSplit = e.UserState.ToString().Split(',');
-
-
-      string sMsg = "進度:{0} / 總數:{1}, 同步執行數:{2}";
-
-      label1.Text = string.Format(sMsg, sSplit);
-
-      //label1.Text = sSplit[0];
-      //label2.Text = sSplit[1];
-      //label3.Text = sSplit[2];
-    }
+  public class InfoContent
+  {
+    public string Num = "";
+    public string Url = "";
   }
 
   
