@@ -42,5 +42,11 @@ namespace Spider
       SpC040Form newSpC040Form = new SpC040Form();
       newSpC040Form.ShowDialog(this);
     }
+
+    private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+    {
+      //这是最彻底的退出方式，不管什么线程都被强制退出，把程序结束的很干净。              
+      Environment.Exit(Environment.ExitCode);
+    }
   }
 }

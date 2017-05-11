@@ -278,9 +278,6 @@ namespace Spider
 
         throw;
       }
-      
-      
-      //ShowMsg(DateTime.Now.ToString());
     }
 
 

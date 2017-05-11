@@ -32,7 +32,7 @@ namespace Spider
     static string[] Scopes = { DriveService.Scope.Drive, DriveService.Scope.DriveFile, SheetsService.Scope.Spreadsheets, SheetsService.Scope.Drive };
     //應用程式的名字需要英文
     static string ApplicationName = "Get Google SheetData with Google Sheets API";
-    static string UserCredentFilePath = @"c:\\client_id.json";
+    string UserCredentFilePath = @"c:\\client_id.json";
 
     public SpC040Form()
     {
@@ -42,7 +42,8 @@ namespace Spider
 
     private void SpC040Form_Load(object sender, EventArgs e)
     {
-
+      //取得資料 
+      UserCredentFilePath = Path.Combine(Directory.GetCurrentDirectory(), "client_id.json");
     }
 
 
