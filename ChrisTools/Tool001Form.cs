@@ -114,7 +114,7 @@ namespace ChrisTools
         Application.DoEvents();
         iIndex++;
 
-        System.Threading.Thread.Sleep(30);
+        //System.Threading.Thread.Sleep(30);
       }
 
       ResultTextbox.AppendText("完成。" + "\r\n");
