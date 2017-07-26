@@ -22,24 +22,33 @@ namespace MegaRouting
     {
       for (int i = 0; i < 40; i++)
       {
-        MegaApiClient client = new MegaApiClient();
+        try
+        {
+          MegaApiClient client = new MegaApiClient();
 
-        int idx = i + 1;
-        string sEmail = string.Format("chris.lin.tw1234+{0}@gmail.com", idx.ToString().PadLeft(3, '0'));
+          int idx = i + 1;
+          string sEmail = string.Format("chris.lin.tw1234+{0}@gmail.com", idx.ToString().PadLeft(3, '0'));
 
-        showMsg(string.Format("{0}==登入中", sEmail));        
-        client.Login(sEmail, "fm719531");
-        showMsg(string.Format("{0}==登入成功", sEmail));
+          showMsg(string.Format("{0}==登入中", sEmail));
+          client.Login(sEmail, "fm719531");
+          showMsg(string.Format("{0}==登入成功", sEmail));
+
+          showMsg(string.Format("{0}==讀取中", sEmail));
+          var nodes = client.GetNodes();
+          showMsg(string.Format("{0}==讀取成功", sEmail));
+
+          showMsg(string.Format("{0}==登出中", sEmail));
+          client.Logout();
+          showMsg(string.Format("{0}==登出成功", sEmail));
+
+          showMsg("");
+        }
+        catch (Exception)
+        {
+
+          continue;
+        }
         
-        showMsg(string.Format("{0}==讀取中", sEmail));
-        var nodes = client.GetNodes();
-        showMsg(string.Format("{0}==讀取成功", sEmail));
-        
-        showMsg(string.Format("{0}==登出中", sEmail));
-        client.Logout();
-        showMsg(string.Format("{0}==登出成功", sEmail));
-        
-        showMsg("");
         
       }
 
