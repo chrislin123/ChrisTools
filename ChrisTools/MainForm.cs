@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ChrisTools
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -23,5 +23,12 @@ namespace ChrisTools
 
 
         }
+
+    private void btnTool001_Click(object sender, EventArgs e)
+    {
+      Tool001Form fTool001Form = new Tool001Form();
+      
+      fTool001Form.ShowDialog();
     }
+  }
 }
