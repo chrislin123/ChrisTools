@@ -36,8 +36,18 @@
       <HintPath>..\packages\ExifLib.1.7.0.0\lib\net45\ExifLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MegaApiClient, Version=1.6.2.396, Culture=neutral, PublicKeyToken=0480d311efbeb4e2, processorArchitecture=MSIL">
+      <HintPath>..\packages\MegaApiClient.1.6.2\lib\net45\MegaApiClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -86,6 +96,12 @@
     <Compile Include="Tool003Form.Designer.cs">
       <DependentUpon>Tool003Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tool004Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tool004Form.Designer.cs">
+      <DependentUpon>Tool004Form.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Tool002Form.resx">
       <DependentUpon>Tool002Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -109,6 +125,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tool003Form.resx">
       <DependentUpon>Tool003Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tool004Form.resx">
+      <DependentUpon>Tool004Form.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
