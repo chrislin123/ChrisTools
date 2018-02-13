@@ -1,6 +1,6 @@
-﻿namespace MegaRouting
+﻿namespace ChrisTools
 {
-  partial class Tools001
+  partial class Tool004Form
   {
     /// <summary>
     /// Required designer variable.
@@ -49,16 +49,17 @@
       this.richTextBox1.Size = new System.Drawing.Size(465, 274);
       this.richTextBox1.TabIndex = 1;
       this.richTextBox1.Text = "";
+      this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
       // 
-      // Tools001
+      // Tool004Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(489, 377);
       this.Controls.Add(this.richTextBox1);
       this.Controls.Add(this.btnStart);
-      this.Name = "Tools001";
-      this.Text = "Tools001";
+      this.Name = "Tool004Form";
+      this.Text = "MEGA批次登入";
       this.ResumeLayout(false);
 
     }

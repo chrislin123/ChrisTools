@@ -143,6 +143,15 @@ namespace ChrisTools
       tf.Show();
       
     }
+
+    private void MenuItemTool004_Click(object sender, EventArgs e)
+    {
+
+      Tool004Form tf = new Tool004Form();
+      tf.MdiParent = this;
+      tf.WindowState = FormWindowState.Maximized;
+      tf.Show();
+    }
   }
 
   

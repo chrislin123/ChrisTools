@@ -52,6 +52,8 @@
       this.MenuItemTool001 = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
       this.MenuItemTool003 = new System.Windows.Forms.ToolStripMenuItem();
+      this.雲端相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.MenuItemTool004 = new System.Windows.Forms.ToolStripMenuItem();
       this.menuStrip.SuspendLayout();
       this.statusStrip.SuspendLayout();
       this.SuspendLayout();
@@ -61,7 +63,8 @@
       this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileMenu,
             this.檔案相關ToolStripMenuItem,
-            this.照片相關ToolStripMenuItem});
+            this.照片相關ToolStripMenuItem,
+            this.雲端相關ToolStripMenuItem});
       this.menuStrip.Location = new System.Drawing.Point(0, 0);
       this.menuStrip.Name = "menuStrip";
       this.menuStrip.Size = new System.Drawing.Size(1008, 24);
@@ -229,6 +232,21 @@
       this.MenuItemTool003.Text = "批次更新檔案名稱";
       this.MenuItemTool003.Click += new System.EventHandler(this.MenuItemTool003_Click);
       // 
+      // 雲端相關ToolStripMenuItem
+      // 
+      this.雲端相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemTool004});
+      this.雲端相關ToolStripMenuItem.Name = "雲端相關ToolStripMenuItem";
+      this.雲端相關ToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+      this.雲端相關ToolStripMenuItem.Text = "雲端相關";
+      // 
+      // MenuItemTool004
+      // 
+      this.MenuItemTool004.Name = "MenuItemTool004";
+      this.MenuItemTool004.Size = new System.Drawing.Size(160, 22);
+      this.MenuItemTool004.Text = "MEGA批次登入";
+      this.MenuItemTool004.Click += new System.EventHandler(this.MenuItemTool004_Click);
+      // 
       // MainMdiForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -273,6 +291,8 @@
     private System.Windows.Forms.ToolStripMenuItem MenuItemTool001;
     private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     private System.Windows.Forms.ToolStripMenuItem MenuItemTool003;
+    private System.Windows.Forms.ToolStripMenuItem 雲端相關ToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem MenuItemTool004;
   }
 }
 

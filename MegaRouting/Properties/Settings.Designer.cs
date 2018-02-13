@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MegaRouting.Properties
+namespace ChrisTools.Properties
 {
 
 
