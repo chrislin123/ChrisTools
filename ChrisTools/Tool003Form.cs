@@ -29,6 +29,15 @@ namespace ChrisTools
     private void btnStart_Click(object sender, EventArgs e)
     {
 
+      //防呆
+      if (NewNameText.Text.Contains("{0}") == false)
+      {
+        //新檔案名稱格式
+        MessageBox.Show("新檔案名稱格式，需要包含'{0}'字元。");
+        return;
+      }
+
+
       int iStartIndex = Convert.ToInt16(startindexText.Text);
       int iLength = Convert.ToInt16(lengthText.Text);
       string sFileNameTemp = NewNameText.Text;
