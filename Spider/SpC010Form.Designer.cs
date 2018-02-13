@@ -33,6 +33,7 @@
       this.FileSavePathText = new System.Windows.Forms.TextBox();
       this.FileSavePathButton = new System.Windows.Forms.Button();
       this.label1 = new System.Windows.Forms.Label();
+      this.btntest = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // StartButton
@@ -80,11 +81,22 @@
       this.label1.TabIndex = 5;
       this.label1.Text = "label1";
       // 
+      // btntest
+      // 
+      this.btntest.Location = new System.Drawing.Point(93, 11);
+      this.btntest.Name = "btntest";
+      this.btntest.Size = new System.Drawing.Size(75, 23);
+      this.btntest.TabIndex = 6;
+      this.btntest.Text = "btntest";
+      this.btntest.UseVisualStyleBackColor = true;
+      this.btntest.Click += new System.EventHandler(this.btntest_Click);
+      // 
       // SpC010Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(469, 280);
+      this.Controls.Add(this.btntest);
       this.Controls.Add(this.label1);
       this.Controls.Add(this.FileSavePathButton);
       this.Controls.Add(this.FileSavePathText);
@@ -104,5 +116,6 @@
     private System.Windows.Forms.TextBox FileSavePathText;
     private System.Windows.Forms.Button FileSavePathButton;
     private System.Windows.Forms.Label label1;
+    private System.Windows.Forms.Button btntest;
   }
 }

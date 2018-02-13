@@ -394,8 +394,49 @@ namespace Spider
       richTextBox1.ScrollToCaret();
       richTextBox1.Refresh();
     }
-  
-  
+
+    private void btntest_Click(object sender, EventArgs e)
+    {
+      string surl = "http://isin.twse.com.tw/isin/C_public.jsp?strMode=2";
+
+      HtmlWeb webClient = new HtmlWeb();
+      webClient.OverrideEncoding = Encoding.GetEncoding(950);
+      //HtmlAgilityPack.HtmlWeb.PreRequestHandler handler = delegate (HttpWebRequest request)
+      //{
+      //  request.Headers[HttpRequestHeader.AcceptEncoding] = "gzip, deflate";
+      //  request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+      //  request.CookieContainer = new System.Net.CookieContainer();
+      //  return true;
+      //};
+
+      //webClient.PreRequest += handler;
+
+      //ShowMsg("載入資料");
+
+      
+      // 載入網頁資料 
+      HtmlAgilityPack.HtmlDocument doc = webClient.Load(surl);
+
+      // 裝載查詢結果 
+      HtmlAgilityPack.HtmlDocument docStockContext = new HtmlAgilityPack.HtmlDocument();
+      docStockContext.LoadHtml(doc.DocumentNode.SelectSingleNode(
+        @"//*[@id='mw-content-text']/table[1]").InnerHtml);
+
+      ShowMsg("彙整連結");
+
+      //取得連結清單
+      List<string> imgList = new List<string>();
+      //foreach (HtmlNode link in docStockContext.DocumentNode.SelectNodes("//a[@href]"))
+      foreach (HtmlNode link in docStockContext.DocumentNode.SelectNodes("./tr"))
+      {
+        if (link.ChildNodes.Count == 8)
+        {
+          HtmlNode imaHref = link.SelectNodes(@"./td")[3].SelectSingleNode(@"./a");
+
+          imgList.Add(imaHref.GetAttributeValue("href", ""));
+        }
+      }
+    }
   }
 
   public class InfoContent
