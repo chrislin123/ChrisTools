@@ -100,12 +100,63 @@ namespace ChrisTools
         {
           NewNameText.Text = di.Name + ".E{0}";
         }
+
+        int idx = 0;
+        int iTemp = 0;
+        //判斷檔案名稱，預測起始位置
+        FileInfo[] fiList = di.GetFiles();
+        if (fiList.Length > 0)
+        {
+          FileInfo fi = fiList[0];
+          
+          string sAnlString = fi.Name.ToUpper();
+
+
+          //分析"E01"
+          for (int i = 0; i < sAnlString.Length; i++)
+          {
+            if (i == sAnlString.Length -1)
+            {
+              break;
+            }
+
+            if (sAnlString.Substring(i, 1) == "E" && int.TryParse(sAnlString.Substring(i+1, 1),out iTemp))
+            {
+              idx = i;
+              break;
+            }
+          }
+
+          //分析"EP01"
+          for (int i = 0; i < sAnlString.Length; i++)
+          {
+            if (i == sAnlString.Length - 2)
+            {
+              break;
+            }
+
+            if (sAnlString.Substring(i, 2) == "EP" && int.TryParse(sAnlString.Substring(i + 2, 1), out iTemp))
+            {
+              idx = i + 1;
+              break;
+            }
+          }
+        }
+
+        startindexText.Text = idx.ToString();
+
+
+
       }
       catch (Exception)
       {
         //解析錯誤，提供預設值
         NewNameText.Text = "預設.E{0}";
       }
+
+
+
+
     }
   }
 }

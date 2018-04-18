@@ -43,17 +43,17 @@
       this.printSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
       this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.statusStrip = new System.Windows.Forms.StatusStrip();
-      this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-      this.toolTip = new System.Windows.Forms.ToolTip(this.components);
       this.檔案相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.MenuItemTool002 = new System.Windows.Forms.ToolStripMenuItem();
+      this.MenuItemTool003 = new System.Windows.Forms.ToolStripMenuItem();
       this.照片相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.MenuItemTool001 = new System.Windows.Forms.ToolStripMenuItem();
-      this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-      this.MenuItemTool003 = new System.Windows.Forms.ToolStripMenuItem();
       this.雲端相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.MenuItemTool004 = new System.Windows.Forms.ToolStripMenuItem();
+      this.statusStrip = new System.Windows.Forms.StatusStrip();
+      this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+      this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+      this.toolTip = new System.Windows.Forms.ToolTip(this.components);
       this.menuStrip.SuspendLayout();
       this.statusStrip.SuspendLayout();
       this.SuspendLayout();
@@ -171,6 +171,59 @@
       this.exitToolStripMenuItem.Text = "結束(&X)";
       this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolsStripMenuItem_Click);
       // 
+      // 檔案相關ToolStripMenuItem
+      // 
+      this.檔案相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemTool002,
+            this.MenuItemTool003});
+      this.檔案相關ToolStripMenuItem.Name = "檔案相關ToolStripMenuItem";
+      this.檔案相關ToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+      this.檔案相關ToolStripMenuItem.Text = "檔案相關";
+      // 
+      // MenuItemTool002
+      // 
+      this.MenuItemTool002.Name = "MenuItemTool002";
+      this.MenuItemTool002.Size = new System.Drawing.Size(184, 22);
+      this.MenuItemTool002.Text = "從資料夾移出大檔案";
+      this.MenuItemTool002.Click += new System.EventHandler(this.MenuItemTool002_Click);
+      // 
+      // MenuItemTool003
+      // 
+      this.MenuItemTool003.Name = "MenuItemTool003";
+      this.MenuItemTool003.Size = new System.Drawing.Size(184, 22);
+      this.MenuItemTool003.Text = "批次更新檔案名稱";
+      this.MenuItemTool003.Click += new System.EventHandler(this.MenuItemTool003_Click);
+      // 
+      // 照片相關ToolStripMenuItem
+      // 
+      this.照片相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemTool001});
+      this.照片相關ToolStripMenuItem.Name = "照片相關ToolStripMenuItem";
+      this.照片相關ToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+      this.照片相關ToolStripMenuItem.Text = "照片相關";
+      // 
+      // MenuItemTool001
+      // 
+      this.MenuItemTool001.Name = "MenuItemTool001";
+      this.MenuItemTool001.Size = new System.Drawing.Size(172, 22);
+      this.MenuItemTool001.Text = "照片整理歸檔功能";
+      this.MenuItemTool001.Click += new System.EventHandler(this.MenuItemTool001_Click);
+      // 
+      // 雲端相關ToolStripMenuItem
+      // 
+      this.雲端相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemTool004});
+      this.雲端相關ToolStripMenuItem.Name = "雲端相關ToolStripMenuItem";
+      this.雲端相關ToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+      this.雲端相關ToolStripMenuItem.Text = "雲端相關";
+      // 
+      // MenuItemTool004
+      // 
+      this.MenuItemTool004.Name = "MenuItemTool004";
+      this.MenuItemTool004.Size = new System.Drawing.Size(160, 22);
+      this.MenuItemTool004.Text = "MEGA批次登入";
+      this.MenuItemTool004.Click += new System.EventHandler(this.MenuItemTool004_Click);
+      // 
       // statusStrip
       // 
       this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -188,64 +241,11 @@
       this.toolStripStatusLabel.Size = new System.Drawing.Size(32, 17);
       this.toolStripStatusLabel.Text = "狀態";
       // 
-      // 檔案相關ToolStripMenuItem
-      // 
-      this.檔案相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemTool002,
-            this.MenuItemTool003});
-      this.檔案相關ToolStripMenuItem.Name = "檔案相關ToolStripMenuItem";
-      this.檔案相關ToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
-      this.檔案相關ToolStripMenuItem.Text = "檔案相關";
-      // 
-      // MenuItemTool002
-      // 
-      this.MenuItemTool002.Name = "MenuItemTool002";
-      this.MenuItemTool002.Size = new System.Drawing.Size(184, 22);
-      this.MenuItemTool002.Text = "從資料夾移出大檔案";
-      this.MenuItemTool002.Click += new System.EventHandler(this.MenuItemTool002_Click);
-      // 
-      // 照片相關ToolStripMenuItem
-      // 
-      this.照片相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemTool001});
-      this.照片相關ToolStripMenuItem.Name = "照片相關ToolStripMenuItem";
-      this.照片相關ToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
-      this.照片相關ToolStripMenuItem.Text = "照片相關";
-      // 
-      // MenuItemTool001
-      // 
-      this.MenuItemTool001.Name = "MenuItemTool001";
-      this.MenuItemTool001.Size = new System.Drawing.Size(172, 22);
-      this.MenuItemTool001.Text = "照片整理歸檔功能";
-      this.MenuItemTool001.Click += new System.EventHandler(this.MenuItemTool001_Click);
-      // 
       // toolStripStatusLabel1
       // 
       this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
       this.toolStripStatusLabel1.Size = new System.Drawing.Size(129, 17);
       this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
-      // 
-      // MenuItemTool003
-      // 
-      this.MenuItemTool003.Name = "MenuItemTool003";
-      this.MenuItemTool003.Size = new System.Drawing.Size(184, 22);
-      this.MenuItemTool003.Text = "批次更新檔案名稱";
-      this.MenuItemTool003.Click += new System.EventHandler(this.MenuItemTool003_Click);
-      // 
-      // 雲端相關ToolStripMenuItem
-      // 
-      this.雲端相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemTool004});
-      this.雲端相關ToolStripMenuItem.Name = "雲端相關ToolStripMenuItem";
-      this.雲端相關ToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
-      this.雲端相關ToolStripMenuItem.Text = "雲端相關";
-      // 
-      // MenuItemTool004
-      // 
-      this.MenuItemTool004.Name = "MenuItemTool004";
-      this.MenuItemTool004.Size = new System.Drawing.Size(160, 22);
-      this.MenuItemTool004.Text = "MEGA批次登入";
-      this.MenuItemTool004.Click += new System.EventHandler(this.MenuItemTool004_Click);
       // 
       // MainMdiForm
       // 
