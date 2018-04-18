@@ -135,6 +135,11 @@ namespace ChrisTools
       tf.WindowState = FormWindowState.Maximized;
     }
 
+    /// <summary>
+    /// 批次更新檔案名稱
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void MenuItemTool003_Click(object sender, EventArgs e)
     {
       Tool003Form tf = new Tool003Form();

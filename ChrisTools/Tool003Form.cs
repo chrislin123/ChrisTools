@@ -28,6 +28,11 @@ namespace ChrisTools
 
     private void btnStart_Click(object sender, EventArgs e)
     {
+      if (MessageBox.Show("確定修改?", "提示", MessageBoxButtons.YesNo) == DialogResult.No)
+      {
+        return;
+      }
+
 
       //防呆
       if (NewNameText.Text.Contains("{0}") == false)
