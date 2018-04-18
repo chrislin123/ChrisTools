@@ -65,6 +65,7 @@ namespace ChrisTools
 
     private void TestButton_Click(object sender, EventArgs e)
     {
+      
       int iStartIndex = Convert.ToInt16(startindexText.Text);
       int iLength = Convert.ToInt16(lengthText.Text);
       string sFileNameTemp = NewNameText.Text;
@@ -79,6 +80,32 @@ namespace ChrisTools
         break;
       }
 
+    }
+
+    private void txtFrom_TextChanged(object sender, EventArgs e)
+    {
+      try
+      {
+        //新增擋案名稱智能判斷
+        //1.資料夾名稱分析，預測檔名
+        DirectoryInfo di = new DirectoryInfo(txtFrom.Text);
+        if (di.Name.Contains("]") == true)
+        {
+          //取得"]"後的名稱
+          string TempString = di.Name.Substring(di.Name.IndexOf("]") + 1, di.Name.Length - di.Name.IndexOf("]") - 1);
+
+          NewNameText.Text = TempString + ".E{0}";
+        }
+        else
+        {
+          NewNameText.Text = di.Name + ".E{0}";
+        }
+      }
+      catch (Exception)
+      {
+        //解析錯誤，提供預設值
+        NewNameText.Text = "預設.E{0}";
+      }
     }
   }
 }

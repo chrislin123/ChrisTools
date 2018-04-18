@@ -71,6 +71,7 @@
       this.txtFrom.Name = "txtFrom";
       this.txtFrom.Size = new System.Drawing.Size(384, 22);
       this.txtFrom.TabIndex = 8;
+      this.txtFrom.TextChanged += new System.EventHandler(this.txtFrom_TextChanged);
       // 
       // button1
       // 
@@ -136,6 +137,7 @@
       this.lengthText.Name = "lengthText";
       this.lengthText.Size = new System.Drawing.Size(98, 22);
       this.lengthText.TabIndex = 16;
+      this.lengthText.Text = "2";
       // 
       // label5
       // 
