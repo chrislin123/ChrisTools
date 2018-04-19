@@ -71,6 +71,7 @@
       this.txtFrom.Name = "txtFrom";
       this.txtFrom.Size = new System.Drawing.Size(384, 22);
       this.txtFrom.TabIndex = 8;
+      this.txtFrom.MouseClick += new System.Windows.Forms.MouseEventHandler(this.txtFrom_MouseClick);
       this.txtFrom.TextChanged += new System.EventHandler(this.txtFrom_TextChanged);
       // 
       // button1

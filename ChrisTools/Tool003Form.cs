@@ -167,5 +167,10 @@ namespace ChrisTools
 
 
     }
+
+    private void txtFrom_MouseClick(object sender, MouseEventArgs e)
+    {
+      txtFrom.SelectAll();
+    }
   }
 }
