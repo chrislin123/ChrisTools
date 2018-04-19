@@ -122,7 +122,7 @@ namespace ChrisTools
 
             if (sAnlString.Substring(i, 1) == "E" && int.TryParse(sAnlString.Substring(i+1, 1),out iTemp))
             {
-              idx = i;
+              idx = i+1;
               break;
             }
           }
@@ -137,7 +137,7 @@ namespace ChrisTools
 
             if (sAnlString.Substring(i, 2) == "EP" && int.TryParse(sAnlString.Substring(i + 2, 1), out iTemp))
             {
-              idx = i + 1;
+              idx = i + 2;
               break;
             }
           }
