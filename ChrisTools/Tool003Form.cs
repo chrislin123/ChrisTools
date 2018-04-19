@@ -28,6 +28,7 @@ namespace ChrisTools
 
     private void btnStart_Click(object sender, EventArgs e)
     {
+
       if (MessageBox.Show("確定修改?", "提示", MessageBoxButtons.YesNo) == DialogResult.No)
       {
         return;
@@ -48,11 +49,19 @@ namespace ChrisTools
       string sFileNameTemp = NewNameText.Text;
 
       string sfileFullName = string.Empty;
-      foreach (FileInfo fi in new DirectoryInfo(txtFrom.Text).GetFiles("*.*", SearchOption.TopDirectoryOnly))
+      FileInfo[] fiList = new DirectoryInfo(txtFrom.Text).GetFiles("*.*", SearchOption.TopDirectoryOnly);
+      int idx = 0;
+      foreach (FileInfo fi in fiList)
       {
+        idx++;
 
         string sIDent = fi.Name.Substring(iStartIndex, iLength);
         string NewFileName = string.Format(sFileNameTemp, sIDent);
+        //最後一筆加上End字樣
+        if (idx == fiList.Length)
+        {
+          NewFileName += ".END";
+        }
 
         fi.MoveTo(Path.Combine(fi.DirectoryName, NewFileName + fi.Extension));        
       }
