@@ -17,8 +17,8 @@ namespace ChrisTools
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
       //Application.Run(new MainForm());
-      //Application.Run(new MainMdiForm());
-      Application.Run(new Tool005Form());
+      Application.Run(new MainMdiForm());
+      //Application.Run(new Tool005Form());
 
     }
   }

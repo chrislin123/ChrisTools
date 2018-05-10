@@ -30,22 +30,21 @@
     {
       this.btnStart = new System.Windows.Forms.Button();
       this.label2 = new System.Windows.Forms.Label();
-      this.txtFrom = new System.Windows.Forms.TextBox();
+      this.txtMkvToolPath = new System.Windows.Forms.TextBox();
       this.button1 = new System.Windows.Forms.Button();
-      this.label1 = new System.Windows.Forms.Label();
-      this.label3 = new System.Windows.Forms.Label();
-      this.label4 = new System.Windows.Forms.Label();
-      this.NewNameText = new System.Windows.Forms.TextBox();
-      this.startindexText = new System.Windows.Forms.TextBox();
-      this.lengthText = new System.Windows.Forms.TextBox();
-      this.TestButton = new System.Windows.Forms.Button();
+      this.txtTransPath = new System.Windows.Forms.TextBox();
       this.button2 = new System.Windows.Forms.Button();
-      this.button3 = new System.Windows.Forms.Button();
+      this.label5 = new System.Windows.Forms.Label();
+      this.button4 = new System.Windows.Forms.Button();
+      this.lblStatus = new System.Windows.Forms.Label();
+      this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+      this.progressBar1 = new System.Windows.Forms.ProgressBar();
+      this.lbltotal = new System.Windows.Forms.Label();
       this.SuspendLayout();
       // 
       // btnStart
       // 
-      this.btnStart.Location = new System.Drawing.Point(15, 136);
+      this.btnStart.Location = new System.Drawing.Point(112, 70);
       this.btnStart.Margin = new System.Windows.Forms.Padding(6);
       this.btnStart.Name = "btnStart";
       this.btnStart.Size = new System.Drawing.Size(138, 46);
@@ -60,100 +59,45 @@
       this.label2.Location = new System.Drawing.Point(15, 9);
       this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.label2.Name = "label2";
-      this.label2.Size = new System.Drawing.Size(41, 12);
+      this.label2.Size = new System.Drawing.Size(85, 12);
       this.label2.TabIndex = 9;
-      this.label2.Text = "路徑：";
+      this.label2.Text = "MkvTool路徑：";
       // 
-      // txtFrom
+      // txtMkvToolPath
       // 
-      this.txtFrom.Location = new System.Drawing.Point(68, 6);
-      this.txtFrom.Margin = new System.Windows.Forms.Padding(6);
-      this.txtFrom.Name = "txtFrom";
-      this.txtFrom.Size = new System.Drawing.Size(384, 22);
-      this.txtFrom.TabIndex = 8;
-      this.txtFrom.MouseClick += new System.Windows.Forms.MouseEventHandler(this.txtFrom_MouseClick);
-      this.txtFrom.TextChanged += new System.EventHandler(this.txtFrom_TextChanged);
+      this.txtMkvToolPath.Location = new System.Drawing.Point(112, 4);
+      this.txtMkvToolPath.Margin = new System.Windows.Forms.Padding(6);
+      this.txtMkvToolPath.Name = "txtMkvToolPath";
+      this.txtMkvToolPath.Size = new System.Drawing.Size(407, 22);
+      this.txtMkvToolPath.TabIndex = 8;
+      this.txtMkvToolPath.Text = "C:\\runtime\\mkvtoolnix-64-bit-20.0.0\\mkvtoolnix";
+      this.txtMkvToolPath.MouseClick += new System.Windows.Forms.MouseEventHandler(this.txtMkvToolPath_MouseClick);
+      this.txtMkvToolPath.TextChanged += new System.EventHandler(this.txtMkvToolPath_TextChanged);
       // 
       // button1
       // 
-      this.button1.Location = new System.Drawing.Point(464, 6);
+      this.button1.Location = new System.Drawing.Point(531, 4);
       this.button1.Margin = new System.Windows.Forms.Padding(6);
       this.button1.Name = "button1";
-      this.button1.Size = new System.Drawing.Size(138, 46);
+      this.button1.Size = new System.Drawing.Size(84, 22);
       this.button1.TabIndex = 7;
       this.button1.Text = "瀏覽";
       this.button1.UseVisualStyleBackColor = true;
       this.button1.Click += new System.EventHandler(this.button1_Click);
       // 
-      // label1
+      // txtTransPath
       // 
-      this.label1.AutoSize = true;
-      this.label1.Location = new System.Drawing.Point(15, 74);
-      this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-      this.label1.Name = "label1";
-      this.label1.Size = new System.Drawing.Size(101, 12);
-      this.label1.TabIndex = 11;
-      this.label1.Text = "新檔案名稱格式：";
-      // 
-      // label3
-      // 
-      this.label3.AutoSize = true;
-      this.label3.Location = new System.Drawing.Point(15, 105);
-      this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-      this.label3.Name = "label3";
-      this.label3.Size = new System.Drawing.Size(125, 12);
-      this.label3.TabIndex = 12;
-      this.label3.Text = "舊檔名識別字串起始：";
-      // 
-      // label4
-      // 
-      this.label4.AutoSize = true;
-      this.label4.Location = new System.Drawing.Point(269, 112);
-      this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-      this.label4.Name = "label4";
-      this.label4.Size = new System.Drawing.Size(125, 12);
-      this.label4.TabIndex = 13;
-      this.label4.Text = "舊檔名識別字串長度：";
-      // 
-      // NewNameText
-      // 
-      this.NewNameText.Location = new System.Drawing.Point(241, 64);
-      this.NewNameText.Margin = new System.Windows.Forms.Padding(6);
-      this.NewNameText.Name = "NewNameText";
-      this.NewNameText.Size = new System.Drawing.Size(362, 22);
-      this.NewNameText.TabIndex = 14;
-      // 
-      // startindexText
-      // 
-      this.startindexText.Location = new System.Drawing.Point(152, 102);
-      this.startindexText.Margin = new System.Windows.Forms.Padding(6);
-      this.startindexText.Name = "startindexText";
-      this.startindexText.Size = new System.Drawing.Size(91, 22);
-      this.startindexText.TabIndex = 15;
-      // 
-      // lengthText
-      // 
-      this.lengthText.Location = new System.Drawing.Point(406, 109);
-      this.lengthText.Margin = new System.Windows.Forms.Padding(6);
-      this.lengthText.Name = "lengthText";
-      this.lengthText.Size = new System.Drawing.Size(98, 22);
-      this.lengthText.TabIndex = 16;
-      this.lengthText.Text = "2";
-      // 
-      // TestButton
-      // 
-      this.TestButton.Location = new System.Drawing.Point(517, 104);
-      this.TestButton.Margin = new System.Windows.Forms.Padding(6);
-      this.TestButton.Name = "TestButton";
-      this.TestButton.Size = new System.Drawing.Size(86, 29);
-      this.TestButton.TabIndex = 19;
-      this.TestButton.Text = "取得測試";
-      this.TestButton.UseVisualStyleBackColor = true;
-      this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
+      this.txtTransPath.Location = new System.Drawing.Point(112, 36);
+      this.txtTransPath.Margin = new System.Windows.Forms.Padding(6);
+      this.txtTransPath.Name = "txtTransPath";
+      this.txtTransPath.Size = new System.Drawing.Size(407, 22);
+      this.txtTransPath.TabIndex = 14;
+      this.txtTransPath.Text = "F:\\temp\\test";
+      this.txtTransPath.MouseClick += new System.Windows.Forms.MouseEventHandler(this.txtTransPath_MouseClick);
       // 
       // button2
       // 
-      this.button2.Location = new System.Drawing.Point(191, 136);
+      this.button2.Location = new System.Drawing.Point(262, 70);
       this.button2.Margin = new System.Windows.Forms.Padding(6);
       this.button2.Name = "button2";
       this.button2.Size = new System.Drawing.Size(138, 46);
@@ -162,37 +106,83 @@
       this.button2.UseVisualStyleBackColor = true;
       this.button2.Click += new System.EventHandler(this.button2_Click);
       // 
-      // button3
+      // label5
       // 
-      this.button3.Location = new System.Drawing.Point(341, 136);
-      this.button3.Margin = new System.Windows.Forms.Padding(6);
-      this.button3.Name = "button3";
-      this.button3.Size = new System.Drawing.Size(138, 46);
-      this.button3.TabIndex = 21;
-      this.button3.Text = "test";
-      this.button3.UseVisualStyleBackColor = true;
-      this.button3.Click += new System.EventHandler(this.button3_Click);
+      this.label5.AutoSize = true;
+      this.label5.Location = new System.Drawing.Point(15, 39);
+      this.label5.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+      this.label5.Name = "label5";
+      this.label5.Size = new System.Drawing.Size(65, 12);
+      this.label5.TabIndex = 22;
+      this.label5.Text = "轉檔路徑：";
+      // 
+      // button4
+      // 
+      this.button4.Location = new System.Drawing.Point(531, 34);
+      this.button4.Margin = new System.Windows.Forms.Padding(6);
+      this.button4.Name = "button4";
+      this.button4.Size = new System.Drawing.Size(84, 22);
+      this.button4.TabIndex = 23;
+      this.button4.Text = "瀏覽";
+      this.button4.UseVisualStyleBackColor = true;
+      this.button4.Click += new System.EventHandler(this.button4_Click);
+      // 
+      // lblStatus
+      // 
+      this.lblStatus.AutoSize = true;
+      this.lblStatus.Location = new System.Drawing.Point(15, 131);
+      this.lblStatus.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+      this.lblStatus.Name = "lblStatus";
+      this.lblStatus.Size = new System.Drawing.Size(29, 12);
+      this.lblStatus.TabIndex = 24;
+      this.lblStatus.Text = "狀態";
+      // 
+      // richTextBox1
+      // 
+      this.richTextBox1.Location = new System.Drawing.Point(12, 146);
+      this.richTextBox1.Name = "richTextBox1";
+      this.richTextBox1.Size = new System.Drawing.Size(606, 148);
+      this.richTextBox1.TabIndex = 25;
+      this.richTextBox1.Text = "";
+      this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+      // 
+      // progressBar1
+      // 
+      this.progressBar1.Location = new System.Drawing.Point(409, 93);
+      this.progressBar1.Name = "progressBar1";
+      this.progressBar1.Size = new System.Drawing.Size(206, 23);
+      this.progressBar1.TabIndex = 26;
+      // 
+      // lbltotal
+      // 
+      this.lbltotal.AutoSize = true;
+      this.lbltotal.Location = new System.Drawing.Point(15, 104);
+      this.lbltotal.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+      this.lbltotal.Name = "lbltotal";
+      this.lbltotal.Size = new System.Drawing.Size(29, 12);
+      this.lbltotal.TabIndex = 27;
+      this.lbltotal.Text = "數量";
       // 
       // Tool005Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(630, 212);
-      this.Controls.Add(this.button3);
+      this.ClientSize = new System.Drawing.Size(630, 306);
+      this.Controls.Add(this.lbltotal);
+      this.Controls.Add(this.progressBar1);
+      this.Controls.Add(this.richTextBox1);
+      this.Controls.Add(this.lblStatus);
+      this.Controls.Add(this.button4);
+      this.Controls.Add(this.label5);
       this.Controls.Add(this.button2);
-      this.Controls.Add(this.TestButton);
-      this.Controls.Add(this.lengthText);
-      this.Controls.Add(this.startindexText);
-      this.Controls.Add(this.NewNameText);
-      this.Controls.Add(this.label4);
-      this.Controls.Add(this.label3);
-      this.Controls.Add(this.label1);
+      this.Controls.Add(this.txtTransPath);
       this.Controls.Add(this.btnStart);
       this.Controls.Add(this.label2);
-      this.Controls.Add(this.txtFrom);
+      this.Controls.Add(this.txtMkvToolPath);
       this.Controls.Add(this.button1);
       this.Name = "Tool005Form";
       this.Text = "批次更新檔案名稱";
+      this.Load += new System.EventHandler(this.Tool005Form_Load);
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -202,16 +192,15 @@
 
     private System.Windows.Forms.Button btnStart;
     private System.Windows.Forms.Label label2;
-    private System.Windows.Forms.TextBox txtFrom;
+    private System.Windows.Forms.TextBox txtMkvToolPath;
     private System.Windows.Forms.Button button1;
-    private System.Windows.Forms.Label label1;
-    private System.Windows.Forms.Label label3;
-    private System.Windows.Forms.Label label4;
-    private System.Windows.Forms.TextBox NewNameText;
-    private System.Windows.Forms.TextBox startindexText;
-    private System.Windows.Forms.TextBox lengthText;
-    private System.Windows.Forms.Button TestButton;
+    private System.Windows.Forms.TextBox txtTransPath;
     private System.Windows.Forms.Button button2;
-    private System.Windows.Forms.Button button3;
+    private System.Windows.Forms.Label label5;
+    private System.Windows.Forms.Button button4;
+    private System.Windows.Forms.Label lblStatus;
+    private System.Windows.Forms.RichTextBox richTextBox1;
+    private System.Windows.Forms.ProgressBar progressBar1;
+    private System.Windows.Forms.Label lbltotal;
   }
 }

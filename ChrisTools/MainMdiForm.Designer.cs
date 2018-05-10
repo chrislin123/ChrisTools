@@ -50,12 +50,12 @@
       this.MenuItemTool001 = new System.Windows.Forms.ToolStripMenuItem();
       this.雲端相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.MenuItemTool004 = new System.Windows.Forms.ToolStripMenuItem();
+      this.媒體相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.MenuItemTool005 = new System.Windows.Forms.ToolStripMenuItem();
       this.statusStrip = new System.Windows.Forms.StatusStrip();
       this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
       this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
       this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-      this.媒體相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.MenuItemTool005 = new System.Windows.Forms.ToolStripMenuItem();
       this.menuStrip.SuspendLayout();
       this.statusStrip.SuspendLayout();
       this.SuspendLayout();
@@ -70,7 +70,7 @@
             this.媒體相關ToolStripMenuItem});
       this.menuStrip.Location = new System.Drawing.Point(0, 0);
       this.menuStrip.Name = "menuStrip";
-      this.menuStrip.Size = new System.Drawing.Size(1008, 24);
+      this.menuStrip.Size = new System.Drawing.Size(927, 24);
       this.menuStrip.TabIndex = 0;
       this.menuStrip.Text = "MenuStrip";
       // 
@@ -227,14 +227,29 @@
       this.MenuItemTool004.Text = "MEGA批次登入";
       this.MenuItemTool004.Click += new System.EventHandler(this.MenuItemTool004_Click);
       // 
+      // 媒體相關ToolStripMenuItem
+      // 
+      this.媒體相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemTool005});
+      this.媒體相關ToolStripMenuItem.Name = "媒體相關ToolStripMenuItem";
+      this.媒體相關ToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+      this.媒體相關ToolStripMenuItem.Text = "媒體相關";
+      // 
+      // MenuItemTool005
+      // 
+      this.MenuItemTool005.Name = "MenuItemTool005";
+      this.MenuItemTool005.Size = new System.Drawing.Size(124, 22);
+      this.MenuItemTool005.Text = "Mkv提取";
+      this.MenuItemTool005.Click += new System.EventHandler(this.MenuItemTool005_Click);
+      // 
       // statusStrip
       // 
       this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel,
             this.toolStripStatusLabel1});
-      this.statusStrip.Location = new System.Drawing.Point(0, 708);
+      this.statusStrip.Location = new System.Drawing.Point(0, 384);
       this.statusStrip.Name = "statusStrip";
-      this.statusStrip.Size = new System.Drawing.Size(1008, 22);
+      this.statusStrip.Size = new System.Drawing.Size(927, 22);
       this.statusStrip.TabIndex = 2;
       this.statusStrip.Text = "StatusStrip";
       // 
@@ -250,26 +265,11 @@
       this.toolStripStatusLabel1.Size = new System.Drawing.Size(129, 17);
       this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
       // 
-      // 媒體相關ToolStripMenuItem
-      // 
-      this.媒體相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemTool005});
-      this.媒體相關ToolStripMenuItem.Name = "媒體相關ToolStripMenuItem";
-      this.媒體相關ToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
-      this.媒體相關ToolStripMenuItem.Text = "媒體相關";
-      // 
-      // MenuItemTool005
-      // 
-      this.MenuItemTool005.Name = "MenuItemTool005";
-      this.MenuItemTool005.Size = new System.Drawing.Size(152, 22);
-      this.MenuItemTool005.Text = "Mkv提取";
-      this.MenuItemTool005.Click += new System.EventHandler(this.MenuItemTool005_Click);
-      // 
       // MainMdiForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1008, 730);
+      this.ClientSize = new System.Drawing.Size(927, 406);
       this.Controls.Add(this.statusStrip);
       this.Controls.Add(this.menuStrip);
       this.IsMdiContainer = true;

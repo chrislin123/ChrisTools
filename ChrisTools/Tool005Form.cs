@@ -22,159 +22,123 @@ namespace ChrisTools
     private void button1_Click(object sender, EventArgs e)
     {
       FolderBrowserDialog path = new FolderBrowserDialog();
-      //path.RootFolder = Environment.SpecialFolder.;
       path.ShowDialog();
-      txtFrom.Text = path.SelectedPath;
+      txtMkvToolPath.Text = path.SelectedPath;
+
+      //防呆，判斷程式是否存在
+
+    }
+
+    private void button4_Click(object sender, EventArgs e)
+    {
+      FolderBrowserDialog path = new FolderBrowserDialog();
+      path.ShowDialog();
+      txtTransPath.Text = path.SelectedPath;
     }
 
     private void btnStart_Click(object sender, EventArgs e)
     {
 
-      if (MessageBox.Show("確定修改?", "提示", MessageBoxButtons.YesNo) == DialogResult.No)
+
+      DirectoryInfo di = new DirectoryInfo(txtMkvToolPath.Text);
+
+
+      var r1 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVEXTRACT.EXE");
+
+      if (r1.Count() == 0)
       {
-        return;
+        MessageBox.Show("MkvTool路經，未包含MKVEXTRACT.EXE");
       }
 
+      var r2 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVMERGE.EXE");
 
-      //防呆
-      if (NewNameText.Text.Contains("{0}") == false)
+      if (r2.Count() == 0)
       {
-        //新檔案名稱格式
-        MessageBox.Show("新檔案名稱格式，需要包含'{0}'字元。");
-        return;
+        MessageBox.Show("MkvTool路經，未包含MKVMERGE.EXE");
       }
 
+      FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.mkv", SearchOption.AllDirectories);
 
-      int iStartIndex = Convert.ToInt16(startindexText.Text);
-      int iLength = Convert.ToInt16(lengthText.Text);
-      string sFileNameTemp = NewNameText.Text;
 
-      string sfileFullName = string.Empty;
-      FileInfo[] fiList = new DirectoryInfo(txtFrom.Text).GetFiles("*.*", SearchOption.TopDirectoryOnly);
-      int idx = 0;
-      foreach (FileInfo fi in fiList)
+      int idx = 1;
+      foreach (FileInfo item in fiList)
       {
+        lbltotal.Text = string.Format("{0} / {1}", idx,fiList.Length);
+        ShowStatus(string.Format("轉檔：{0}",item.FullName));
+        ProcMkvExtractSubt(item);
+
         idx++;
-
-        string sIDent = fi.Name.Substring(iStartIndex, iLength);
-        string NewFileName = string.Format(sFileNameTemp, sIDent);
-        //最後一筆加上End字樣
-        if (idx == fiList.Length)
-        {
-          NewFileName += ".END";
-        }
-
-        fi.MoveTo(Path.Combine(fi.DirectoryName, NewFileName + fi.Extension));        
       }
 
-      BaseShowStatus("執行完畢！");
+      ShowStatus("完成");
 
-    
+
+
+
+      //if (MessageBox.Show("確定修改?", "提示", MessageBoxButtons.YesNo) == DialogResult.No)
+      //{
+      //  return;
+      //}
+
+
+
+
+      //string sfileFullName = string.Empty;
+      //FileInfo[] fiList = new DirectoryInfo(txtMkvToolPath.Text).GetFiles("*.*", SearchOption.TopDirectoryOnly);
+      //int idx = 0;
+      //foreach (FileInfo fi in fiList)
+      //{
+      //  idx++;
+
+      //  string sIDent = fi.Name.Substring(iStartIndex, iLength);
+      //  string NewFileName = string.Format(sFileNameTemp, sIDent);
+      //  //最後一筆加上End字樣
+      //  if (idx == fiList.Length)
+      //  {
+      //    NewFileName += ".END";
+      //  }
+
+      //  fi.MoveTo(Path.Combine(fi.DirectoryName, NewFileName + fi.Extension));
+      //}
+
+      //BaseShowStatus("執行完畢！");
+
+
 
     }
 
-    private void TestButton_Click(object sender, EventArgs e)
+    private void ShowStatus(string msg) {
+
+      lblStatus.Text = msg;
+      Application.DoEvents();
+
+    }
+    private void ShowRichTextStatus(string pMsg)
     {
-      
-      int iStartIndex = Convert.ToInt16(startindexText.Text);
-      int iLength = Convert.ToInt16(lengthText.Text);
-      string sFileNameTemp = NewNameText.Text;
-
-      string sfileFullName = string.Empty;
-      foreach (FileInfo fi in new DirectoryInfo(txtFrom.Text).GetFiles("*.*", SearchOption.TopDirectoryOnly))
+      if (pMsg.Contains("Progress:") == true)
       {
-        string sIDent = fi.Name.Substring(iStartIndex, iLength);        
-
-        MessageBox.Show(sIDent);
-
-        break;
+        progressBar1.Value = Convert.ToInt32(pMsg.Replace("Progress:", "").Replace("%", "").Trim());
+        if (pMsg == "Progress: 100%")
+        {
+          richTextBox1.AppendText("\r\n" + "完成。");
+        }
+      }
+      else
+      {
+        richTextBox1.AppendText("\r\n" + pMsg);
       }
 
+      this.Update();
+      Application.DoEvents();
     }
 
-    private void txtFrom_TextChanged(object sender, EventArgs e)
-    {
-      try
-      {
-        //新增擋案名稱智能判斷
-        //1.資料夾名稱分析，預測檔名
-        DirectoryInfo di = new DirectoryInfo(txtFrom.Text);
-        if (di.Name.Contains("]") == true)
-        {
-          //取得"]"後的名稱
-          string TempString = di.Name.Substring(di.Name.IndexOf("]") + 1, di.Name.Length - di.Name.IndexOf("]") - 1);
-
-          NewNameText.Text = TempString + ".E{0}";
-        }
-        else
-        {
-          NewNameText.Text = di.Name + ".E{0}";
-        }
-
-        int idx = 0;
-        int iTemp = 0;
-        //判斷檔案名稱，預測起始位置
-        FileInfo[] fiList = di.GetFiles();
-        if (fiList.Length > 0)
-        {
-          FileInfo fi = fiList[0];
-          
-          string sAnlString = fi.Name.ToUpper();
-
-
-          //分析"E01"
-          for (int i = 0; i < sAnlString.Length; i++)
-          {
-            if (i == sAnlString.Length -1)
-            {
-              break;
-            }
-
-            if (sAnlString.Substring(i, 1) == "E" && int.TryParse(sAnlString.Substring(i+1, 1),out iTemp))
-            {
-              idx = i+1;
-              break;
-            }
-          }
-
-          //分析"EP01"
-          for (int i = 0; i < sAnlString.Length; i++)
-          {
-            if (i == sAnlString.Length - 2)
-            {
-              break;
-            }
-
-            if (sAnlString.Substring(i, 2) == "EP" && int.TryParse(sAnlString.Substring(i + 2, 1), out iTemp))
-            {
-              idx = i + 2;
-              break;
-            }
-          }
-        }
-
-        startindexText.Text = idx.ToString();
-
-
-
-      }
-      catch (Exception)
-      {
-        //解析錯誤，提供預設值
-        NewNameText.Text = "預設.E{0}";
-      }
-
-
-
-
-    }
 
     private void txtFrom_MouseClick(object sender, MouseEventArgs e)
     {
-      txtFrom.SelectAll();
+      txtMkvToolPath.SelectAll();
     }
 
-   
+
     /// <span class="code-SummaryComment"><summary></span>
     /// Executes a shell command synchronously.
     /// <span class="code-SummaryComment"></summary></span>
@@ -184,14 +148,18 @@ namespace ChrisTools
     {
       List<string> ResultList = new List<string>();
       //string sResult = "";
+
+      Console.WriteLine(command.ToString());
       try
       {
         // create the ProcessStartInfo using "cmd" as the program to be run,
         // and "/c " as the parameters.
         // Incidentally, /c tells cmd that we want it to execute the command that follows,
         // and then exit.
+        //System.Diagnostics.ProcessStartInfo procStartInfo =
+        //    new System.Diagnostics.ProcessStartInfo("cmd", "/c " + command);
         System.Diagnostics.ProcessStartInfo procStartInfo =
-            new System.Diagnostics.ProcessStartInfo("cmd", "/c " + command);
+          new System.Diagnostics.ProcessStartInfo("cmd", "/c " + command);
 
         // The following commands are needed to redirect the standard output.
         // This means that it will be redirected to the Process.StandardOutput StreamReader.
@@ -203,24 +171,32 @@ namespace ChrisTools
         System.Diagnostics.Process proc = new System.Diagnostics.Process();
         proc.StartInfo = procStartInfo;
         proc.Start();
-      
 
-        //while (!proc.StandardOutput.EndOfStream)
-        //{
-        //  string line = proc.StandardOutput.ReadLine();
-        //  // do something with line
-        //  Console.WriteLine(line);
-        //}
+
+        while (!proc.StandardOutput.EndOfStream)
+        {
+          string line = proc.StandardOutput.ReadLine();
+          // do something with line
+
+          ResultList.Add(line);
+
+
+          ShowRichTextStatus(line);
+
+          Console.WriteLine(line);
+        }
 
 
         // Get the output into a string
-        string result = proc.StandardOutput.ReadToEnd();
+        //string result = proc.StandardOutput.ReadToEnd();
 
-        ResultList = result.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList<string>();
+        proc.WaitForExit();
+
+        //ResultList = result.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList<string>();
 
 
         // Display the command output.
-        Console.WriteLine(result);
+        //Console.WriteLine(result);
       }
       catch (Exception objException)
       {
@@ -230,11 +206,13 @@ namespace ChrisTools
       return ResultList;
     }
 
-    private void button2_Click(object sender, EventArgs e)
+
+    private void ProcMkvExtractSubt(FileInfo pFileInfo)
     {
-      string sMkvtoolnixPath = @"F:\temp\mkvtoolnix\mkvmerge.exe";
-      string sMkvextractPath = @"F:\temp\mkvtoolnix\mkvextract.exe";
-      string sFilePath = @"F:\temp\1.mkv";
+      string sMkvToolPath = txtMkvToolPath.Text;
+      string sMkvtoolnixPath = Path.Combine(sMkvToolPath, "mkvmerge.exe");
+      string sMkvextractPath = Path.Combine(sMkvToolPath, "mkvextract.exe");
+      string sFilePath = pFileInfo.FullName;
       FileInfo fi = new FileInfo(sFilePath);
       string sGetInfoCommand = string.Format(@"{0} -i ""{1}"" ", sMkvtoolnixPath, sFilePath);
       List<string> TempList = ExecuteCommandSync(sGetInfoCommand);
@@ -251,27 +229,34 @@ namespace ChrisTools
             Track ID 5: subtitles (SubStationAlpha)
             Track ID 6: subtitles (HDMV PGS)
           */
-          
+
           //取得軌道
           string[] TrackSplit = item.Split(':');
           string sTrackID = TrackSplit[0].Replace("Track ID ", "").Trim();
           string sTrackType = TrackSplit[1].Replace("subtitles (", "").Replace(")", "").Trim();
 
-          string sCommandExt = string.Format(@"""{0}"" tracks ""{1}"" {2}:{3}.{4} "
+          string sCommandExt = string.Format(@"{0} tracks ""{1}"" {2}:{3}.{4} "
                                       , sMkvextractPath
-                                      , sFilePath,sTrackID
-                                      , fi.Name.Replace(fi.Extension,"")
+                                      , sFilePath
+                                      , sTrackID
+                                      , fi.FullName.Replace(fi.Extension, "")
                                       , TransExtension(sTrackType));
-
-
-          //MessageBox.Show(sTrackID + " " + sTrackType);
 
           ExecuteCommandSync(sCommandExt);
         }
       }
+
     }
 
-    private string TransExtension(string sTrans) {
+
+
+    private void button2_Click(object sender, EventArgs e)
+    {
+      ProcMkvExtractSubt(new FileInfo(@"F:\temp\1.mkv"));
+    }
+
+    private string TransExtension(string sTrans)
+    {
       string sResult = "";
 
       if (sTrans == "VobSub") sResult = "sub";
@@ -285,10 +270,75 @@ namespace ChrisTools
 
 
     private void button3_Click(object sender, EventArgs e)
-    {  
+    {
       string sMkvtoolnixPath = @"F:\temp\mkvtoolnix\mkvextract.exe";
       string sGetInfoCommand = string.Format(@"""{0}"" tracks ""F:\temp\test.mp4"" 1:test.aac ", sMkvtoolnixPath);
       ExecuteCommandSync(sGetInfoCommand);
+    }
+
+   
+    private void txtMkvToolPath_TextChanged(object sender, EventArgs e)
+    {
+      try
+      {
+        string sFileExist = "";
+        //新增擋案名稱智能判斷
+        //1.資料夾名稱分析，預測檔名
+
+        //di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "mkvextract.exe");
+
+
+
+        //if (di.Name.Contains("]") == true)
+        //{
+        //  //取得"]"後的名稱
+        //  string TempString = di.Name.Substring(di.Name.IndexOf("]") + 1, di.Name.Length - di.Name.IndexOf("]") - 1);
+
+        //  txtTransPath.Text = TempString + ".E{0}";
+        //}
+        //else
+        //{
+        //  txtTransPath.Text = di.Name + ".E{0}";
+        //}
+
+
+
+
+
+      }
+      catch (Exception)
+      {
+        //MessageBox.Show("Test");
+        //解析錯誤，提供預設值
+        //txtTransPath.Text = "預設.E{0}";
+      }
+    }
+
+    private void txtMkvToolPath_MouseClick(object sender, MouseEventArgs e)
+    {
+      txtMkvToolPath.SelectAll();
+    }
+
+    private void txtTransPath_MouseClick(object sender, MouseEventArgs e)
+    {
+      txtTransPath.SelectAll();
+    }
+
+    private void richTextBox1_TextChanged(object sender, EventArgs e)
+    {
+      RichTextBox rtb = sender as RichTextBox;
+
+      if (rtb.Lines.Length > 500)
+      {
+        rtb.Text = rtb.Text.Remove(0, rtb.Lines[0].Length + 1);
+      }
+
+      rtb.ScrollToCaret();
+    }
+
+    private void Tool005Form_Load(object sender, EventArgs e)
+    {
+      
     }
   }
 }
