@@ -33,7 +33,7 @@
       this.txtMkvToolPath = new System.Windows.Forms.TextBox();
       this.button1 = new System.Windows.Forms.Button();
       this.txtTransPath = new System.Windows.Forms.TextBox();
-      this.button2 = new System.Windows.Forms.Button();
+      this.btnRemoveFile = new System.Windows.Forms.Button();
       this.label5 = new System.Windows.Forms.Label();
       this.button4 = new System.Windows.Forms.Button();
       this.lblStatus = new System.Windows.Forms.Label();
@@ -95,16 +95,16 @@
       this.txtTransPath.Text = "F:\\temp\\test";
       this.txtTransPath.MouseClick += new System.Windows.Forms.MouseEventHandler(this.txtTransPath_MouseClick);
       // 
-      // button2
+      // btnRemoveFile
       // 
-      this.button2.Location = new System.Drawing.Point(262, 70);
-      this.button2.Margin = new System.Windows.Forms.Padding(6);
-      this.button2.Name = "button2";
-      this.button2.Size = new System.Drawing.Size(138, 46);
-      this.button2.TabIndex = 20;
-      this.button2.Text = "test";
-      this.button2.UseVisualStyleBackColor = true;
-      this.button2.Click += new System.EventHandler(this.button2_Click);
+      this.btnRemoveFile.Location = new System.Drawing.Point(262, 70);
+      this.btnRemoveFile.Margin = new System.Windows.Forms.Padding(6);
+      this.btnRemoveFile.Name = "btnRemoveFile";
+      this.btnRemoveFile.Size = new System.Drawing.Size(138, 46);
+      this.btnRemoveFile.TabIndex = 20;
+      this.btnRemoveFile.Text = "移除不必要檔案(RAR,INI)";
+      this.btnRemoveFile.UseVisualStyleBackColor = true;
+      this.btnRemoveFile.Click += new System.EventHandler(this.btnRemoveFile_Click);
       // 
       // label5
       // 
@@ -174,7 +174,7 @@
       this.Controls.Add(this.lblStatus);
       this.Controls.Add(this.button4);
       this.Controls.Add(this.label5);
-      this.Controls.Add(this.button2);
+      this.Controls.Add(this.btnRemoveFile);
       this.Controls.Add(this.txtTransPath);
       this.Controls.Add(this.btnStart);
       this.Controls.Add(this.label2);
@@ -195,7 +195,7 @@
     private System.Windows.Forms.TextBox txtMkvToolPath;
     private System.Windows.Forms.Button button1;
     private System.Windows.Forms.TextBox txtTransPath;
-    private System.Windows.Forms.Button button2;
+    private System.Windows.Forms.Button btnRemoveFile;
     private System.Windows.Forms.Label label5;
     private System.Windows.Forms.Button button4;
     private System.Windows.Forms.Label lblStatus;

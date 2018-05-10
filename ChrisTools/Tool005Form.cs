@@ -340,5 +340,35 @@ namespace ChrisTools
     {
       
     }
+
+    private void btnRemoveFile_Click(object sender, EventArgs e)
+    {
+
+      if (MessageBox.Show("確定刪除?", "提示", MessageBoxButtons.YesNo) == DialogResult.No)
+      {
+        return;
+      }
+
+      FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.rar", SearchOption.AllDirectories);
+      
+      foreach (FileInfo item in fiList)
+      {
+        ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
+
+        item.Delete();
+      }
+
+      
+      fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.ini", SearchOption.AllDirectories);
+
+      foreach (FileInfo item in fiList)
+      {
+        ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
+
+        item.Delete();
+      }
+
+      ShowStatus("完成");
+    }
   }
 }
