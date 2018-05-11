@@ -182,6 +182,7 @@
       this.Controls.Add(this.button1);
       this.Name = "Tool005Form";
       this.Text = "批次更新檔案名稱";
+      this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Tool005Form_FormClosing);
       this.Load += new System.EventHandler(this.Tool005Form_Load);
       this.ResumeLayout(false);
       this.PerformLayout();

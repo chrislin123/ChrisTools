@@ -10,13 +10,40 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 
+using M10.lib.modelChrisTools;
+
 namespace ChrisTools
 {
   public partial class Tool005Form : BaseForm
   {
+    //const string constMkvToolPath = "MkvToolPath";
+    //const string constTransPath = "TransPath";
     public Tool005Form()
     {
       InitializeComponent();
+      base.InitForm();
+    }
+
+    private void Tool005Form_Load(object sender, EventArgs e)
+    {
+
+
+      
+
+      txtMkvToolPath.Text = Comm.GetSetting(CTsConst.SettingList.Tool005_MkvToolPath);
+      txtTransPath.Text = Comm.GetSetting(CTsConst.SettingList.Tool005_TransPath);
+
+      //取得預設值
+      //ssql = "select * from basedata where type = @type";
+      //var q = dbDapper.GetNewDynamicParameters();
+      //q.Add("type", constMkvToolPath);
+      //BaseData bdMkvToolPath = dbDapper.QuerySingleOrDefault<BaseData>(ssql, q);
+      //txtMkvToolPath.Text = bdMkvToolPath == null ? "" : bdMkvToolPath.data1;
+
+      //var q1 = dbDapper.GetNewDynamicParameters();
+      //q1.Add("type", constTransPath);
+      //BaseData bdTransPath = dbDapper.QuerySingleOrDefault<BaseData>(ssql, q1);
+      //txtTransPath.Text = bdTransPath == null ? "" : bdTransPath.data1;
     }
 
     private void button1_Click(object sender, EventArgs e)
@@ -59,12 +86,12 @@ namespace ChrisTools
 
       FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.mkv", SearchOption.AllDirectories);
 
-      
+
       int idx = 1;
       foreach (FileInfo item in fiList)
       {
-        lbltotal.Text = string.Format("{0} / {1}", idx,fiList.Length);
-        ShowStatus(string.Format("轉檔：{0}",item.FullName));
+        lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
+        ShowStatus(string.Format("轉檔：{0}", item.FullName));
         ProcMkvExtractSubt(item);
 
         idx++;
@@ -74,40 +101,12 @@ namespace ChrisTools
 
 
 
-
-      //if (MessageBox.Show("確定修改?", "提示", MessageBoxButtons.YesNo) == DialogResult.No)
-      //{
-      //  return;
-      //}
-
-
-
-
-      //string sfileFullName = string.Empty;
-      //FileInfo[] fiList = new DirectoryInfo(txtMkvToolPath.Text).GetFiles("*.*", SearchOption.TopDirectoryOnly);
-      //int idx = 0;
-      //foreach (FileInfo fi in fiList)
-      //{
-      //  idx++;
-
-      //  string sIDent = fi.Name.Substring(iStartIndex, iLength);
-      //  string NewFileName = string.Format(sFileNameTemp, sIDent);
-      //  //最後一筆加上End字樣
-      //  if (idx == fiList.Length)
-      //  {
-      //    NewFileName += ".END";
-      //  }
-
-      //  fi.MoveTo(Path.Combine(fi.DirectoryName, NewFileName + fi.Extension));
-      //}
-
-      //BaseShowStatus("執行完畢！");
-
-
+      
 
     }
 
-    private void ShowStatus(string msg) {
+    private void ShowStatus(string msg)
+    {
 
       lblStatus.Text = msg;
       Application.DoEvents();
@@ -276,7 +275,7 @@ namespace ChrisTools
       ExecuteCommandSync(sGetInfoCommand);
     }
 
-   
+
     private void txtMkvToolPath_TextChanged(object sender, EventArgs e)
     {
       try
@@ -336,10 +335,7 @@ namespace ChrisTools
       rtb.ScrollToCaret();
     }
 
-    private void Tool005Form_Load(object sender, EventArgs e)
-    {
-      
-    }
+
 
     private void btnRemoveFile_Click(object sender, EventArgs e)
     {
@@ -350,25 +346,35 @@ namespace ChrisTools
       }
 
       FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.rar", SearchOption.AllDirectories);
-      
+
       foreach (FileInfo item in fiList)
       {
         ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
 
+        item.Attributes = FileAttributes.Normal;
         item.Delete();
       }
 
-      
+
       fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.ini", SearchOption.AllDirectories);
 
       foreach (FileInfo item in fiList)
       {
         ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
 
+        item.Attributes = FileAttributes.Normal;
         item.Delete();
       }
 
       ShowStatus("完成");
+    }
+
+
+
+    private void Tool005Form_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      Comm.SetSetting(CTsConst.SettingList.Tool005_MkvToolPath, txtMkvToolPath.Text);
+      Comm.SetSetting(CTsConst.SettingList.Tool005_TransPath, txtTransPath.Text);
     }
   }
 }
