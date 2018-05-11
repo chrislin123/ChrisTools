@@ -59,7 +59,7 @@ namespace ChrisTools
 
       FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.mkv", SearchOption.AllDirectories);
 
-
+      
       int idx = 1;
       foreach (FileInfo item in fiList)
       {
