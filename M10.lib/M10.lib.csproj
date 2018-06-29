@@ -75,6 +75,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsWinrar.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DALDapper.cs" />
     <Compile Include="DataExport.cs" />

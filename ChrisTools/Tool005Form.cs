@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
-
 using M10.lib.modelChrisTools;
+using M10.lib;
 
 namespace ChrisTools
 {
@@ -66,39 +66,7 @@ namespace ChrisTools
     private void btnStart_Click(object sender, EventArgs e)
     {
 
-
-      DirectoryInfo di = new DirectoryInfo(txtMkvToolPath.Text);
-
-
-      var r1 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVEXTRACT.EXE");
-
-      if (r1.Count() == 0)
-      {
-        MessageBox.Show("MkvTool路經，未包含MKVEXTRACT.EXE");
-      }
-
-      var r2 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVMERGE.EXE");
-
-      if (r2.Count() == 0)
-      {
-        MessageBox.Show("MkvTool路經，未包含MKVMERGE.EXE");
-      }
-
-      FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.mkv", SearchOption.AllDirectories);
-
-
-      int idx = 1;
-      foreach (FileInfo item in fiList)
-      {
-        lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
-        ShowStatus(string.Format("轉檔：{0}", item.FullName));
-        ProcMkvExtractSubt(item);
-
-        idx++;
-      }
-
-      ShowStatus("完成");
-
+      string aaa = "";
 
 
       
@@ -376,5 +344,93 @@ namespace ChrisTools
       Comm.SetSetting(CTsConst.SettingList.Tool005_MkvToolPath, txtMkvToolPath.Text);
       Comm.SetSetting(CTsConst.SettingList.Tool005_TransPath, txtTransPath.Text);
     }
+
+    private void btnGetSrt_Click(object sender, EventArgs e)
+    {
+
+      DirectoryInfo di = new DirectoryInfo(txtMkvToolPath.Text);
+
+
+      var r1 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVEXTRACT.EXE");
+
+      if (r1.Count() == 0)
+      {
+        MessageBox.Show("MkvTool路經，未包含MKVEXTRACT.EXE");
+      }
+
+      var r2 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVMERGE.EXE");
+
+      if (r2.Count() == 0)
+      {
+        MessageBox.Show("MkvTool路經，未包含MKVMERGE.EXE");
+      }
+
+      FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.mkv", SearchOption.AllDirectories);
+
+
+      int idx = 1;
+      foreach (FileInfo item in fiList)
+      {
+        lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
+        ShowStatus(string.Format("轉檔：{0}", item.FullName));
+        ProcMkvExtractSubt(item);
+
+        idx++;
+      }
+
+      ShowStatus("完成");
+
+    }
+
+    private void btnBatUnZip_Click(object sender, EventArgs e)
+    {
+
+      DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
+      clsWinrar rar = new clsWinrar();
+
+
+      //取得所有資料夾
+      List<string> AllDiList = Directory.GetDirectories(di.FullName, "*.*", SearchOption.AllDirectories).ToList<string>();
+
+
+
+      foreach (string SubDiString in AllDiList)
+      {
+        DirectoryInfo SubDi = new DirectoryInfo(SubDiString);
+
+        //判斷資料夾是否包含RAR檔案，不包含不處理
+        if (SubDi.GetFiles("*.rar").Length == 0) continue;
+
+
+        string smark = "!@#$";
+        foreach (FileInfo SubFi in SubDi.GetFiles("*.rar"))
+        {
+          //判斷是否有切割擋
+          if (SubFi.Name.Contains(".part"))
+          {
+            if (SubFi.Name.Contains(smark)) continue;
+
+            //解壓縮
+            rar.unCompressRAR(SubFi, SubFi.Directory, "pass@word1");
+
+            //紀錄擋名
+            smark = SubFi.Name.Substring(0, SubFi.Name.IndexOf(".part"));
+
+          }
+          else
+          {
+            rar.unCompressRAR(SubFi, SubFi.Directory, "pass@word1");
+          }
+
+        }
+
+       
+      }
+
+
+    }
+
+
+   
   }
 }

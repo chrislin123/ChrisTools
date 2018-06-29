@@ -40,16 +40,18 @@
       this.richTextBox1 = new System.Windows.Forms.RichTextBox();
       this.progressBar1 = new System.Windows.Forms.ProgressBar();
       this.lbltotal = new System.Windows.Forms.Label();
+      this.btnBatUnZip = new System.Windows.Forms.Button();
+      this.btnGetSrt = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // btnStart
       // 
-      this.btnStart.Location = new System.Drawing.Point(112, 70);
+      this.btnStart.Location = new System.Drawing.Point(17, 70);
       this.btnStart.Margin = new System.Windows.Forms.Padding(6);
       this.btnStart.Name = "btnStart";
       this.btnStart.Size = new System.Drawing.Size(138, 46);
       this.btnStart.TabIndex = 10;
-      this.btnStart.Text = "啟動";
+      this.btnStart.Text = " 批次全啟動";
       this.btnStart.UseVisualStyleBackColor = true;
       this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
       // 
@@ -97,7 +99,7 @@
       // 
       // btnRemoveFile
       // 
-      this.btnRemoveFile.Location = new System.Drawing.Point(262, 70);
+      this.btnRemoveFile.Location = new System.Drawing.Point(467, 70);
       this.btnRemoveFile.Margin = new System.Windows.Forms.Padding(6);
       this.btnRemoveFile.Name = "btnRemoveFile";
       this.btnRemoveFile.Size = new System.Drawing.Size(138, 46);
@@ -130,7 +132,7 @@
       // lblStatus
       // 
       this.lblStatus.AutoSize = true;
-      this.lblStatus.Location = new System.Drawing.Point(15, 131);
+      this.lblStatus.Location = new System.Drawing.Point(15, 201);
       this.lblStatus.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.lblStatus.Name = "lblStatus";
       this.lblStatus.Size = new System.Drawing.Size(29, 12);
@@ -139,7 +141,7 @@
       // 
       // richTextBox1
       // 
-      this.richTextBox1.Location = new System.Drawing.Point(12, 146);
+      this.richTextBox1.Location = new System.Drawing.Point(9, 216);
       this.richTextBox1.Name = "richTextBox1";
       this.richTextBox1.Size = new System.Drawing.Size(606, 148);
       this.richTextBox1.TabIndex = 25;
@@ -148,7 +150,7 @@
       // 
       // progressBar1
       // 
-      this.progressBar1.Location = new System.Drawing.Point(409, 93);
+      this.progressBar1.Location = new System.Drawing.Point(210, 172);
       this.progressBar1.Name = "progressBar1";
       this.progressBar1.Size = new System.Drawing.Size(206, 23);
       this.progressBar1.TabIndex = 26;
@@ -156,18 +158,42 @@
       // lbltotal
       // 
       this.lbltotal.AutoSize = true;
-      this.lbltotal.Location = new System.Drawing.Point(15, 104);
+      this.lbltotal.Location = new System.Drawing.Point(15, 177);
       this.lbltotal.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.lbltotal.Name = "lbltotal";
       this.lbltotal.Size = new System.Drawing.Size(29, 12);
       this.lbltotal.TabIndex = 27;
       this.lbltotal.Text = "數量";
       // 
+      // btnBatUnZip
+      // 
+      this.btnBatUnZip.Location = new System.Drawing.Point(317, 70);
+      this.btnBatUnZip.Margin = new System.Windows.Forms.Padding(6);
+      this.btnBatUnZip.Name = "btnBatUnZip";
+      this.btnBatUnZip.Size = new System.Drawing.Size(138, 46);
+      this.btnBatUnZip.TabIndex = 28;
+      this.btnBatUnZip.Text = "批次解壓縮";
+      this.btnBatUnZip.UseVisualStyleBackColor = true;
+      this.btnBatUnZip.Click += new System.EventHandler(this.btnBatUnZip_Click);
+      // 
+      // btnGetSrt
+      // 
+      this.btnGetSrt.Location = new System.Drawing.Point(167, 70);
+      this.btnGetSrt.Margin = new System.Windows.Forms.Padding(6);
+      this.btnGetSrt.Name = "btnGetSrt";
+      this.btnGetSrt.Size = new System.Drawing.Size(138, 46);
+      this.btnGetSrt.TabIndex = 29;
+      this.btnGetSrt.Text = "批次擷取字幕";
+      this.btnGetSrt.UseVisualStyleBackColor = true;
+      this.btnGetSrt.Click += new System.EventHandler(this.btnGetSrt_Click);
+      // 
       // Tool005Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(630, 306);
+      this.ClientSize = new System.Drawing.Size(630, 376);
+      this.Controls.Add(this.btnGetSrt);
+      this.Controls.Add(this.btnBatUnZip);
       this.Controls.Add(this.lbltotal);
       this.Controls.Add(this.progressBar1);
       this.Controls.Add(this.richTextBox1);
@@ -203,5 +229,7 @@
     private System.Windows.Forms.RichTextBox richTextBox1;
     private System.Windows.Forms.ProgressBar progressBar1;
     private System.Windows.Forms.Label lbltotal;
+    private System.Windows.Forms.Button btnBatUnZip;
+    private System.Windows.Forms.Button btnGetSrt;
   }
 }
