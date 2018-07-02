@@ -42,6 +42,7 @@
       this.lbltotal = new System.Windows.Forms.Label();
       this.btnBatUnZip = new System.Windows.Forms.Button();
       this.btnGetSrt = new System.Windows.Forms.Button();
+      this.btnFileNameTune = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // btnStart
@@ -51,7 +52,7 @@
       this.btnStart.Name = "btnStart";
       this.btnStart.Size = new System.Drawing.Size(138, 46);
       this.btnStart.TabIndex = 10;
-      this.btnStart.Text = " 批次全啟動";
+      this.btnStart.Text = " 批次全啟動(解=>移=>取)";
       this.btnStart.UseVisualStyleBackColor = true;
       this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
       // 
@@ -132,7 +133,7 @@
       // lblStatus
       // 
       this.lblStatus.AutoSize = true;
-      this.lblStatus.Location = new System.Drawing.Point(15, 201);
+      this.lblStatus.Location = new System.Drawing.Point(15, 173);
       this.lblStatus.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.lblStatus.Name = "lblStatus";
       this.lblStatus.Size = new System.Drawing.Size(29, 12);
@@ -141,7 +142,7 @@
       // 
       // richTextBox1
       // 
-      this.richTextBox1.Location = new System.Drawing.Point(9, 216);
+      this.richTextBox1.Location = new System.Drawing.Point(9, 192);
       this.richTextBox1.Name = "richTextBox1";
       this.richTextBox1.Size = new System.Drawing.Size(606, 148);
       this.richTextBox1.TabIndex = 25;
@@ -150,7 +151,7 @@
       // 
       // progressBar1
       // 
-      this.progressBar1.Location = new System.Drawing.Point(210, 172);
+      this.progressBar1.Location = new System.Drawing.Point(210, 144);
       this.progressBar1.Name = "progressBar1";
       this.progressBar1.Size = new System.Drawing.Size(206, 23);
       this.progressBar1.TabIndex = 26;
@@ -158,7 +159,7 @@
       // lbltotal
       // 
       this.lbltotal.AutoSize = true;
-      this.lbltotal.Location = new System.Drawing.Point(15, 177);
+      this.lbltotal.Location = new System.Drawing.Point(15, 149);
       this.lbltotal.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.lbltotal.Name = "lbltotal";
       this.lbltotal.Size = new System.Drawing.Size(29, 12);
@@ -187,11 +188,23 @@
       this.btnGetSrt.UseVisualStyleBackColor = true;
       this.btnGetSrt.Click += new System.EventHandler(this.btnGetSrt_Click);
       // 
+      // btnFileNameTune
+      // 
+      this.btnFileNameTune.Location = new System.Drawing.Point(467, 128);
+      this.btnFileNameTune.Margin = new System.Windows.Forms.Padding(6);
+      this.btnFileNameTune.Name = "btnFileNameTune";
+      this.btnFileNameTune.Size = new System.Drawing.Size(138, 46);
+      this.btnFileNameTune.TabIndex = 30;
+      this.btnFileNameTune.Text = "調整檔案名稱(空白及括弧)";
+      this.btnFileNameTune.UseVisualStyleBackColor = true;
+      this.btnFileNameTune.Click += new System.EventHandler(this.btnFileNameTune_Click);
+      // 
       // Tool005Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(630, 376);
+      this.ClientSize = new System.Drawing.Size(630, 349);
+      this.Controls.Add(this.btnFileNameTune);
       this.Controls.Add(this.btnGetSrt);
       this.Controls.Add(this.btnBatUnZip);
       this.Controls.Add(this.lbltotal);
@@ -231,5 +244,6 @@
     private System.Windows.Forms.Label lbltotal;
     private System.Windows.Forms.Button btnBatUnZip;
     private System.Windows.Forms.Button btnGetSrt;
+    private System.Windows.Forms.Button btnFileNameTune;
   }
 }

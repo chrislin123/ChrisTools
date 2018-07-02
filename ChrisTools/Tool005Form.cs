@@ -65,12 +65,19 @@ namespace ChrisTools
 
     private void btnStart_Click(object sender, EventArgs e)
     {
+      string sTransPath = txtTransPath.Text;
 
-      string aaa = "";
+      //解壓
+      ProcUnRAR(sTransPath);
+
+      //刪除
+      ProcRemoveFile(sTransPath);
+
+      //擷取
+      ProcGetSrt(sTransPath);
 
 
-      
-
+      ShowStatus("全部完成");
     }
 
     private void ShowStatus(string msg)
@@ -313,26 +320,7 @@ namespace ChrisTools
         return;
       }
 
-      FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.rar", SearchOption.AllDirectories);
-
-      foreach (FileInfo item in fiList)
-      {
-        ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
-
-        item.Attributes = FileAttributes.Normal;
-        item.Delete();
-      }
-
-
-      fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.ini", SearchOption.AllDirectories);
-
-      foreach (FileInfo item in fiList)
-      {
-        ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
-
-        item.Attributes = FileAttributes.Normal;
-        item.Delete();
-      }
+      ProcRemoveFile(txtTransPath.Text);
 
       ShowStatus("完成");
     }
@@ -356,6 +344,7 @@ namespace ChrisTools
       if (r1.Count() == 0)
       {
         MessageBox.Show("MkvTool路經，未包含MKVEXTRACT.EXE");
+        return;
       }
 
       var r2 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVMERGE.EXE");
@@ -363,20 +352,10 @@ namespace ChrisTools
       if (r2.Count() == 0)
       {
         MessageBox.Show("MkvTool路經，未包含MKVMERGE.EXE");
+        return;
       }
 
-      FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.mkv", SearchOption.AllDirectories);
-
-
-      int idx = 1;
-      foreach (FileInfo item in fiList)
-      {
-        lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
-        ShowStatus(string.Format("轉檔：{0}", item.FullName));
-        ProcMkvExtractSubt(item);
-
-        idx++;
-      }
+      ProcGetSrt(txtTransPath.Text);
 
       ShowStatus("完成");
 
@@ -384,8 +363,13 @@ namespace ChrisTools
 
     private void btnBatUnZip_Click(object sender, EventArgs e)
     {
+      ProcUnRAR(txtTransPath.Text);
+    }
 
-      DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
+
+    private void ProcUnRAR(string sPath)
+    {
+      DirectoryInfo di = new DirectoryInfo(sPath);
       clsWinrar rar = new clsWinrar();
 
 
@@ -424,13 +408,80 @@ namespace ChrisTools
 
         }
 
-       
-      }
 
+      }
 
     }
 
 
-   
+    private void ProcGetSrt(string sPath) {
+      FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles("*.mkv", SearchOption.AllDirectories);
+
+      int idx = 1;
+      foreach (FileInfo item in fiList)
+      {
+        lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
+        ShowStatus(string.Format("轉檔：{0}", item.FullName));
+        ProcMkvExtractSubt(item);
+
+        idx++;
+      }
+    }
+
+    private void ProcRemoveFile(string sPath)
+    {
+      FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles("*.rar", SearchOption.AllDirectories);
+
+      foreach (FileInfo item in fiList)
+      {
+        ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
+
+        item.Attributes = FileAttributes.Normal;
+        item.Delete();
+      }
+
+
+      fiList = new DirectoryInfo(sPath).GetFiles("*.ini", SearchOption.AllDirectories);
+
+      foreach (FileInfo item in fiList)
+      {
+        ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
+
+        item.Attributes = FileAttributes.Normal;
+        item.Delete();
+      }
+
+    }
+
+
+
+    private void btnFileNameTune_Click(object sender, EventArgs e)
+    {
+      if (MessageBox.Show("確定要批次更新檔案名稱?", "提示", MessageBoxButtons.YesNo) == DialogResult.No)
+      {
+        return;
+      }
+
+      DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
+
+
+      List<FileInfo> tttt = di.GetFiles("*.*", SearchOption.AllDirectories)
+        .Where(s => s.Extension.ToLower() == ".mkv" || s.Extension.ToLower() == ".mp4").ToList<FileInfo>();
+
+
+      foreach (FileInfo item in tttt)
+      {
+        string sNewFileName = item.Name.Replace(" ", "").Replace("(1)", "").Replace("(2)", "")
+          .Replace("(ass)", "").Replace("(srt)", "");
+
+        string sFullRename = Path.Combine(item.DirectoryName, sNewFileName);
+        if (File.Exists(sFullRename) == false)
+        {
+          item.MoveTo(sFullRename);
+        }
+      }
+
+      ShowStatus("批次更新檔案名稱 完成");
+    }
   }
 }
