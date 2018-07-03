@@ -70,8 +70,11 @@ namespace ChrisTools
       //解壓
       ProcUnRAR(sTransPath);
 
-      //刪除
-      ProcRemoveFile(sTransPath);
+      //移除rar
+      ProcRemoveFile(sTransPath, "*.rar");
+      //移除ini
+      ProcRemoveFile(sTransPath, "*.ini");
+
 
       //擷取
       ProcGetSrt(sTransPath);
@@ -320,7 +323,10 @@ namespace ChrisTools
         return;
       }
 
-      ProcRemoveFile(txtTransPath.Text);
+      //移除rar
+      ProcRemoveFile(txtTransPath.Text, "*.rar");
+      //移除ini
+      ProcRemoveFile(txtTransPath.Text, "*.ini");      
 
       ShowStatus("完成");
     }
@@ -428,9 +434,9 @@ namespace ChrisTools
       }
     }
 
-    private void ProcRemoveFile(string sPath)
+    private void ProcRemoveFile(string sPath,string searchPattern)
     {
-      FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles("*.rar", SearchOption.AllDirectories);
+      FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles(searchPattern, SearchOption.AllDirectories);
 
       foreach (FileInfo item in fiList)
       {
@@ -441,15 +447,6 @@ namespace ChrisTools
       }
 
 
-      fiList = new DirectoryInfo(sPath).GetFiles("*.ini", SearchOption.AllDirectories);
-
-      foreach (FileInfo item in fiList)
-      {
-        ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
-
-        item.Attributes = FileAttributes.Normal;
-        item.Delete();
-      }
 
     }
 
@@ -483,5 +480,21 @@ namespace ChrisTools
 
       ShowStatus("批次更新檔案名稱 完成");
     }
+
+    private void btnRemoveMKV_Click(object sender, EventArgs e)
+    {
+      //移除ini
+      ProcRemoveFile(txtTransPath.Text, "*.mkv");
+    }
+  }
+
+
+  public class Tool005Helper {
+
+
+
+
+
+
   }
 }

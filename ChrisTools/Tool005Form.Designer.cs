@@ -43,6 +43,7 @@
       this.btnBatUnZip = new System.Windows.Forms.Button();
       this.btnGetSrt = new System.Windows.Forms.Button();
       this.btnFileNameTune = new System.Windows.Forms.Button();
+      this.btnRemoveMKV = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // btnStart
@@ -151,7 +152,7 @@
       // 
       // progressBar1
       // 
-      this.progressBar1.Location = new System.Drawing.Point(210, 144);
+      this.progressBar1.Location = new System.Drawing.Point(17, 123);
       this.progressBar1.Name = "progressBar1";
       this.progressBar1.Size = new System.Drawing.Size(206, 23);
       this.progressBar1.TabIndex = 26;
@@ -190,20 +191,32 @@
       // 
       // btnFileNameTune
       // 
-      this.btnFileNameTune.Location = new System.Drawing.Point(467, 128);
+      this.btnFileNameTune.Location = new System.Drawing.Point(317, 128);
       this.btnFileNameTune.Margin = new System.Windows.Forms.Padding(6);
       this.btnFileNameTune.Name = "btnFileNameTune";
       this.btnFileNameTune.Size = new System.Drawing.Size(138, 46);
       this.btnFileNameTune.TabIndex = 30;
-      this.btnFileNameTune.Text = "調整檔案名稱(空白及括弧)";
+      this.btnFileNameTune.Text = "調整名稱(空白及括弧)";
       this.btnFileNameTune.UseVisualStyleBackColor = true;
       this.btnFileNameTune.Click += new System.EventHandler(this.btnFileNameTune_Click);
+      // 
+      // btnRemoveMKV
+      // 
+      this.btnRemoveMKV.Location = new System.Drawing.Point(467, 128);
+      this.btnRemoveMKV.Margin = new System.Windows.Forms.Padding(6);
+      this.btnRemoveMKV.Name = "btnRemoveMKV";
+      this.btnRemoveMKV.Size = new System.Drawing.Size(138, 46);
+      this.btnRemoveMKV.TabIndex = 31;
+      this.btnRemoveMKV.Text = "移除MKV";
+      this.btnRemoveMKV.UseVisualStyleBackColor = true;
+      this.btnRemoveMKV.Click += new System.EventHandler(this.btnRemoveMKV_Click);
       // 
       // Tool005Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(630, 349);
+      this.Controls.Add(this.btnRemoveMKV);
       this.Controls.Add(this.btnFileNameTune);
       this.Controls.Add(this.btnGetSrt);
       this.Controls.Add(this.btnBatUnZip);
@@ -245,5 +258,6 @@
     private System.Windows.Forms.Button btnBatUnZip;
     private System.Windows.Forms.Button btnGetSrt;
     private System.Windows.Forms.Button btnFileNameTune;
+    private System.Windows.Forms.Button btnRemoveMKV;
   }
 }
