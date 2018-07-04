@@ -18,6 +18,7 @@ namespace ChrisTools
   {
     //const string constMkvToolPath = "MkvToolPath";
     //const string constTransPath = "TransPath";
+    Tool005Helper oTool005Helper = new Tool005Helper();
     public Tool005Form()
     {
       InitializeComponent();
@@ -342,24 +343,9 @@ namespace ChrisTools
     private void btnGetSrt_Click(object sender, EventArgs e)
     {
 
-      DirectoryInfo di = new DirectoryInfo(txtMkvToolPath.Text);
-
-
-      var r1 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVEXTRACT.EXE");
-
-      if (r1.Count() == 0)
-      {
-        MessageBox.Show("MkvTool路經，未包含MKVEXTRACT.EXE");
-        return;
-      }
-
-      var r2 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVMERGE.EXE");
-
-      if (r2.Count() == 0)
-      {
-        MessageBox.Show("MkvTool路經，未包含MKVMERGE.EXE");
-        return;
-      }
+      string sTemp = oTool005Helper.checkMkvToolExe(txtMkvToolPath.Text);
+      if (sTemp != "") MessageBox.Show(sTemp);
+      
 
       ProcGetSrt(txtTransPath.Text);
 
@@ -486,13 +472,106 @@ namespace ChrisTools
       //移除ini
       ProcRemoveFile(txtTransPath.Text, "*.mkv");
     }
+
+    private void btnMergeMKV_Click(object sender, EventArgs e)
+    {
+      string sTemp = oTool005Helper.checkMkvToolExe(txtMkvToolPath.Text);
+      if (sTemp != "") MessageBox.Show(sTemp);
+
+      DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
+      
+      string sVideoType = "";
+      if (radMP4.Checked == true) sVideoType = "mp4";
+      if (radMKV.Checked == true) sVideoType = "mkv";
+
+      string sSubTitleType = "";
+      if (radASS.Checked == true) sSubTitleType = "ass";
+      if (radSRT.Checked == true) sSubTitleType = "srt";
+      
+      
+
+      //取得所有影像資料
+      FileInfo[] VideoList = di.GetFiles("*." + sVideoType, SearchOption.AllDirectories);
+
+
+      foreach (FileInfo VideoItem in VideoList)
+      {
+        //搜尋符合的SubTilte
+        DirectoryInfo diTemp = VideoItem.Directory;
+        FileInfo[] fiSubTitleList = diTemp.GetFiles(
+          string.Format("{0}*.{1}", VideoItem.Name.Replace(VideoItem.Extension, ""), sSubTitleType)
+          , SearchOption.TopDirectoryOnly);
+
+        if (fiSubTitleList.Length > 0)
+        {
+          //執行合併檔案
+          ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
+        }
+
+      }
+
+    }
+
+
+
+    private void ProcMergeMkvSrt(FileInfo fiMKV,FileInfo fiSubTitle)
+    {
+      string sMkvToolPath = txtMkvToolPath.Text;
+      string sMkvtoolnixPath = Path.Combine(sMkvToolPath, "mkvmerge.exe");
+      //string sMkvextractPath = Path.Combine(sMkvToolPath, "mkvextract.exe");
+      //string sFilePath = pFileInfo.FullName;
+      //FileInfo fi = new FileInfo(sFilePath);
+
+      string sSubTitleType = "";
+      if (fiSubTitle.Extension.ToUpper() == ".ASS") sSubTitleType = "(ass)";
+      if (fiSubTitle.Extension.ToUpper() == ".SRT") sSubTitleType = "(srt)";
+
+
+      FileInfo fiTarget = new FileInfo(Path.Combine(
+         fiMKV.DirectoryName, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
+
+      string sGetInfoCommand = string.Format(@"{0} -i ""{1}"" ", sMkvtoolnixPath, fiMKV.FullName);
+      List<string> TempList = ExecuteCommandSync(sGetInfoCommand);
+
+
+
+      sGetInfoCommand = string.Format(@"{0} -o {1} -S {2} {3}", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName,fiSubTitle.FullName);
+      //sGetInfoCommand = string.Format(@"{0} -o {1} {2} {3}", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName, fiSRT.FullName);
+      TempList = ExecuteCommandSync(sGetInfoCommand);
+
+
+      sGetInfoCommand = string.Format(@"{0} -i ""{1}"" ", sMkvtoolnixPath, fiTarget.FullName);
+      TempList = ExecuteCommandSync(sGetInfoCommand);
+
+
+
+
+
+
+   
+
+    }
+
   }
 
 
   public class Tool005Helper {
 
 
+    public string checkMkvToolExe(string sMkvtoolPath)
+    {
+      string sResult = "";
 
+      DirectoryInfo di = new DirectoryInfo(sMkvtoolPath);
+
+      var r1 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVEXTRACT.EXE");
+      if (r1.Count() == 0) sResult = "MkvTool路經，未包含MKVEXTRACT.EXE";
+
+      var r2 = di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "MKVMERGE.EXE");
+      if (r2.Count() == 0) sResult = "MkvTool路經，未包含MKVMERGE.EXE";
+
+      return sResult;
+    }
 
 
 

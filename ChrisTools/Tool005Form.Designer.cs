@@ -44,6 +44,15 @@
       this.btnGetSrt = new System.Windows.Forms.Button();
       this.btnFileNameTune = new System.Windows.Forms.Button();
       this.btnRemoveMKV = new System.Windows.Forms.Button();
+      this.btnMergeMKV = new System.Windows.Forms.Button();
+      this.radMKV = new System.Windows.Forms.RadioButton();
+      this.radMP4 = new System.Windows.Forms.RadioButton();
+      this.radASS = new System.Windows.Forms.RadioButton();
+      this.radSRT = new System.Windows.Forms.RadioButton();
+      this.panel1 = new System.Windows.Forms.Panel();
+      this.panel2 = new System.Windows.Forms.Panel();
+      this.panel1.SuspendLayout();
+      this.panel2.SuspendLayout();
       this.SuspendLayout();
       // 
       // btnStart
@@ -134,7 +143,7 @@
       // lblStatus
       // 
       this.lblStatus.AutoSize = true;
-      this.lblStatus.Location = new System.Drawing.Point(15, 173);
+      this.lblStatus.Location = new System.Drawing.Point(15, 237);
       this.lblStatus.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.lblStatus.Name = "lblStatus";
       this.lblStatus.Size = new System.Drawing.Size(29, 12);
@@ -143,7 +152,7 @@
       // 
       // richTextBox1
       // 
-      this.richTextBox1.Location = new System.Drawing.Point(9, 192);
+      this.richTextBox1.Location = new System.Drawing.Point(9, 252);
       this.richTextBox1.Name = "richTextBox1";
       this.richTextBox1.Size = new System.Drawing.Size(606, 148);
       this.richTextBox1.TabIndex = 25;
@@ -152,7 +161,7 @@
       // 
       // progressBar1
       // 
-      this.progressBar1.Location = new System.Drawing.Point(17, 123);
+      this.progressBar1.Location = new System.Drawing.Point(9, 199);
       this.progressBar1.Name = "progressBar1";
       this.progressBar1.Size = new System.Drawing.Size(206, 23);
       this.progressBar1.TabIndex = 26;
@@ -160,7 +169,7 @@
       // lbltotal
       // 
       this.lbltotal.AutoSize = true;
-      this.lbltotal.Location = new System.Drawing.Point(15, 149);
+      this.lbltotal.Location = new System.Drawing.Point(15, 225);
       this.lbltotal.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.lbltotal.Name = "lbltotal";
       this.lbltotal.Size = new System.Drawing.Size(29, 12);
@@ -211,11 +220,88 @@
       this.btnRemoveMKV.UseVisualStyleBackColor = true;
       this.btnRemoveMKV.Click += new System.EventHandler(this.btnRemoveMKV_Click);
       // 
+      // btnMergeMKV
+      // 
+      this.btnMergeMKV.Location = new System.Drawing.Point(167, 128);
+      this.btnMergeMKV.Margin = new System.Windows.Forms.Padding(6);
+      this.btnMergeMKV.Name = "btnMergeMKV";
+      this.btnMergeMKV.Size = new System.Drawing.Size(138, 46);
+      this.btnMergeMKV.TabIndex = 32;
+      this.btnMergeMKV.Text = "Mkv合併";
+      this.btnMergeMKV.UseVisualStyleBackColor = true;
+      this.btnMergeMKV.Click += new System.EventHandler(this.btnMergeMKV_Click);
+      // 
+      // radMKV
+      // 
+      this.radMKV.AutoSize = true;
+      this.radMKV.Checked = true;
+      this.radMKV.Location = new System.Drawing.Point(6, 3);
+      this.radMKV.Name = "radMKV";
+      this.radMKV.Size = new System.Drawing.Size(49, 16);
+      this.radMKV.TabIndex = 33;
+      this.radMKV.TabStop = true;
+      this.radMKV.Text = "MKV";
+      this.radMKV.UseVisualStyleBackColor = true;
+      // 
+      // radMP4
+      // 
+      this.radMP4.AutoSize = true;
+      this.radMP4.Location = new System.Drawing.Point(61, 3);
+      this.radMP4.Name = "radMP4";
+      this.radMP4.Size = new System.Drawing.Size(45, 16);
+      this.radMP4.TabIndex = 34;
+      this.radMP4.TabStop = true;
+      this.radMP4.Text = "MP4";
+      this.radMP4.UseVisualStyleBackColor = true;
+      // 
+      // radASS
+      // 
+      this.radASS.AutoSize = true;
+      this.radASS.Location = new System.Drawing.Point(61, 3);
+      this.radASS.Name = "radASS";
+      this.radASS.Size = new System.Drawing.Size(43, 16);
+      this.radASS.TabIndex = 36;
+      this.radASS.Text = "ASS";
+      this.radASS.UseVisualStyleBackColor = true;
+      // 
+      // radSRT
+      // 
+      this.radSRT.AutoSize = true;
+      this.radSRT.Checked = true;
+      this.radSRT.Location = new System.Drawing.Point(6, 3);
+      this.radSRT.Name = "radSRT";
+      this.radSRT.Size = new System.Drawing.Size(44, 16);
+      this.radSRT.TabIndex = 35;
+      this.radSRT.TabStop = true;
+      this.radSRT.Text = "SRT";
+      this.radSRT.UseVisualStyleBackColor = true;
+      // 
+      // panel1
+      // 
+      this.panel1.Controls.Add(this.radMKV);
+      this.panel1.Controls.Add(this.radMP4);
+      this.panel1.Location = new System.Drawing.Point(17, 128);
+      this.panel1.Name = "panel1";
+      this.panel1.Size = new System.Drawing.Size(115, 22);
+      this.panel1.TabIndex = 37;
+      // 
+      // panel2
+      // 
+      this.panel2.Controls.Add(this.radSRT);
+      this.panel2.Controls.Add(this.radASS);
+      this.panel2.Location = new System.Drawing.Point(17, 153);
+      this.panel2.Name = "panel2";
+      this.panel2.Size = new System.Drawing.Size(115, 22);
+      this.panel2.TabIndex = 38;
+      // 
       // Tool005Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(630, 349);
+      this.ClientSize = new System.Drawing.Size(630, 412);
+      this.Controls.Add(this.panel2);
+      this.Controls.Add(this.panel1);
+      this.Controls.Add(this.btnMergeMKV);
       this.Controls.Add(this.btnRemoveMKV);
       this.Controls.Add(this.btnFileNameTune);
       this.Controls.Add(this.btnGetSrt);
@@ -236,6 +322,10 @@
       this.Text = "批次更新檔案名稱";
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Tool005Form_FormClosing);
       this.Load += new System.EventHandler(this.Tool005Form_Load);
+      this.panel1.ResumeLayout(false);
+      this.panel1.PerformLayout();
+      this.panel2.ResumeLayout(false);
+      this.panel2.PerformLayout();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -259,5 +349,12 @@
     private System.Windows.Forms.Button btnGetSrt;
     private System.Windows.Forms.Button btnFileNameTune;
     private System.Windows.Forms.Button btnRemoveMKV;
+    private System.Windows.Forms.Button btnMergeMKV;
+    private System.Windows.Forms.RadioButton radMKV;
+    private System.Windows.Forms.RadioButton radMP4;
+    private System.Windows.Forms.RadioButton radASS;
+    private System.Windows.Forms.RadioButton radSRT;
+    private System.Windows.Forms.Panel panel1;
+    private System.Windows.Forms.Panel panel2;
   }
 }
