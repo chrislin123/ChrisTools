@@ -424,16 +424,17 @@ namespace ChrisTools
     {
       FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles(searchPattern, SearchOption.AllDirectories);
 
+      int idx = 1;
       foreach (FileInfo item in fiList)
       {
+        lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
         ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
 
         item.Attributes = FileAttributes.Normal;
         item.Delete();
+
+        idx++;
       }
-
-
-
     }
 
 
@@ -486,16 +487,19 @@ namespace ChrisTools
 
       string sSubTitleType = "";
       if (radASS.Checked == true) sSubTitleType = "ass";
-      if (radSRT.Checked == true) sSubTitleType = "srt";
-      
-      
+      if (radSRT.Checked == true) sSubTitleType = "srt";      
 
       //取得所有影像資料
       FileInfo[] VideoList = di.GetFiles("*." + sVideoType, SearchOption.AllDirectories);
 
-
+      int idx = 1;
+      //設定進度條
+      progressBar2.Maximum = VideoList.Length;
       foreach (FileInfo VideoItem in VideoList)
       {
+        progressBar2.Value = idx;
+        lbltotal.Text = string.Format("{0} / {1}", idx, VideoList.Length);
+
         //搜尋符合的SubTilte
         DirectoryInfo diTemp = VideoItem.Directory;
         FileInfo[] fiSubTitleList = diTemp.GetFiles(
@@ -508,7 +512,11 @@ namespace ChrisTools
           ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
         }
 
+        idx++;
       }
+
+      Button btnSender = sender as Button;
+      ShowStatus(string.Format("[完成]{0}", btnSender.Text));
 
     }
 
@@ -516,6 +524,10 @@ namespace ChrisTools
 
     private void ProcMergeMkvSrt(FileInfo fiMKV,FileInfo fiSubTitle)
     {
+      //建立轉檔資料夾
+      string sMkvTrans = "MkvTrans";
+      Directory.CreateDirectory(Path.Combine(fiMKV.DirectoryName, sMkvTrans));
+
       string sMkvToolPath = txtMkvToolPath.Text;
       string sMkvtoolnixPath = Path.Combine(sMkvToolPath, "mkvmerge.exe");
       //string sMkvextractPath = Path.Combine(sMkvToolPath, "mkvextract.exe");
@@ -528,27 +540,17 @@ namespace ChrisTools
 
 
       FileInfo fiTarget = new FileInfo(Path.Combine(
-         fiMKV.DirectoryName, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
+         fiMKV.DirectoryName, sMkvTrans, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
 
-      string sGetInfoCommand = string.Format(@"{0} -i ""{1}"" ", sMkvtoolnixPath, fiMKV.FullName);
-      List<string> TempList = ExecuteCommandSync(sGetInfoCommand);
+      //取得資訊
+      //string sGetInfoCommand = string.Format(@"{0} -i ""{1}"" ", sMkvtoolnixPath, fiMKV.FullName);
+      //List<string> TempList = ExecuteCommandSync(sGetInfoCommand);
 
 
 
-      sGetInfoCommand = string.Format(@"{0} -o {1} -S {2} {3}", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName,fiSubTitle.FullName);
+      string sGetInfoCommand = string.Format(@"{0} -o {1} -S {2} {3}", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName,fiSubTitle.FullName);
       //sGetInfoCommand = string.Format(@"{0} -o {1} {2} {3}", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName, fiSRT.FullName);
-      TempList = ExecuteCommandSync(sGetInfoCommand);
-
-
-      sGetInfoCommand = string.Format(@"{0} -i ""{1}"" ", sMkvtoolnixPath, fiTarget.FullName);
-      TempList = ExecuteCommandSync(sGetInfoCommand);
-
-
-
-
-
-
-   
+      List<string>  TempList = ExecuteCommandSync(sGetInfoCommand);
 
     }
 

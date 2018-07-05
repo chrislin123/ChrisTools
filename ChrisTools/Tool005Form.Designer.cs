@@ -51,6 +51,7 @@
       this.radSRT = new System.Windows.Forms.RadioButton();
       this.panel1 = new System.Windows.Forms.Panel();
       this.panel2 = new System.Windows.Forms.Panel();
+      this.progressBar2 = new System.Windows.Forms.ProgressBar();
       this.panel1.SuspendLayout();
       this.panel2.SuspendLayout();
       this.SuspendLayout();
@@ -143,7 +144,7 @@
       // lblStatus
       // 
       this.lblStatus.AutoSize = true;
-      this.lblStatus.Location = new System.Drawing.Point(15, 237);
+      this.lblStatus.Location = new System.Drawing.Point(15, 223);
       this.lblStatus.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.lblStatus.Name = "lblStatus";
       this.lblStatus.Size = new System.Drawing.Size(29, 12);
@@ -161,15 +162,15 @@
       // 
       // progressBar1
       // 
-      this.progressBar1.Location = new System.Drawing.Point(9, 199);
+      this.progressBar1.Location = new System.Drawing.Point(205, 221);
       this.progressBar1.Name = "progressBar1";
-      this.progressBar1.Size = new System.Drawing.Size(206, 23);
+      this.progressBar1.Size = new System.Drawing.Size(410, 16);
       this.progressBar1.TabIndex = 26;
       // 
       // lbltotal
       // 
       this.lbltotal.AutoSize = true;
-      this.lbltotal.Location = new System.Drawing.Point(15, 225);
+      this.lbltotal.Location = new System.Drawing.Point(15, 201);
       this.lbltotal.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.lbltotal.Name = "lbltotal";
       this.lbltotal.Size = new System.Drawing.Size(29, 12);
@@ -294,11 +295,19 @@
       this.panel2.Size = new System.Drawing.Size(115, 22);
       this.panel2.TabIndex = 38;
       // 
+      // progressBar2
+      // 
+      this.progressBar2.Location = new System.Drawing.Point(205, 199);
+      this.progressBar2.Name = "progressBar2";
+      this.progressBar2.Size = new System.Drawing.Size(410, 16);
+      this.progressBar2.TabIndex = 39;
+      // 
       // Tool005Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(630, 412);
+      this.Controls.Add(this.progressBar2);
       this.Controls.Add(this.panel2);
       this.Controls.Add(this.panel1);
       this.Controls.Add(this.btnMergeMKV);
@@ -356,5 +365,6 @@
     private System.Windows.Forms.RadioButton radSRT;
     private System.Windows.Forms.Panel panel1;
     private System.Windows.Forms.Panel panel2;
+    private System.Windows.Forms.ProgressBar progressBar2;
   }
 }
