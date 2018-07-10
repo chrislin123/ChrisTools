@@ -145,11 +145,15 @@ namespace ChrisTools
         procStartInfo.UseShellExecute = false;
         // Do not create the black window.
         procStartInfo.CreateNoWindow = true;
+        //解決中文顯示問題
+        procStartInfo.StandardOutputEncoding = Encoding.UTF8;
         // Now we create a process, assign its ProcessStartInfo and start it
         System.Diagnostics.Process proc = new System.Diagnostics.Process();
+        //解決中文顯示問題
+        proc.StartInfo.StandardOutputEncoding = Encoding.UTF8;
         proc.StartInfo = procStartInfo;
         proc.Start();
-
+        
 
         while (!proc.StandardOutput.EndOfStream)
         {
