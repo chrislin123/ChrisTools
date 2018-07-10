@@ -189,7 +189,7 @@ namespace M10.lib
         //the_Info = "x " + fiTarget.Name + " -ppass@word1 " + diDest.FullName + " -y";
 
         //檔名或路徑如果有空白，需要使用半形的雙引號包起來，才不會出問題
-        the_Info = string.Format(@"x ""{0}"" -{1} ""{2}"" -y", fiTarget.Name, sPassword, diDest.FullName);
+        the_Info = string.Format(@"x ""{0}"" -p{1} ""{2}"" -y", fiTarget.Name, sPassword, diDest.FullName);
 
         ProcessStartInfo the_StartInfo = new ProcessStartInfo();
         the_StartInfo.FileName = the_rar;

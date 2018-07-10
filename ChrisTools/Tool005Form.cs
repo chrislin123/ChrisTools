@@ -213,7 +213,7 @@ namespace ChrisTools
           string sTrackID = TrackSplit[0].Replace("Track ID ", "").Trim();
           string sTrackType = TrackSplit[1].Replace("subtitles (", "").Replace(")", "").Trim();
 
-          string sCommandExt = string.Format(@"{0} tracks ""{1}"" {2}:{3}.{4} "
+          string sCommandExt = string.Format(@"{0} tracks ""{1}"" {2}:""{3}.{4}"" "
                                       , sMkvextractPath
                                       , sFilePath
                                       , sTrackID
@@ -369,7 +369,9 @@ namespace ChrisTools
       List<string> AllDiList = Directory.GetDirectories(di.FullName, "*.*", SearchOption.AllDirectories).ToList<string>();
 
 
-
+      int idx = 0;
+      //設定進度條
+      progressBar2.Maximum = AllDiList.Count;
       foreach (string SubDiString in AllDiList)
       {
         DirectoryInfo SubDi = new DirectoryInfo(SubDiString);
@@ -400,6 +402,9 @@ namespace ChrisTools
 
         }
 
+        idx++;
+        progressBar2.Value = idx;
+        lbltotal.Text = string.Format("{0} / {1}", idx, AllDiList.Count);
 
       }
 
