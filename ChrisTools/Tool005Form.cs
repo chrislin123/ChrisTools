@@ -485,34 +485,59 @@ namespace ChrisTools
       if (radMP4.Checked == true) sVideoType = "mp4";
       if (radMKV.Checked == true) sVideoType = "mkv";
 
-      string sSubTitleType = "";
-      if (radASS.Checked == true) sSubTitleType = "ass";
-      if (radSRT.Checked == true) sSubTitleType = "srt";      
+      //string sSubTitleType = "";
+      //if (radASS.Checked == true) sSubTitleType = "ass";
+      //if (radSRT.Checked == true) sSubTitleType = "srt";      
 
       //取得所有影像資料
       FileInfo[] VideoList = di.GetFiles("*." + sVideoType, SearchOption.AllDirectories);
 
-      int idx = 1;
+      int idx = 0;
       //設定進度條
       progressBar2.Maximum = VideoList.Length;
       foreach (FileInfo VideoItem in VideoList)
       {
-        progressBar2.Value = idx;
-        lbltotal.Text = string.Format("{0} / {1}", idx, VideoList.Length);
+        
+        
 
-        //搜尋符合的SubTilte
-        DirectoryInfo diTemp = VideoItem.Directory;
-        FileInfo[] fiSubTitleList = diTemp.GetFiles(
-          string.Format("{0}*.{1}", VideoItem.Name.Replace(VideoItem.Extension, ""), sSubTitleType)
-          , SearchOption.TopDirectoryOnly);
-
-        if (fiSubTitleList.Length > 0)
+        string sSubTitleType = "";
+        if (radASS.Checked == true)
         {
-          //執行合併檔案
-          ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
+          sSubTitleType = "ass";
+          //搜尋符合的SubTilte
+          DirectoryInfo diTemp = VideoItem.Directory;
+          FileInfo[] fiSubTitleList = diTemp.GetFiles(
+            string.Format("{0}*.{1}", VideoItem.Name.Replace(VideoItem.Extension, ""), sSubTitleType)
+            , SearchOption.TopDirectoryOnly);
+
+          if (fiSubTitleList.Length > 0)
+          {
+            //執行合併檔案
+            ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
+          }
+
+        }
+
+        if (radSRT.Checked == true)
+        {
+          sSubTitleType = "srt";
+          //搜尋符合的SubTilte
+          DirectoryInfo diTemp = VideoItem.Directory;
+          FileInfo[] fiSubTitleList = diTemp.GetFiles(
+            string.Format("{0}*.{1}", VideoItem.Name.Replace(VideoItem.Extension, ""), sSubTitleType)
+            , SearchOption.TopDirectoryOnly);
+
+          if (fiSubTitleList.Length > 0)
+          {
+            //執行合併檔案
+            ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
+          }
+
         }
 
         idx++;
+        progressBar2.Value = idx;
+        lbltotal.Text = string.Format("{0} / {1}", idx, VideoList.Length);
       }
 
       Button btnSender = sender as Button;
@@ -525,8 +550,8 @@ namespace ChrisTools
     private void ProcMergeMkvSrt(FileInfo fiMKV,FileInfo fiSubTitle)
     {
       //建立轉檔資料夾
-      string sMkvTrans = "MkvTrans";
-      Directory.CreateDirectory(Path.Combine(fiMKV.DirectoryName, sMkvTrans));
+      //string sMkvTrans = "MkvTrans";
+      //Directory.CreateDirectory(Path.Combine(fiMKV.DirectoryName, sMkvTrans));
 
       string sMkvToolPath = txtMkvToolPath.Text;
       string sMkvtoolnixPath = Path.Combine(sMkvToolPath, "mkvmerge.exe");
@@ -539,8 +564,10 @@ namespace ChrisTools
       if (fiSubTitle.Extension.ToUpper() == ".SRT") sSubTitleType = "(srt)";
 
 
+      //FileInfo fiTarget = new FileInfo(Path.Combine(
+      //   fiMKV.DirectoryName, sMkvTrans, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
       FileInfo fiTarget = new FileInfo(Path.Combine(
-         fiMKV.DirectoryName, sMkvTrans, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
+         fiMKV.DirectoryName,  fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
 
       //取得資訊
       //string sGetInfoCommand = string.Format(@"{0} -i ""{1}"" ", sMkvtoolnixPath, fiMKV.FullName);

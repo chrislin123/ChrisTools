@@ -47,11 +47,11 @@
       this.btnMergeMKV = new System.Windows.Forms.Button();
       this.radMKV = new System.Windows.Forms.RadioButton();
       this.radMP4 = new System.Windows.Forms.RadioButton();
-      this.radASS = new System.Windows.Forms.RadioButton();
-      this.radSRT = new System.Windows.Forms.RadioButton();
       this.panel1 = new System.Windows.Forms.Panel();
       this.panel2 = new System.Windows.Forms.Panel();
       this.progressBar2 = new System.Windows.Forms.ProgressBar();
+      this.radSRT = new System.Windows.Forms.CheckBox();
+      this.radASS = new System.Windows.Forms.CheckBox();
       this.panel1.SuspendLayout();
       this.panel2.SuspendLayout();
       this.SuspendLayout();
@@ -255,28 +255,6 @@
       this.radMP4.Text = "MP4";
       this.radMP4.UseVisualStyleBackColor = true;
       // 
-      // radASS
-      // 
-      this.radASS.AutoSize = true;
-      this.radASS.Location = new System.Drawing.Point(61, 3);
-      this.radASS.Name = "radASS";
-      this.radASS.Size = new System.Drawing.Size(43, 16);
-      this.radASS.TabIndex = 36;
-      this.radASS.Text = "ASS";
-      this.radASS.UseVisualStyleBackColor = true;
-      // 
-      // radSRT
-      // 
-      this.radSRT.AutoSize = true;
-      this.radSRT.Checked = true;
-      this.radSRT.Location = new System.Drawing.Point(6, 3);
-      this.radSRT.Name = "radSRT";
-      this.radSRT.Size = new System.Drawing.Size(44, 16);
-      this.radSRT.TabIndex = 35;
-      this.radSRT.TabStop = true;
-      this.radSRT.Text = "SRT";
-      this.radSRT.UseVisualStyleBackColor = true;
-      // 
       // panel1
       // 
       this.panel1.Controls.Add(this.radMKV);
@@ -288,8 +266,8 @@
       // 
       // panel2
       // 
-      this.panel2.Controls.Add(this.radSRT);
       this.panel2.Controls.Add(this.radASS);
+      this.panel2.Controls.Add(this.radSRT);
       this.panel2.Location = new System.Drawing.Point(17, 153);
       this.panel2.Name = "panel2";
       this.panel2.Size = new System.Drawing.Size(115, 22);
@@ -301,6 +279,26 @@
       this.progressBar2.Name = "progressBar2";
       this.progressBar2.Size = new System.Drawing.Size(410, 16);
       this.progressBar2.TabIndex = 39;
+      // 
+      // radSRT
+      // 
+      this.radSRT.AutoSize = true;
+      this.radSRT.Location = new System.Drawing.Point(6, 5);
+      this.radSRT.Name = "radSRT";
+      this.radSRT.Size = new System.Drawing.Size(45, 16);
+      this.radSRT.TabIndex = 37;
+      this.radSRT.Text = "SRT";
+      this.radSRT.UseVisualStyleBackColor = true;
+      // 
+      // radASS
+      // 
+      this.radASS.AutoSize = true;
+      this.radASS.Location = new System.Drawing.Point(61, 5);
+      this.radASS.Name = "radASS";
+      this.radASS.Size = new System.Drawing.Size(44, 16);
+      this.radASS.TabIndex = 38;
+      this.radASS.Text = "ASS";
+      this.radASS.UseVisualStyleBackColor = true;
       // 
       // Tool005Form
       // 
@@ -361,10 +359,10 @@
     private System.Windows.Forms.Button btnMergeMKV;
     private System.Windows.Forms.RadioButton radMKV;
     private System.Windows.Forms.RadioButton radMP4;
-    private System.Windows.Forms.RadioButton radASS;
-    private System.Windows.Forms.RadioButton radSRT;
     private System.Windows.Forms.Panel panel1;
     private System.Windows.Forms.Panel panel2;
     private System.Windows.Forms.ProgressBar progressBar2;
+    private System.Windows.Forms.CheckBox radSRT;
+    private System.Windows.Forms.CheckBox radASS;
   }
 }
