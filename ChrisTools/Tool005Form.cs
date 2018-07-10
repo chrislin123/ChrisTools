@@ -380,6 +380,7 @@ namespace ChrisTools
 
       int idx = 0;
       //設定進度條
+      lbltotal.Text = string.Format("{0} / {1}", idx, AllDiList.Count);
       progressBar2.Maximum = AllDiList.Count;
       foreach (string SubDiString in AllDiList)
       {
@@ -424,6 +425,7 @@ namespace ChrisTools
       FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles("*.mkv", SearchOption.AllDirectories);
 
       int idx = 0;
+      lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
       progressBar2.Maximum = fiList.Length;
       foreach (FileInfo item in fiList)
       { 
@@ -441,6 +443,7 @@ namespace ChrisTools
       FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles(searchPattern, SearchOption.AllDirectories);
 
       int idx = 0;
+      lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
       progressBar2.Maximum = fiList.Length;
       foreach (FileInfo item in fiList)
       {
@@ -472,6 +475,7 @@ namespace ChrisTools
 
 
       int idx = 0;
+      lbltotal.Text = string.Format("{0} / {1}", idx, tttt.Count);
       progressBar2.Maximum = tttt.Count;
       foreach (FileInfo item in tttt)
       {
@@ -521,6 +525,7 @@ namespace ChrisTools
 
       int idx = 0;
       //設定進度條
+      lbltotal.Text = string.Format("{0} / {1}", idx, VideoList.Length);
       progressBar2.Maximum = VideoList.Length;
       foreach (FileInfo VideoItem in VideoList)
       {
