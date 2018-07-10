@@ -66,6 +66,8 @@ namespace ChrisTools
 
     private void btnStart_Click(object sender, EventArgs e)
     {
+      ClearForm();
+
       string sTransPath = txtTransPath.Text;
 
       //解壓
@@ -322,6 +324,7 @@ namespace ChrisTools
 
     private void btnRemoveFile_Click(object sender, EventArgs e)
     {
+      ClearForm();
 
       if (MessageBox.Show("確定刪除?", "提示", MessageBoxButtons.YesNo) == DialogResult.No)
       {
@@ -346,6 +349,7 @@ namespace ChrisTools
 
     private void btnGetSrt_Click(object sender, EventArgs e)
     {
+      ClearForm();
 
       string sTemp = oTool005Helper.checkMkvToolExe(txtMkvToolPath.Text);
       if (sTemp != "") MessageBox.Show(sTemp);
@@ -359,6 +363,7 @@ namespace ChrisTools
 
     private void btnBatUnZip_Click(object sender, EventArgs e)
     {
+      ClearForm();
       ProcUnRAR(txtTransPath.Text);
     }
 
@@ -418,14 +423,16 @@ namespace ChrisTools
     private void ProcGetSrt(string sPath) {
       FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles("*.mkv", SearchOption.AllDirectories);
 
-      int idx = 1;
+      int idx = 0;
+      progressBar2.Maximum = fiList.Length;
       foreach (FileInfo item in fiList)
-      {
-        lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
+      { 
         ShowStatus(string.Format("轉檔：{0}", item.FullName));
         ProcMkvExtractSubt(item);
 
         idx++;
+        progressBar2.Value = idx;
+        lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
       }
     }
 
@@ -433,16 +440,18 @@ namespace ChrisTools
     {
       FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles(searchPattern, SearchOption.AllDirectories);
 
-      int idx = 1;
+      int idx = 0;
+      progressBar2.Maximum = fiList.Length;
       foreach (FileInfo item in fiList)
       {
-        lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
         ShowRichTextStatus(string.Format("刪除：{0}", item.FullName));
 
         item.Attributes = FileAttributes.Normal;
         item.Delete();
 
         idx++;
+        progressBar2.Value = idx;
+        lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
       }
     }
 
@@ -450,6 +459,7 @@ namespace ChrisTools
 
     private void btnFileNameTune_Click(object sender, EventArgs e)
     {
+      ClearForm();
       if (MessageBox.Show("確定要批次更新檔案名稱?", "提示", MessageBoxButtons.YesNo) == DialogResult.No)
       {
         return;
@@ -457,11 +467,12 @@ namespace ChrisTools
 
       DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
 
-
       List<FileInfo> tttt = di.GetFiles("*.*", SearchOption.AllDirectories)
         .Where(s => s.Extension.ToLower() == ".mkv" || s.Extension.ToLower() == ".mp4").ToList<FileInfo>();
 
 
+      int idx = 0;
+      progressBar2.Maximum = tttt.Count;
       foreach (FileInfo item in tttt)
       {
         string sNewFileName = item.Name.Replace(" ", "").Replace("(1)", "").Replace("(2)", "")
@@ -472,6 +483,10 @@ namespace ChrisTools
         {
           item.MoveTo(sFullRename);
         }
+
+        idx++;
+        progressBar2.Value = idx;
+        lbltotal.Text = string.Format("{0} / {1}", idx, tttt.Count);
       }
 
       ShowStatus("批次更新檔案名稱 完成");
@@ -479,12 +494,15 @@ namespace ChrisTools
 
     private void btnRemoveMKV_Click(object sender, EventArgs e)
     {
+      ClearForm();
       //移除ini
       ProcRemoveFile(txtTransPath.Text, "*.mkv");
     }
 
     private void btnMergeMKV_Click(object sender, EventArgs e)
     {
+      ClearForm();
+
       string sTemp = oTool005Helper.checkMkvToolExe(txtMkvToolPath.Text);
       if (sTemp != "") MessageBox.Show(sTemp);
 
@@ -506,9 +524,6 @@ namespace ChrisTools
       progressBar2.Maximum = VideoList.Length;
       foreach (FileInfo VideoItem in VideoList)
       {
-        
-        
-
         string sSubTitleType = "";
         if (radASS.Checked == true)
         {
@@ -584,9 +599,20 @@ namespace ChrisTools
 
 
 
-      string sGetInfoCommand = string.Format(@"{0} -o {1} -S {2} {3}", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName,fiSubTitle.FullName);
+      string sGetInfoCommand = string.Format(@"{0} -o ""{1}"" -S ""{2}"" ""{3}""", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName,fiSubTitle.FullName);
       //sGetInfoCommand = string.Format(@"{0} -o {1} {2} {3}", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName, fiSRT.FullName);
       List<string>  TempList = ExecuteCommandSync(sGetInfoCommand);
+
+    }
+
+    private void ClearForm()
+    {
+      progressBar1.Value = 0;      
+      progressBar2.Value = 0;
+
+      richTextBox1.Text = "";
+      lblStatus.Text = "狀態";
+      lbltotal.Text = "數量";
 
     }
 
