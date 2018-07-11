@@ -100,12 +100,13 @@ namespace ChrisTools
         progressBar1.Value = Convert.ToInt32(pMsg.Replace("Progress:", "").Replace("%", "").Trim());
         if (pMsg == "Progress: 100%")
         {
-          richTextBox1.AppendText("\r\n" + "完成。");
+          richTextBox1.AppendText("\r\n" + pMsg + " 完成。");
         }
       }
       else
       {
-        richTextBox1.AppendText("\r\n" + pMsg);
+        //取消不顯示細部內容
+        //richTextBox1.AppendText("\r\n" + pMsg);
       }
 
       this.Update();
@@ -376,9 +377,9 @@ namespace ChrisTools
 
       //取得所有資料夾
       List<string> AllDiList = Directory.GetDirectories(di.FullName, "*.*", SearchOption.AllDirectories).ToList<string>();
+      
 
-
-      int idx = 0;
+        int idx = 0;
       //設定進度條
       lbltotal.Text = string.Format("{0} / {1}", idx, AllDiList.Count);
       progressBar2.Maximum = AllDiList.Count;
@@ -387,7 +388,10 @@ namespace ChrisTools
         DirectoryInfo SubDi = new DirectoryInfo(SubDiString);
 
         //判斷資料夾是否包含RAR檔案，不包含不處理
-        if (SubDi.GetFiles("*.rar").Length == 0) continue;
+        if (SubDi.GetFiles("*.rar").Length == 0) {
+          idx++;
+          continue;
+        };
 
 
         string smark = "!@#$";
