@@ -49,9 +49,9 @@
       this.radMP4 = new System.Windows.Forms.RadioButton();
       this.panel1 = new System.Windows.Forms.Panel();
       this.panel2 = new System.Windows.Forms.Panel();
-      this.progressBar2 = new System.Windows.Forms.ProgressBar();
-      this.radSRT = new System.Windows.Forms.CheckBox();
       this.radASS = new System.Windows.Forms.CheckBox();
+      this.radSRT = new System.Windows.Forms.CheckBox();
+      this.progressBar2 = new System.Windows.Forms.ProgressBar();
       this.panel1.SuspendLayout();
       this.panel2.SuspendLayout();
       this.SuspendLayout();
@@ -155,7 +155,7 @@
       // 
       this.richTextBox1.Location = new System.Drawing.Point(9, 252);
       this.richTextBox1.Name = "richTextBox1";
-      this.richTextBox1.Size = new System.Drawing.Size(606, 148);
+      this.richTextBox1.Size = new System.Drawing.Size(606, 101);
       this.richTextBox1.TabIndex = 25;
       this.richTextBox1.Text = "";
       this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
@@ -273,12 +273,15 @@
       this.panel2.Size = new System.Drawing.Size(115, 22);
       this.panel2.TabIndex = 38;
       // 
-      // progressBar2
+      // radASS
       // 
-      this.progressBar2.Location = new System.Drawing.Point(205, 199);
-      this.progressBar2.Name = "progressBar2";
-      this.progressBar2.Size = new System.Drawing.Size(410, 16);
-      this.progressBar2.TabIndex = 39;
+      this.radASS.AutoSize = true;
+      this.radASS.Location = new System.Drawing.Point(61, 5);
+      this.radASS.Name = "radASS";
+      this.radASS.Size = new System.Drawing.Size(44, 16);
+      this.radASS.TabIndex = 38;
+      this.radASS.Text = "ASS";
+      this.radASS.UseVisualStyleBackColor = true;
       // 
       // radSRT
       // 
@@ -290,21 +293,18 @@
       this.radSRT.Text = "SRT";
       this.radSRT.UseVisualStyleBackColor = true;
       // 
-      // radASS
+      // progressBar2
       // 
-      this.radASS.AutoSize = true;
-      this.radASS.Location = new System.Drawing.Point(61, 5);
-      this.radASS.Name = "radASS";
-      this.radASS.Size = new System.Drawing.Size(44, 16);
-      this.radASS.TabIndex = 38;
-      this.radASS.Text = "ASS";
-      this.radASS.UseVisualStyleBackColor = true;
+      this.progressBar2.Location = new System.Drawing.Point(205, 199);
+      this.progressBar2.Name = "progressBar2";
+      this.progressBar2.Size = new System.Drawing.Size(410, 16);
+      this.progressBar2.TabIndex = 39;
       // 
       // Tool005Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(630, 412);
+      this.ClientSize = new System.Drawing.Size(630, 362);
       this.Controls.Add(this.progressBar2);
       this.Controls.Add(this.panel2);
       this.Controls.Add(this.panel1);

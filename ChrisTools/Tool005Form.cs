@@ -29,7 +29,7 @@ namespace ChrisTools
     {
 
 
-      
+
 
       txtMkvToolPath.Text = Comm.GetSetting(CTsConst.SettingList.Tool005_MkvToolPath);
       txtTransPath.Text = Comm.GetSetting(CTsConst.SettingList.Tool005_TransPath);
@@ -113,6 +113,15 @@ namespace ChrisTools
       Application.DoEvents();
     }
 
+    private void ShowRichTextStatus1(string pMsg)
+    {
+      //取消不顯示細部內容
+      richTextBox1.AppendText("\r\n" + pMsg);
+
+      //this.Update();
+      //Application.DoEvents();
+    }
+
 
     private void txtFrom_MouseClick(object sender, MouseEventArgs e)
     {
@@ -130,7 +139,7 @@ namespace ChrisTools
       List<string> ResultList = new List<string>();
       //string sResult = "";
 
-      Console.WriteLine(command.ToString());
+      //Console.WriteLine(command.ToString());
       try
       {
         // create the ProcessStartInfo using "cmd" as the program to be run,
@@ -156,7 +165,7 @@ namespace ChrisTools
         proc.StartInfo.StandardOutputEncoding = Encoding.UTF8;
         proc.StartInfo = procStartInfo;
         proc.Start();
-        
+
 
         while (!proc.StandardOutput.EndOfStream)
         {
@@ -168,7 +177,6 @@ namespace ChrisTools
 
           ShowRichTextStatus(line);
 
-          Console.WriteLine(line);
         }
 
 
@@ -235,10 +243,7 @@ namespace ChrisTools
 
 
 
-    private void button2_Click(object sender, EventArgs e)
-    {
-      ProcMkvExtractSubt(new FileInfo(@"F:\temp\1.mkv"));
-    }
+  
 
     private string TransExtension(string sTrans)
     {
@@ -254,12 +259,7 @@ namespace ChrisTools
     }
 
 
-    private void button3_Click(object sender, EventArgs e)
-    {
-      string sMkvtoolnixPath = @"F:\temp\mkvtoolnix\mkvextract.exe";
-      string sGetInfoCommand = string.Format(@"""{0}"" tracks ""F:\temp\test.mp4"" 1:test.aac ", sMkvtoolnixPath);
-      ExecuteCommandSync(sGetInfoCommand);
-    }
+   
 
 
     private void txtMkvToolPath_TextChanged(object sender, EventArgs e)
@@ -335,7 +335,7 @@ namespace ChrisTools
       //移除rar
       ProcRemoveFile(txtTransPath.Text, "*.rar");
       //移除ini
-      ProcRemoveFile(txtTransPath.Text, "*.ini");      
+      ProcRemoveFile(txtTransPath.Text, "*.ini");
 
       ShowStatus("完成");
     }
@@ -353,19 +353,48 @@ namespace ChrisTools
       ClearForm();
 
       string sTemp = oTool005Helper.checkMkvToolExe(txtMkvToolPath.Text);
-      if (sTemp != "") MessageBox.Show(sTemp);
+      if (sTemp != "")
+      {
+        MessageBox.Show(sTemp);
+        return;
+      }
+
+      BackgroundWorker bw = new BackgroundWorker();
+      //回報進程
+      bw.WorkerReportsProgress = true;
+      //加入DoWork
+      bw.DoWork += new DoWorkEventHandler(Proc_DoWorkGetSrt);
+      //加入ProgressChanged
+      bw.ProgressChanged += new ProgressChangedEventHandler(Proc_ProgressChanged);
+      //加入RunWorkerCompleted
+      bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerCompleted);
+      //傳遞參數
+      //object i = new object();
+      //執行程序    
+      bw.RunWorkerAsync(txtTransPath.Text);
       
-
-      ProcGetSrt(txtTransPath.Text);
-
-      ShowStatus("完成");
-
     }
 
     private void btnBatUnZip_Click(object sender, EventArgs e)
     {
       ClearForm();
-      ProcUnRAR(txtTransPath.Text);
+
+      //ShowStatus("啟動 解壓");
+
+      BackgroundWorker bw = new BackgroundWorker();
+      //回報進程
+      bw.WorkerReportsProgress = true;
+      //加入DoWork
+      bw.DoWork += new DoWorkEventHandler(Proc_DoWorkUnRAR);
+      //加入ProgressChanged
+      bw.ProgressChanged += new ProgressChangedEventHandler(Proc_ProgressChanged);
+      //加入RunWorkerCompleted
+      bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerCompleted);
+      //傳遞參數
+      //object i = new object();
+      //執行程序
+      bw.RunWorkerAsync(txtTransPath.Text);
+
     }
 
 
@@ -377,9 +406,9 @@ namespace ChrisTools
 
       //取得所有資料夾
       List<string> AllDiList = Directory.GetDirectories(di.FullName, "*.*", SearchOption.AllDirectories).ToList<string>();
-      
 
-        int idx = 0;
+
+      int idx = 0;
       //設定進度條
       lbltotal.Text = string.Format("{0} / {1}", idx, AllDiList.Count);
       progressBar2.Maximum = AllDiList.Count;
@@ -388,7 +417,8 @@ namespace ChrisTools
         DirectoryInfo SubDi = new DirectoryInfo(SubDiString);
 
         //判斷資料夾是否包含RAR檔案，不包含不處理
-        if (SubDi.GetFiles("*.rar").Length == 0) {
+        if (SubDi.GetFiles("*.rar").Length == 0)
+        {
           idx++;
           continue;
         };
@@ -425,14 +455,15 @@ namespace ChrisTools
     }
 
 
-    private void ProcGetSrt(string sPath) {
+    private void ProcGetSrt(string sPath)
+    {
       FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles("*.mkv", SearchOption.AllDirectories);
 
       int idx = 0;
       lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
       progressBar2.Maximum = fiList.Length;
       foreach (FileInfo item in fiList)
-      { 
+      {
         ShowStatus(string.Format("轉檔：{0}", item.FullName));
         ProcMkvExtractSubt(item);
 
@@ -442,7 +473,7 @@ namespace ChrisTools
       }
     }
 
-    private void ProcRemoveFile(string sPath,string searchPattern)
+    private void ProcRemoveFile(string sPath, string searchPattern)
     {
       FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles(searchPattern, SearchOption.AllDirectories);
 
@@ -512,75 +543,41 @@ namespace ChrisTools
       ClearForm();
 
       string sTemp = oTool005Helper.checkMkvToolExe(txtMkvToolPath.Text);
-      if (sTemp != "") MessageBox.Show(sTemp);
-
-      DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
-      
-      string sVideoType = "";
-      if (radMP4.Checked == true) sVideoType = "mp4";
-      if (radMKV.Checked == true) sVideoType = "mkv";
-
-      //string sSubTitleType = "";
-      //if (radASS.Checked == true) sSubTitleType = "ass";
-      //if (radSRT.Checked == true) sSubTitleType = "srt";      
-
-      //取得所有影像資料
-      FileInfo[] VideoList = di.GetFiles("*." + sVideoType, SearchOption.AllDirectories);
-
-      int idx = 0;
-      //設定進度條
-      lbltotal.Text = string.Format("{0} / {1}", idx, VideoList.Length);
-      progressBar2.Maximum = VideoList.Length;
-      foreach (FileInfo VideoItem in VideoList)
+      if (sTemp != "")
       {
-        string sSubTitleType = "";
-        if (radASS.Checked == true)
-        {
-          sSubTitleType = "ass";
-          //搜尋符合的SubTilte
-          DirectoryInfo diTemp = VideoItem.Directory;
-          FileInfo[] fiSubTitleList = diTemp.GetFiles(
-            string.Format("{0}*.{1}", VideoItem.Name.Replace(VideoItem.Extension, ""), sSubTitleType)
-            , SearchOption.TopDirectoryOnly);
-
-          if (fiSubTitleList.Length > 0)
-          {
-            //執行合併檔案
-            ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
-          }
-
-        }
-
-        if (radSRT.Checked == true)
-        {
-          sSubTitleType = "srt";
-          //搜尋符合的SubTilte
-          DirectoryInfo diTemp = VideoItem.Directory;
-          FileInfo[] fiSubTitleList = diTemp.GetFiles(
-            string.Format("{0}*.{1}", VideoItem.Name.Replace(VideoItem.Extension, ""), sSubTitleType)
-            , SearchOption.TopDirectoryOnly);
-
-          if (fiSubTitleList.Length > 0)
-          {
-            //執行合併檔案
-            ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
-          }
-
-        }
-
-        idx++;
-        progressBar2.Value = idx;
-        lbltotal.Text = string.Format("{0} / {1}", idx, VideoList.Length);
+        MessageBox.Show(sTemp);
+        return;
       }
 
-      Button btnSender = sender as Button;
-      ShowStatus(string.Format("[完成]{0}", btnSender.Text));
+
+      BackgroundWorker bw = new BackgroundWorker();
+      //回報進程
+      bw.WorkerReportsProgress = true;
+      //加入DoWork
+      bw.DoWork += new DoWorkEventHandler(Proc_DoWorkMergeMkvSrt);
+      //加入ProgressChanged
+      bw.ProgressChanged += new ProgressChangedEventHandler(Proc_ProgressChanged);
+      //加入RunWorkerCompleted
+      bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerCompleted);
+      //傳遞參數
+      //object i = new object();
+      //執行程序
+
+      var p = new { path = txtTransPath.Text,
+                    chksrt = radSRT.Checked,
+                    chkass = radASS.Checked,
+                    chkmp4 = radMP4.Checked,
+                    chkmkv = radMKV.Checked
+                  };
+      bw.RunWorkerAsync(p);
+
+
 
     }
 
 
 
-    private void ProcMergeMkvSrt(FileInfo fiMKV,FileInfo fiSubTitle)
+    private void ProcMergeMkvSrt(FileInfo fiMKV, FileInfo fiSubTitle)
     {
       //建立轉檔資料夾
       //string sMkvTrans = "MkvTrans";
@@ -600,7 +597,7 @@ namespace ChrisTools
       //FileInfo fiTarget = new FileInfo(Path.Combine(
       //   fiMKV.DirectoryName, sMkvTrans, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
       FileInfo fiTarget = new FileInfo(Path.Combine(
-         fiMKV.DirectoryName,  fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
+         fiMKV.DirectoryName, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
 
       //取得資訊
       //string sGetInfoCommand = string.Format(@"{0} -i ""{1}"" ", sMkvtoolnixPath, fiMKV.FullName);
@@ -608,15 +605,15 @@ namespace ChrisTools
 
 
 
-      string sGetInfoCommand = string.Format(@"{0} -o ""{1}"" -S ""{2}"" ""{3}""", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName,fiSubTitle.FullName);
+      string sGetInfoCommand = string.Format(@"{0} -o ""{1}"" -S ""{2}"" ""{3}""", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName, fiSubTitle.FullName);
       //sGetInfoCommand = string.Format(@"{0} -o {1} {2} {3}", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName, fiSRT.FullName);
-      List<string>  TempList = ExecuteCommandSync(sGetInfoCommand);
+      ExecuteCommandSync(sGetInfoCommand);
 
     }
 
     private void ClearForm()
     {
-      progressBar1.Value = 0;      
+      progressBar1.Value = 0;
       progressBar2.Value = 0;
 
       richTextBox1.Text = "";
@@ -625,10 +622,248 @@ namespace ChrisTools
 
     }
 
+    private void Proc_DoWorkGetSrt(object sender, DoWorkEventArgs e)
+    {
+      ReportInfo ri = new ReportInfo();
+      BackgroundWorker bw = sender as BackgroundWorker;
+      string sPath = e.Argument as string;
+
+      FileInfo[] fiList = new DirectoryInfo(sPath).GetFiles("*.mkv", SearchOption.AllDirectories);
+
+      int idx = 0;
+      foreach (FileInfo item in fiList)
+      {
+        idx++;
+        ri.Total = fiList.Length;
+        ri.Idx = idx;
+        ri.Msg = item.Name;
+        bw.ReportProgress(1, ri);
+
+        ProcMkvExtractSubt(item);
+      }
+      
+      ri.Msg = "";
+      bw.ReportProgress(1, ri);
+
+    }
+
+    private void Proc_DoWorkMergeMkvSrt(object sender, DoWorkEventArgs e)
+    {
+      ReportInfo ri = new ReportInfo();
+      BackgroundWorker bw = sender as BackgroundWorker;
+
+      dynamic p = e.Argument as dynamic;
+      string sPath = p.path;
+      Boolean bchksrt = p.chksrt;
+      Boolean bchkass = p.chkass;
+      Boolean bchkmkv = p.chkmkv;
+      Boolean bchkmp4 = p.chkmp4;
+
+      DirectoryInfo di = new DirectoryInfo(sPath);
+
+      string sVideoType = "";
+      if (bchkmp4 == true) sVideoType = "mp4";
+      if (bchkmkv == true) sVideoType = "mkv";
+
+      //取得所有影像資料
+      FileInfo[] VideoList = di.GetFiles("*." + sVideoType, SearchOption.AllDirectories);
+
+      int idx = 0;      
+      foreach (FileInfo VideoItem in VideoList)
+      {
+        idx++;
+        ri.Total = VideoList.Length;
+        ri.Idx = idx;
+        ri.Msg = "";
+
+        string sSubTitleType = "";
+        if (bchkass == true)
+        {
+          sSubTitleType = "ass";
+          //搜尋符合的SubTilte
+          DirectoryInfo diTemp = VideoItem.Directory;
+          FileInfo[] fiSubTitleList = diTemp.GetFiles(
+            string.Format("{0}*.{1}", VideoItem.Name.Replace(VideoItem.Extension, ""), sSubTitleType)
+            , SearchOption.TopDirectoryOnly);
+
+          if (fiSubTitleList.Length > 0)
+          {
+            ri.Msg = VideoItem.Name;
+            bw.ReportProgress(1, ri);
+            //執行合併檔案
+            ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
+          }
+
+        }
+
+        if (bchksrt == true)
+        {
+          sSubTitleType = "srt";
+          //搜尋符合的SubTilte
+          DirectoryInfo diTemp = VideoItem.Directory;
+          FileInfo[] fiSubTitleList = diTemp.GetFiles(
+            string.Format("{0}*.{1}", VideoItem.Name.Replace(VideoItem.Extension, ""), sSubTitleType)
+            , SearchOption.TopDirectoryOnly);
+
+          if (fiSubTitleList.Length > 0)
+          {
+            ri.Msg = VideoItem.Name;
+            bw.ReportProgress(1, ri);
+            //執行合併檔案
+            ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
+          }
+
+        }
+      }
+
+      
+
+      ri.Msg = "";
+      bw.ReportProgress(1, ri);
+
+    }
+
+    private void Proc_DoWorkUnRAR(object sender, DoWorkEventArgs e)
+    {
+      BackgroundWorker bw = sender as BackgroundWorker;
+      string sPath = e.Argument as string;
+      ReportInfo ri = new ReportInfo();
+
+      DirectoryInfo di = new DirectoryInfo(sPath);
+      clsWinrar rar = new clsWinrar();
+
+
+      //取得所有資料夾
+      List<string> AllDiList = Directory.GetDirectories(di.FullName, "*.*", SearchOption.AllDirectories).ToList<string>();
+
+
+      int idx = 0;
+      foreach (string SubDiString in AllDiList)
+      {
+        idx++;
+        ri.Total = AllDiList.Count;
+        ri.Idx = idx;
+        ri.Msg = "";
+
+        DirectoryInfo SubDi = new DirectoryInfo(SubDiString);
+
+        string smark = "!@#$";
+        foreach (FileInfo SubFi in SubDi.GetFiles("*.rar"))
+        {
+          //判斷是否有切割擋
+          if (SubFi.Name.Contains(".part"))
+          {
+            if (SubFi.Name.Contains(smark)) continue;
+
+            ri.Msg = SubFi.Name;
+            bw.ReportProgress(1, ri);
+            //解壓縮
+            rar.unCompressRAR(SubFi, SubFi.Directory, "pass@word1");
+
+            //紀錄擋名
+            smark = SubFi.Name.Substring(0, SubFi.Name.IndexOf(".part"));
+
+          }
+          else
+          {
+            ri.Msg = SubFi.Name;
+            bw.ReportProgress(1, ri);
+
+            rar.unCompressRAR(SubFi, SubFi.Directory, "pass@word1");
+          }
+
+        }
+
+
+      }
+
+      ri.Msg = "";
+      bw.ReportProgress(1, ri);
+
+    }
+
+    private void Proc_ProgressChanged(object sender, ProgressChangedEventArgs e)
+    {
+
+      ReportInfo ri = e.UserState as ReportInfo;
+      progressBar2.Maximum = ri.Total;
+      progressBar2.Value = ri.Idx;
+
+      lbltotal.Text = string.Format("{0} / {1}", ri.Idx, ri.Total);
+
+      if (ri.Msg != "")
+      {
+        ShowRichTextStatus1(ri.Msg);
+      }
+
+    }
+    private void Proc_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    {
+      ShowRichTextStatus1(string.Format("[完成]{0}", ""));
+    }
+
   }
 
+  public class ReportInfo
+  {
+    int _Total = 0;
+    int _Idx = 0;
+    string _Msg = string.Empty;
 
-  public class Tool005Helper {
+    //public int Total { get; set; }
+    //public int Idx { get; set; }
+    //public string Msg { get; set; }
+
+    public int Total
+    {
+      get
+      {
+        return _Total;
+      }
+
+      set
+      {
+        _Total = value;
+      }
+    }
+
+    public int Idx
+    {
+      get
+      {
+        return _Idx;
+      }
+
+      set
+      {
+        _Idx = value;
+      }
+    }
+
+    public string Msg
+    {
+      get
+      {
+        return _Msg;
+      }
+
+      set
+      {
+        _Msg = value;
+      }
+    }
+
+
+    public void Clear()
+    {
+      _Total = 0;
+      _Idx = 0;
+      _Msg = string.Empty;
+    }
+  }
+
+  public class Tool005Helper
+  {
 
 
     public string checkMkvToolExe(string sMkvtoolPath)
