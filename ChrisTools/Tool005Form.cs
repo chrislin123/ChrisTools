@@ -175,7 +175,7 @@ namespace ChrisTools
           ResultList.Add(line);
 
 
-          ShowRichTextStatus(line);
+          //ShowRichTextStatus(line);
 
         }
 
@@ -222,6 +222,13 @@ namespace ChrisTools
             Track ID 5: subtitles (SubStationAlpha)
             Track ID 6: subtitles (HDMV PGS)
           */
+
+          //1070716 不擷取SUP
+          if (item.Contains("(HDMV PGS)") == true)
+          {
+            continue;
+          }
+
 
           //取得軌道
           string[] TrackSplit = item.Split(':');
