@@ -136,10 +136,14 @@ namespace ChrisTools
     /// <span class="code-SummaryComment"><returns>string, as output of the command.</returns></span>
     public List<string> ExecuteCommandSync(object command)
     {
-      List<string> ResultList = new List<string>();
-      //string sResult = "";
+      return ExecuteCommandSync(command, null);
+    }
 
-      //Console.WriteLine(command.ToString());
+    public List<string> ExecuteCommandSync(object command,BackgroundWorker bw)
+    {
+      List<string> ResultList = new List<string>();
+      ReportInfo ri = new ReportInfo();
+      
       try
       {
         // create the ProcessStartInfo using "cmd" as the program to be run,
@@ -165,28 +169,35 @@ namespace ChrisTools
         proc.StartInfo.StandardOutputEncoding = Encoding.UTF8;
         proc.StartInfo = procStartInfo;
         proc.Start();
-
-
+        
         while (!proc.StandardOutput.EndOfStream)
         {
           string line = proc.StandardOutput.ReadLine();
-          // do something with line
 
+          // do something with line
           ResultList.Add(line);
 
+          //轉換進度
+          //Progress: 19 %
+          if (line.Contains("Progress:") == true)
+          {
+            line = line.Replace("Progress:", "").Replace("%", "").Trim();
 
-          //ShowRichTextStatus(line);
-
+            if (bw != null)
+            {
+              ri.Type = "sub";
+              ri.Total = 100;
+              ri.Idx = Convert.ToInt16(line);
+              ri.Msg = "";
+              bw.ReportProgress(1, ri);
+            }
+          }
         }
-
 
         // Get the output into a string
         //string result = proc.StandardOutput.ReadToEnd();
 
         proc.WaitForExit();
-
-        //ResultList = result.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList<string>();
-
 
         // Display the command output.
         //Console.WriteLine(result);
@@ -200,7 +211,7 @@ namespace ChrisTools
     }
 
 
-    private void ProcMkvExtractSubt(FileInfo pFileInfo)
+    private void ProcMkvExtractSubt(FileInfo pFileInfo,BackgroundWorker bw)
     {
       string sMkvToolPath = txtMkvToolPath.Text;
       string sMkvtoolnixPath = Path.Combine(sMkvToolPath, "mkvmerge.exe");
@@ -242,7 +253,7 @@ namespace ChrisTools
                                       , fi.FullName.Replace(fi.Extension, "")
                                       , TransExtension(sTrackType));
 
-          ExecuteCommandSync(sCommandExt);
+          ExecuteCommandSync(sCommandExt, bw);
         }
       }
 
@@ -472,7 +483,7 @@ namespace ChrisTools
       foreach (FileInfo item in fiList)
       {
         ShowStatus(string.Format("轉檔：{0}", item.FullName));
-        ProcMkvExtractSubt(item);
+        ProcMkvExtractSubt(item, null);
 
         idx++;
         progressBar2.Value = idx;
@@ -584,7 +595,7 @@ namespace ChrisTools
 
 
 
-    private void ProcMergeMkvSrt(FileInfo fiMKV, FileInfo fiSubTitle)
+    private void ProcMergeMkvSrt(FileInfo fiMKV, FileInfo fiSubTitle,BackgroundWorker bw)
     {
       //建立轉檔資料夾
       //string sMkvTrans = "MkvTrans";
@@ -614,7 +625,7 @@ namespace ChrisTools
 
       string sGetInfoCommand = string.Format(@"{0} -o ""{1}"" -S ""{2}"" ""{3}""", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName, fiSubTitle.FullName);
       //sGetInfoCommand = string.Format(@"{0} -o {1} {2} {3}", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName, fiSRT.FullName);
-      ExecuteCommandSync(sGetInfoCommand);
+      ExecuteCommandSync(sGetInfoCommand, bw);
 
     }
 
@@ -646,7 +657,7 @@ namespace ChrisTools
         ri.Msg = item.Name;
         bw.ReportProgress(1, ri);
 
-        ProcMkvExtractSubt(item);
+        ProcMkvExtractSubt(item, bw);
       }
       
       ri.Msg = "";
@@ -698,7 +709,7 @@ namespace ChrisTools
             ri.Msg = VideoItem.Name;
             bw.ReportProgress(1, ri);
             //執行合併檔案
-            ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
+            ProcMergeMkvSrt(VideoItem, fiSubTitleList[0],bw);
           }
 
         }
@@ -717,7 +728,7 @@ namespace ChrisTools
             ri.Msg = VideoItem.Name;
             bw.ReportProgress(1, ri);
             //執行合併檔案
-            ProcMergeMkvSrt(VideoItem, fiSubTitleList[0]);
+            ProcMergeMkvSrt(VideoItem, fiSubTitleList[0],bw);
           }
 
         }
@@ -792,16 +803,26 @@ namespace ChrisTools
     private void Proc_ProgressChanged(object sender, ProgressChangedEventArgs e)
     {
 
-      ReportInfo ri = e.UserState as ReportInfo;
-      progressBar2.Maximum = ri.Total;
-      progressBar2.Value = ri.Idx;
+      ReportInfo ri = e.UserState as ReportInfo;    
 
-      lbltotal.Text = string.Format("{0} / {1}", ri.Idx, ri.Total);
-
-      if (ri.Msg != "")
+      if (ri.Type == "sub")
       {
-        ShowRichTextStatus1(ri.Msg);
+        progressBar1.Maximum = ri.Total;
+        progressBar1.Value = ri.Idx;
       }
+      else
+      {
+        progressBar2.Maximum = ri.Total;
+        progressBar2.Value = ri.Idx;
+
+        lbltotal.Text = string.Format("{0} / {1}", ri.Idx, ri.Total);
+
+        if (ri.Msg != "")
+        {
+          ShowRichTextStatus1(ri.Msg);
+        }
+      }
+      
 
     }
     private void Proc_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -816,10 +837,24 @@ namespace ChrisTools
     int _Total = 0;
     int _Idx = 0;
     string _Msg = string.Empty;
+    string _Type = string.Empty;
 
     //public int Total { get; set; }
     //public int Idx { get; set; }
     //public string Msg { get; set; }
+
+    public string Type
+    {
+      get
+      {
+        return _Type;
+      }
+
+      set
+      {
+        _Type = value;
+      }
+    }
 
     public int Total
     {
