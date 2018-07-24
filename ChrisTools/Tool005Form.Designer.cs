@@ -52,6 +52,7 @@
       this.radASS = new System.Windows.Forms.CheckBox();
       this.radSRT = new System.Windows.Forms.CheckBox();
       this.progressBar2 = new System.Windows.Forms.ProgressBar();
+      this.btnSplit = new System.Windows.Forms.Button();
       this.panel1.SuspendLayout();
       this.panel2.SuspendLayout();
       this.SuspendLayout();
@@ -201,10 +202,10 @@
       // 
       // btnFileNameTune
       // 
-      this.btnFileNameTune.Location = new System.Drawing.Point(317, 128);
+      this.btnFileNameTune.Location = new System.Drawing.Point(286, 128);
       this.btnFileNameTune.Margin = new System.Windows.Forms.Padding(6);
       this.btnFileNameTune.Name = "btnFileNameTune";
-      this.btnFileNameTune.Size = new System.Drawing.Size(138, 46);
+      this.btnFileNameTune.Size = new System.Drawing.Size(79, 46);
       this.btnFileNameTune.TabIndex = 30;
       this.btnFileNameTune.Text = "調整名稱(空白及括弧)";
       this.btnFileNameTune.UseVisualStyleBackColor = true;
@@ -212,10 +213,10 @@
       // 
       // btnRemoveMKV
       // 
-      this.btnRemoveMKV.Location = new System.Drawing.Point(467, 128);
+      this.btnRemoveMKV.Location = new System.Drawing.Point(405, 128);
       this.btnRemoveMKV.Margin = new System.Windows.Forms.Padding(6);
       this.btnRemoveMKV.Name = "btnRemoveMKV";
-      this.btnRemoveMKV.Size = new System.Drawing.Size(138, 46);
+      this.btnRemoveMKV.Size = new System.Drawing.Size(79, 46);
       this.btnRemoveMKV.TabIndex = 31;
       this.btnRemoveMKV.Text = "移除MKV";
       this.btnRemoveMKV.UseVisualStyleBackColor = true;
@@ -226,7 +227,7 @@
       this.btnMergeMKV.Location = new System.Drawing.Point(167, 128);
       this.btnMergeMKV.Margin = new System.Windows.Forms.Padding(6);
       this.btnMergeMKV.Name = "btnMergeMKV";
-      this.btnMergeMKV.Size = new System.Drawing.Size(138, 46);
+      this.btnMergeMKV.Size = new System.Drawing.Size(79, 46);
       this.btnMergeMKV.TabIndex = 32;
       this.btnMergeMKV.Text = "Mkv合併";
       this.btnMergeMKV.UseVisualStyleBackColor = true;
@@ -300,11 +301,23 @@
       this.progressBar2.Size = new System.Drawing.Size(410, 16);
       this.progressBar2.TabIndex = 39;
       // 
+      // btnSplit
+      // 
+      this.btnSplit.Location = new System.Drawing.Point(524, 128);
+      this.btnSplit.Margin = new System.Windows.Forms.Padding(6);
+      this.btnSplit.Name = "btnSplit";
+      this.btnSplit.Size = new System.Drawing.Size(79, 46);
+      this.btnSplit.TabIndex = 40;
+      this.btnSplit.Text = "分類(-1)";
+      this.btnSplit.UseVisualStyleBackColor = true;
+      this.btnSplit.Click += new System.EventHandler(this.btnSplit_Click);
+      // 
       // Tool005Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(630, 362);
+      this.Controls.Add(this.btnSplit);
       this.Controls.Add(this.progressBar2);
       this.Controls.Add(this.panel2);
       this.Controls.Add(this.panel1);
@@ -364,5 +377,6 @@
     private System.Windows.Forms.ProgressBar progressBar2;
     private System.Windows.Forms.CheckBox radSRT;
     private System.Windows.Forms.CheckBox radASS;
+    private System.Windows.Forms.Button btnSplit;
   }
 }

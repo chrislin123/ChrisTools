@@ -830,6 +830,47 @@ namespace ChrisTools
       ShowRichTextStatus1(string.Format("[完成]{0}", ""));
     }
 
+    private void btnSplit_Click(object sender, EventArgs e)
+    {
+      DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
+      
+      
+      DirectoryInfo[] DiList = di.GetDirectories("*", SearchOption.AllDirectories);
+
+      int idx = 0;
+      lbltotal.Text = string.Format("{0} / {1}", idx, DiList.Length);
+      progressBar2.Maximum = DiList.Length;
+      foreach (DirectoryInfo item in DiList)
+      {
+        string sPathOld = Path.Combine(item.FullName, "Old");
+        string sPathNew = Path.Combine(item.FullName, "New");
+        Directory.CreateDirectory(sPathOld);
+        Directory.CreateDirectory(sPathNew);
+
+
+        List<FileInfo> FileList = di.GetFiles("*.*", SearchOption.AllDirectories)
+          .Where(s => s.Extension.ToLower() == ".mkv" || s.Extension.ToLower() == ".mp4").ToList<FileInfo>();
+
+        foreach (FileInfo fi in FileList)
+        {
+          if (fi.Name.Contains("-1") == true)
+          {
+            fi.MoveTo(Path.Combine(sPathNew, fi.Name));
+          }
+          else
+          {
+            fi.MoveTo(Path.Combine(sPathOld, fi.Name));
+          }
+        }
+        
+
+        idx++;
+        progressBar2.Value = idx;
+        lbltotal.Text = string.Format("{0} / {1}", idx, FileList.Count);
+      }
+
+      ShowStatus("分類檔案 完成");
+    }
   }
 
   public class ReportInfo
