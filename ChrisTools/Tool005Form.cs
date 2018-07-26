@@ -533,7 +533,7 @@ namespace ChrisTools
       foreach (FileInfo item in tttt)
       {
         string sNewFileName = item.Name.Replace(" ", "").Replace("(1)", "").Replace("(2)", "")
-          .Replace("(ass)", "").Replace("(srt)", "");
+          .Replace("(ass)", "").Replace("(srt)", "").Replace("-1", "");
 
         string sFullRename = Path.Combine(item.DirectoryName, sNewFileName);
         if (File.Exists(sFullRename) == false)
