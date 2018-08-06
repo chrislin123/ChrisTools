@@ -800,6 +800,74 @@ namespace ChrisTools
 
     }
 
+    private void Proc_DoWorkRAR(object sender, DoWorkEventArgs e)
+    {
+      BackgroundWorker bw = sender as BackgroundWorker;
+      string sPath = e.Argument as string;
+      ReportInfo ri = new ReportInfo();
+
+      DirectoryInfo di = new DirectoryInfo(sPath);
+      clsWinrar rar = new clsWinrar();
+
+
+      //取得所有資料夾
+      //List<string> AllDiList = Directory.GetDirectories(di.FullName, "*.*", SearchOption.AllDirectories).ToList<string>();
+      //取得所有MKV檔案
+      List<string> AllFiList = Directory.GetFiles(di.FullName, "*.mkv", SearchOption.AllDirectories).ToList<string>();
+
+      int idx = 0;
+      foreach (string SubFiString in AllFiList)
+      {
+        idx++;
+        ri.Total = AllFiList.Count;
+        ri.Idx = idx;
+        ri.Msg = "";
+
+        FileInfo SubFi = new FileInfo(SubFiString);
+
+        ri.Msg = SubFi.Name;
+        bw.ReportProgress(1, ri);
+        //解壓縮
+        //rar.unCompressRAR(SubFi, SubFi.Directory, "pass@word1");
+
+        rar.CompressRAR(SubFi.FullName.Replace(SubFi.Extension, ""), SubFi.FullName, "5g");
+
+
+        //string smark = "!@#$";
+        //foreach (FileInfo SubFi in SubDi.GetFiles("*.rar"))
+        //{
+        //  //判斷是否有切割擋
+        //  if (SubFi.Name.Contains(".part"))
+        //  {
+        //    if (SubFi.Name.Contains(smark)) continue;
+
+        //    ri.Msg = SubFi.Name;
+        //    bw.ReportProgress(1, ri);
+        //    //解壓縮
+        //    rar.unCompressRAR(SubFi, SubFi.Directory, "pass@word1");
+
+        //    //紀錄擋名
+        //    smark = SubFi.Name.Substring(0, SubFi.Name.IndexOf(".part"));
+
+        //  }
+        //  else
+        //  {
+        //    ri.Msg = SubFi.Name;
+        //    bw.ReportProgress(1, ri);
+
+        //    rar.unCompressRAR(SubFi, SubFi.Directory, "pass@word1");
+        //  }
+
+        //}
+
+
+      }
+
+      ri.Msg = "";
+      bw.ReportProgress(1, ri);
+
+    }
+
     private void Proc_ProgressChanged(object sender, ProgressChangedEventArgs e)
     {
 
@@ -870,6 +938,33 @@ namespace ChrisTools
       }
 
       ShowStatus("分類檔案 完成");
+    }
+
+    private void btnFinish265_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void btnAddRAR_Click(object sender, EventArgs e)
+    {
+      ClearForm();
+
+      //ShowStatus("啟動 解壓");
+
+      BackgroundWorker bw = new BackgroundWorker();
+      //回報進程
+      bw.WorkerReportsProgress = true;
+      //加入DoWork
+      bw.DoWork += new DoWorkEventHandler(Proc_DoWorkRAR);
+      //加入ProgressChanged
+      bw.ProgressChanged += new ProgressChangedEventHandler(Proc_ProgressChanged);
+      //加入RunWorkerCompleted
+      bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerCompleted);
+      //傳遞參數
+      //object i = new object();
+      //執行程序
+      bw.RunWorkerAsync(txtTransPath.Text);
+
     }
   }
 

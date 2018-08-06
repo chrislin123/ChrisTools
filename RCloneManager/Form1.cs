@@ -74,11 +74,7 @@ namespace RCloneManager
 
 
         System.Diagnostics.Process ppp = new System.Diagnostics.Process();
-        ppp
-
-
-
-       
+           
         //string line1 = proc.StandardOutput.ReadLine();
 
 

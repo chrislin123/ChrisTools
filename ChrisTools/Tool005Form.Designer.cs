@@ -53,6 +53,8 @@
       this.radSRT = new System.Windows.Forms.CheckBox();
       this.progressBar2 = new System.Windows.Forms.ProgressBar();
       this.btnSplit = new System.Windows.Forms.Button();
+      this.btnFinish265 = new System.Windows.Forms.Button();
+      this.btnBatZip = new System.Windows.Forms.Button();
       this.panel1.SuspendLayout();
       this.panel2.SuspendLayout();
       this.SuspendLayout();
@@ -145,7 +147,7 @@
       // lblStatus
       // 
       this.lblStatus.AutoSize = true;
-      this.lblStatus.Location = new System.Drawing.Point(15, 223);
+      this.lblStatus.Location = new System.Drawing.Point(15, 212);
       this.lblStatus.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.lblStatus.Name = "lblStatus";
       this.lblStatus.Size = new System.Drawing.Size(29, 12);
@@ -154,7 +156,7 @@
       // 
       // richTextBox1
       // 
-      this.richTextBox1.Location = new System.Drawing.Point(9, 252);
+      this.richTextBox1.Location = new System.Drawing.Point(12, 235);
       this.richTextBox1.Name = "richTextBox1";
       this.richTextBox1.Size = new System.Drawing.Size(606, 101);
       this.richTextBox1.TabIndex = 25;
@@ -163,7 +165,7 @@
       // 
       // progressBar1
       // 
-      this.progressBar1.Location = new System.Drawing.Point(205, 221);
+      this.progressBar1.Location = new System.Drawing.Point(205, 210);
       this.progressBar1.Name = "progressBar1";
       this.progressBar1.Size = new System.Drawing.Size(410, 16);
       this.progressBar1.TabIndex = 26;
@@ -171,7 +173,7 @@
       // lbltotal
       // 
       this.lbltotal.AutoSize = true;
-      this.lbltotal.Location = new System.Drawing.Point(15, 201);
+      this.lbltotal.Location = new System.Drawing.Point(15, 190);
       this.lbltotal.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
       this.lbltotal.Name = "lbltotal";
       this.lbltotal.Size = new System.Drawing.Size(29, 12);
@@ -202,7 +204,7 @@
       // 
       // btnFileNameTune
       // 
-      this.btnFileNameTune.Location = new System.Drawing.Point(286, 128);
+      this.btnFileNameTune.Location = new System.Drawing.Point(232, 128);
       this.btnFileNameTune.Margin = new System.Windows.Forms.Padding(6);
       this.btnFileNameTune.Name = "btnFileNameTune";
       this.btnFileNameTune.Size = new System.Drawing.Size(79, 46);
@@ -213,7 +215,7 @@
       // 
       // btnRemoveMKV
       // 
-      this.btnRemoveMKV.Location = new System.Drawing.Point(405, 128);
+      this.btnRemoveMKV.Location = new System.Drawing.Point(323, 128);
       this.btnRemoveMKV.Margin = new System.Windows.Forms.Padding(6);
       this.btnRemoveMKV.Name = "btnRemoveMKV";
       this.btnRemoveMKV.Size = new System.Drawing.Size(79, 46);
@@ -224,7 +226,7 @@
       // 
       // btnMergeMKV
       // 
-      this.btnMergeMKV.Location = new System.Drawing.Point(167, 128);
+      this.btnMergeMKV.Location = new System.Drawing.Point(141, 128);
       this.btnMergeMKV.Margin = new System.Windows.Forms.Padding(6);
       this.btnMergeMKV.Name = "btnMergeMKV";
       this.btnMergeMKV.Size = new System.Drawing.Size(79, 46);
@@ -296,14 +298,14 @@
       // 
       // progressBar2
       // 
-      this.progressBar2.Location = new System.Drawing.Point(205, 199);
+      this.progressBar2.Location = new System.Drawing.Point(205, 188);
       this.progressBar2.Name = "progressBar2";
       this.progressBar2.Size = new System.Drawing.Size(410, 16);
       this.progressBar2.TabIndex = 39;
       // 
       // btnSplit
       // 
-      this.btnSplit.Location = new System.Drawing.Point(524, 128);
+      this.btnSplit.Location = new System.Drawing.Point(414, 128);
       this.btnSplit.Margin = new System.Windows.Forms.Padding(6);
       this.btnSplit.Name = "btnSplit";
       this.btnSplit.Size = new System.Drawing.Size(79, 46);
@@ -312,11 +314,35 @@
       this.btnSplit.UseVisualStyleBackColor = true;
       this.btnSplit.Click += new System.EventHandler(this.btnSplit_Click);
       // 
+      // btnFinish265
+      // 
+      this.btnFinish265.Location = new System.Drawing.Point(596, 128);
+      this.btnFinish265.Margin = new System.Windows.Forms.Padding(6);
+      this.btnFinish265.Name = "btnFinish265";
+      this.btnFinish265.Size = new System.Drawing.Size(79, 46);
+      this.btnFinish265.TabIndex = 41;
+      this.btnFinish265.Text = "265轉檔完成處理";
+      this.btnFinish265.UseVisualStyleBackColor = true;
+      this.btnFinish265.Click += new System.EventHandler(this.btnFinish265_Click);
+      // 
+      // btnBatZip
+      // 
+      this.btnBatZip.Location = new System.Drawing.Point(505, 128);
+      this.btnBatZip.Margin = new System.Windows.Forms.Padding(6);
+      this.btnBatZip.Name = "btnBatZip";
+      this.btnBatZip.Size = new System.Drawing.Size(79, 46);
+      this.btnBatZip.TabIndex = 42;
+      this.btnBatZip.Text = "壓縮檔案(5G)";
+      this.btnBatZip.UseVisualStyleBackColor = true;
+      this.btnBatZip.Click += new System.EventHandler(this.btnAddRAR_Click);
+      // 
       // Tool005Form
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(630, 362);
+      this.ClientSize = new System.Drawing.Size(759, 347);
+      this.Controls.Add(this.btnBatZip);
+      this.Controls.Add(this.btnFinish265);
       this.Controls.Add(this.btnSplit);
       this.Controls.Add(this.progressBar2);
       this.Controls.Add(this.panel2);
@@ -378,5 +404,7 @@
     private System.Windows.Forms.CheckBox radSRT;
     private System.Windows.Forms.CheckBox radASS;
     private System.Windows.Forms.Button btnSplit;
+    private System.Windows.Forms.Button btnFinish265;
+    private System.Windows.Forms.Button btnBatZip;
   }
 }

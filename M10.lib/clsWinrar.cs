@@ -106,6 +106,73 @@ namespace M10.lib
         throw ex;
       }
     }
+
+
+    
+    /// <summary>
+    /// 單一檔案打包成Rar，依照設定檔
+    /// </summary>
+    /// <param name="RARpatch"></param>
+    /// <param name="SourcePatch">檔案路徑</param>
+    /// <param name="SetName">設定檔名稱</param>
+    public void CompressRAR(string RARName, string SourcePatch,string SetName)
+    {
+      string the_rar;
+      RegistryKey the_Reg;
+      object the_Obj;
+      string the_Info = string.Empty;
+      ProcessStartInfo the_StartInfo;
+      Process the_Process;
+      try
+      {
+        the_Reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe");
+        the_Obj = the_Reg.GetValue("");
+        the_rar = the_Obj.ToString();
+        the_Reg.Close();
+        //the_rar = the_rar.Substring(1, the_rar.Length - 7);
+        //Directory.CreateDirectory(patch);
+        //命令参数
+        //the_Info = " a    " + rarName + " " + @"C:Test?70821.txt"; //文件压缩
+
+
+        //if (_size == MyEnum.g3)
+        //{
+        //  //批次壓縮成3G
+        //  the_Info = " a -r -ep1 -v3g -IBCK " + RARName + @".rar """ + SourcePatch + @""" ";
+        //}
+        //else if (_size == MyEnum.m900)
+        //{
+        //  //批次壓縮成990mb
+        //  the_Info = " a -r -ep1 -v990m -IBCK  " + RARName + @".rar """ + SourcePatch + @""" ";
+        //}
+
+        //壓縮5g設定檔
+        the_Info = string.Format(@" a ""-cp5G""  ""{0}.rar"" ""{1}"" ", RARName, SourcePatch);
+        //the_Info = string.Format(@" a -cp5g  ""{0}.rar"" ""{1}"" ", RARName, SourcePatch);
+
+
+        the_StartInfo = new ProcessStartInfo();
+        the_StartInfo.FileName = the_rar;
+        the_StartInfo.Arguments = the_Info;
+        //the_StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+        //打包文件存放目录
+        //the_StartInfo.WorkingDirectory = rarPatch;
+        the_Process = new Process();
+        the_Process.StartInfo = the_StartInfo;
+        the_Process.Start();
+        the_Process.WaitForExit();
+        the_Process.Close();
+
+      }
+      catch (Exception ex)
+      {
+        throw ex;
+      }
+    }
+
+
+
+
     /// <summary>
     /// 解壓
     /// </summary>
