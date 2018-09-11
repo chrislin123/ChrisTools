@@ -1012,61 +1012,34 @@ namespace ChrisTools
 
             //取得所有資料夾
             DirectoryInfo[] DiList = di.GetDirectories("*", SearchOption.AllDirectories);
-
-
-
             for (int i = DiList.Length -1; i >= 0; i--)
             {
                 DirectoryInfo disub = DiList[i];
 
-
-                
-                Directory.Move(disub.FullName, disub.FullName + "test");
-
-
-
-
-            }
-
-
-            return;
-
-            int idx = 0;
-            lbltotal.Text = string.Format("{0} / {1}", idx, DiList.Length);
-            progressBar2.Maximum = DiList.Length;
-            foreach (DirectoryInfo item in DiList)
-            {
-                string sPathOld = Path.Combine(item.FullName, "Old");
-                string sPathNew = Path.Combine(item.FullName, "New");
-                Directory.CreateDirectory(sPathOld);
-                Directory.CreateDirectory(sPathNew);
-
-
-                List<FileInfo> FileList = di.GetFiles("*.*", SearchOption.AllDirectories)
-                  .Where(s => s.Extension.ToLower() == ".mkv" || s.Extension.ToLower() == ".mp4").ToList<FileInfo>();
-
-                foreach (FileInfo fi in FileList)
+                string sNewFullName = Path.Combine(disub.Parent.FullName, disub.Name.Replace("：", "-"));
+                if (Directory.Exists(sNewFullName) == false)
                 {
-                    if (fi.Name.Contains("-1") == true)
-                    {
-                        fi.MoveTo(Path.Combine(sPathNew, fi.Name));
-                    }
-                    else
-                    {
-                        fi.MoveTo(Path.Combine(sPathOld, fi.Name));
-                    }
+                    //資料夾名稱，名稱"："取代"-"
+                    Directory.Move(disub.FullName, sNewFullName);
                 }
-
-
-                idx++;
-                progressBar2.Value = idx;
-                lbltotal.Text = string.Format("{0} / {1}", idx, FileList.Count);
             }
 
-            ShowStatus("分類檔案 完成");
+            //取得所有檔案
+            FileInfo[] fiList = di.GetFiles("*", SearchOption.AllDirectories);            
+            for (int i = fiList.Length - 1; i >= 0; i--)
+            {
+                FileInfo fisub = fiList[i];                
+                
+                string sNewFullName = Path.Combine(fisub.DirectoryName, fisub.Name.Replace("：", "-"));
+                if (File.Exists(sNewFullName) == false)
+                {
+                    //檔案名稱，名稱"："取代"-"
+                    File.Move(fisub.FullName, sNewFullName);
+                }
+            }
 
 
-
+            ShowStatus("檔案及資料夾名稱，修正完成");
         }
     }
 
