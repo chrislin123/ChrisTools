@@ -56,7 +56,6 @@
             this.btnFinish265 = new System.Windows.Forms.Button();
             this.btnBatZip = new System.Windows.Forms.Button();
             this.btnSaveAsSrt = new System.Windows.Forms.Button();
-            this.btnReguName = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -64,7 +63,7 @@
             // btnStart
             // 
             this.btnStart.Location = new System.Drawing.Point(15, 70);
-            this.btnStart.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(6);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(138, 46);
             this.btnStart.TabIndex = 10;
@@ -85,7 +84,7 @@
             // txtMkvToolPath
             // 
             this.txtMkvToolPath.Location = new System.Drawing.Point(112, 4);
-            this.txtMkvToolPath.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txtMkvToolPath.Margin = new System.Windows.Forms.Padding(6);
             this.txtMkvToolPath.Name = "txtMkvToolPath";
             this.txtMkvToolPath.Size = new System.Drawing.Size(407, 22);
             this.txtMkvToolPath.TabIndex = 8;
@@ -96,7 +95,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(531, 4);
-            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(84, 22);
             this.button1.TabIndex = 7;
@@ -107,7 +106,7 @@
             // txtTransPath
             // 
             this.txtTransPath.Location = new System.Drawing.Point(112, 36);
-            this.txtTransPath.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txtTransPath.Margin = new System.Windows.Forms.Padding(6);
             this.txtTransPath.Name = "txtTransPath";
             this.txtTransPath.Size = new System.Drawing.Size(407, 22);
             this.txtTransPath.TabIndex = 14;
@@ -117,7 +116,7 @@
             // btnRemoveFile
             // 
             this.btnRemoveFile.Location = new System.Drawing.Point(409, 70);
-            this.btnRemoveFile.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnRemoveFile.Margin = new System.Windows.Forms.Padding(6);
             this.btnRemoveFile.Name = "btnRemoveFile";
             this.btnRemoveFile.Size = new System.Drawing.Size(99, 46);
             this.btnRemoveFile.TabIndex = 20;
@@ -138,7 +137,7 @@
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(531, 34);
-            this.button4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button4.Margin = new System.Windows.Forms.Padding(6);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(84, 22);
             this.button4.TabIndex = 23;
@@ -185,7 +184,7 @@
             // btnBatUnZip
             // 
             this.btnBatUnZip.Location = new System.Drawing.Point(303, 70);
-            this.btnBatUnZip.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnBatUnZip.Margin = new System.Windows.Forms.Padding(6);
             this.btnBatUnZip.Name = "btnBatUnZip";
             this.btnBatUnZip.Size = new System.Drawing.Size(76, 46);
             this.btnBatUnZip.TabIndex = 28;
@@ -196,7 +195,7 @@
             // btnGetSrt
             // 
             this.btnGetSrt.Location = new System.Drawing.Point(183, 70);
-            this.btnGetSrt.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnGetSrt.Margin = new System.Windows.Forms.Padding(6);
             this.btnGetSrt.Name = "btnGetSrt";
             this.btnGetSrt.Size = new System.Drawing.Size(90, 46);
             this.btnGetSrt.TabIndex = 29;
@@ -207,18 +206,18 @@
             // btnFileNameTune
             // 
             this.btnFileNameTune.Location = new System.Drawing.Point(232, 128);
-            this.btnFileNameTune.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnFileNameTune.Margin = new System.Windows.Forms.Padding(6);
             this.btnFileNameTune.Name = "btnFileNameTune";
             this.btnFileNameTune.Size = new System.Drawing.Size(79, 46);
             this.btnFileNameTune.TabIndex = 30;
-            this.btnFileNameTune.Text = "調整名稱(空白及括弧)";
+            this.btnFileNameTune.Text = "調整資料夾及檔案名稱";
             this.btnFileNameTune.UseVisualStyleBackColor = true;
             this.btnFileNameTune.Click += new System.EventHandler(this.btnFileNameTune_Click);
             // 
             // btnRemoveMKV
             // 
             this.btnRemoveMKV.Location = new System.Drawing.Point(323, 128);
-            this.btnRemoveMKV.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnRemoveMKV.Margin = new System.Windows.Forms.Padding(6);
             this.btnRemoveMKV.Name = "btnRemoveMKV";
             this.btnRemoveMKV.Size = new System.Drawing.Size(79, 46);
             this.btnRemoveMKV.TabIndex = 31;
@@ -229,7 +228,7 @@
             // btnMergeMKV
             // 
             this.btnMergeMKV.Location = new System.Drawing.Point(141, 128);
-            this.btnMergeMKV.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnMergeMKV.Margin = new System.Windows.Forms.Padding(6);
             this.btnMergeMKV.Name = "btnMergeMKV";
             this.btnMergeMKV.Size = new System.Drawing.Size(79, 46);
             this.btnMergeMKV.TabIndex = 32;
@@ -308,7 +307,7 @@
             // btnSplit
             // 
             this.btnSplit.Location = new System.Drawing.Point(414, 128);
-            this.btnSplit.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnSplit.Margin = new System.Windows.Forms.Padding(6);
             this.btnSplit.Name = "btnSplit";
             this.btnSplit.Size = new System.Drawing.Size(79, 46);
             this.btnSplit.TabIndex = 40;
@@ -319,7 +318,7 @@
             // btnFinish265
             // 
             this.btnFinish265.Location = new System.Drawing.Point(596, 128);
-            this.btnFinish265.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnFinish265.Margin = new System.Windows.Forms.Padding(6);
             this.btnFinish265.Name = "btnFinish265";
             this.btnFinish265.Size = new System.Drawing.Size(79, 46);
             this.btnFinish265.TabIndex = 41;
@@ -330,7 +329,7 @@
             // btnBatZip
             // 
             this.btnBatZip.Location = new System.Drawing.Point(505, 128);
-            this.btnBatZip.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnBatZip.Margin = new System.Windows.Forms.Padding(6);
             this.btnBatZip.Name = "btnBatZip";
             this.btnBatZip.Size = new System.Drawing.Size(79, 46);
             this.btnBatZip.TabIndex = 42;
@@ -341,7 +340,7 @@
             // btnSaveAsSrt
             // 
             this.btnSaveAsSrt.Location = new System.Drawing.Point(538, 70);
-            this.btnSaveAsSrt.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnSaveAsSrt.Margin = new System.Windows.Forms.Padding(6);
             this.btnSaveAsSrt.Name = "btnSaveAsSrt";
             this.btnSaveAsSrt.Size = new System.Drawing.Size(79, 46);
             this.btnSaveAsSrt.TabIndex = 43;
@@ -349,23 +348,11 @@
             this.btnSaveAsSrt.UseVisualStyleBackColor = true;
             this.btnSaveAsSrt.Click += new System.EventHandler(this.btnSaveAsSrt_Click);
             // 
-            // btnReguName
-            // 
-            this.btnReguName.Location = new System.Drawing.Point(647, 70);
-            this.btnReguName.Margin = new System.Windows.Forms.Padding(6);
-            this.btnReguName.Name = "btnReguName";
-            this.btnReguName.Size = new System.Drawing.Size(91, 46);
-            this.btnReguName.TabIndex = 44;
-            this.btnReguName.Text = "檔名與資料夾正規化";
-            this.btnReguName.UseVisualStyleBackColor = true;
-            this.btnReguName.Click += new System.EventHandler(this.btnReguName_Click);
-            // 
             // Tool005Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 347);
-            this.Controls.Add(this.btnReguName);
             this.Controls.Add(this.btnSaveAsSrt);
             this.Controls.Add(this.btnBatZip);
             this.Controls.Add(this.btnFinish265);
@@ -433,6 +420,5 @@
     private System.Windows.Forms.Button btnFinish265;
     private System.Windows.Forms.Button btnBatZip;
         private System.Windows.Forms.Button btnSaveAsSrt;
-        private System.Windows.Forms.Button btnReguName;
     }
 }
