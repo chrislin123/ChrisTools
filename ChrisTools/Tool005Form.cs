@@ -533,7 +533,8 @@ namespace ChrisTools
             foreach (FileInfo item in tttt)
             {
                 string sNewFileName = item.Name.Replace(" ", "").Replace("(1)", "").Replace("(2)", "")
-                  .Replace("(ass)", "").Replace("(srt)", "").Replace("-1", "").Replace("(Encoded)", "");
+                  .Replace("(ass)", "").Replace("(srt)", "").Replace("-1", "").Replace("(Encoded)", "")
+                  .Replace("(DTS)", "");
 
                 //1070909 預防RClone同步會出現判斷異常的問題。
                 sNewFileName.Replace("：", "-");
