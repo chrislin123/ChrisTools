@@ -174,6 +174,14 @@ namespace ChrisTools
             tf.WindowState = FormWindowState.Maximized;
             tf.Show();
         }
+
+        private void fFMpeg音訊轉檔ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tool007Form tf = new Tool007Form();
+            tf.MdiParent = this;
+            tf.WindowState = FormWindowState.Maximized;
+            tf.Show();
+        }
     }
 
 

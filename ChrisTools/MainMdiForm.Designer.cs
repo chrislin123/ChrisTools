@@ -52,12 +52,13 @@
             this.MenuItemTool004 = new System.Windows.Forms.ToolStripMenuItem();
             this.媒體相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemTool005 = new System.Windows.Forms.ToolStripMenuItem();
+            this.轉換相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.白馬去除之後文字ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.轉換相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.白馬去除之後文字ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fFMpeg音訊轉檔ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -233,7 +234,8 @@
             // 媒體相關ToolStripMenuItem
             // 
             this.媒體相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemTool005});
+            this.MenuItemTool005,
+            this.fFMpeg音訊轉檔ToolStripMenuItem});
             this.媒體相關ToolStripMenuItem.Name = "媒體相關ToolStripMenuItem";
             this.媒體相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.媒體相關ToolStripMenuItem.Text = "媒體相關";
@@ -241,9 +243,24 @@
             // MenuItemTool005
             // 
             this.MenuItemTool005.Name = "MenuItemTool005";
-            this.MenuItemTool005.Size = new System.Drawing.Size(152, 22);
+            this.MenuItemTool005.Size = new System.Drawing.Size(169, 22);
             this.MenuItemTool005.Text = "Mkv提取";
             this.MenuItemTool005.Click += new System.EventHandler(this.MenuItemTool005_Click);
+            // 
+            // 轉換相關ToolStripMenuItem
+            // 
+            this.轉換相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.白馬去除之後文字ToolStripMenuItem});
+            this.轉換相關ToolStripMenuItem.Name = "轉換相關ToolStripMenuItem";
+            this.轉換相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.轉換相關ToolStripMenuItem.Text = "轉換相關";
+            // 
+            // 白馬去除之後文字ToolStripMenuItem
+            // 
+            this.白馬去除之後文字ToolStripMenuItem.Name = "白馬去除之後文字ToolStripMenuItem";
+            this.白馬去除之後文字ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.白馬去除之後文字ToolStripMenuItem.Text = "白馬去除|之後文字";
+            this.白馬去除之後文字ToolStripMenuItem.Click += new System.EventHandler(this.白馬去除之後文字ToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
@@ -268,20 +285,12 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(128, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
-            // 轉換相關ToolStripMenuItem
+            // fFMpeg音訊轉檔ToolStripMenuItem
             // 
-            this.轉換相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.白馬去除之後文字ToolStripMenuItem});
-            this.轉換相關ToolStripMenuItem.Name = "轉換相關ToolStripMenuItem";
-            this.轉換相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
-            this.轉換相關ToolStripMenuItem.Text = "轉換相關";
-            // 
-            // 白馬去除之後文字ToolStripMenuItem
-            // 
-            this.白馬去除之後文字ToolStripMenuItem.Name = "白馬去除之後文字ToolStripMenuItem";
-            this.白馬去除之後文字ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.白馬去除之後文字ToolStripMenuItem.Text = "白馬去除|之後文字";
-            this.白馬去除之後文字ToolStripMenuItem.Click += new System.EventHandler(this.白馬去除之後文字ToolStripMenuItem_Click);
+            this.fFMpeg音訊轉檔ToolStripMenuItem.Name = "fFMpeg音訊轉檔ToolStripMenuItem";
+            this.fFMpeg音訊轉檔ToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.fFMpeg音訊轉檔ToolStripMenuItem.Text = "FFMpeg音訊轉檔";
+            this.fFMpeg音訊轉檔ToolStripMenuItem.Click += new System.EventHandler(this.fFMpeg音訊轉檔ToolStripMenuItem_Click);
             // 
             // MainMdiForm
             // 
@@ -333,6 +342,7 @@
     private System.Windows.Forms.ToolStripMenuItem MenuItemTool005;
         private System.Windows.Forms.ToolStripMenuItem 轉換相關ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 白馬去除之後文字ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fFMpeg音訊轉檔ToolStripMenuItem;
     }
 }
 

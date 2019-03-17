@@ -8,82 +8,85 @@ using M10.lib.modelChrisTools;
 
 namespace ChrisTools
 {
-  public class Comm
-  {
-    string ssql;
-    DALDapper dbDapper = null;
-
-    public Comm(DALDapper pDALDapper) {
-
-      dbDapper = pDALDapper;
-    }
-
-
-
-    public string GetSetting(CTsConst.SettingList SettingItem)
+    public class Comm
     {
-      string sResult = "";
+        string ssql;
+        DALDapper dbDapper = null;
 
-      //取得預設值
-      ssql = "select * from basedata where type = @type";
-      var q = dbDapper.GetNewDynamicParameters();
-      q.Add("type", SettingItem.ToString());
-      BaseData bdMkvToolPath = dbDapper.QuerySingleOrDefault<BaseData>(ssql, q);
-      sResult = bdMkvToolPath == null ? "" : bdMkvToolPath.data1;
+        public Comm(DALDapper pDALDapper)
+        {
 
-      return sResult;
+            dbDapper = pDALDapper;
+        }
+
+
+
+        public string GetSetting(CTsConst.SettingList SettingItem)
+        {
+            string sResult = "";
+
+            //取得預設值
+            ssql = "select * from basedata where type = @type";
+            var q = dbDapper.GetNewDynamicParameters();
+            q.Add("type", SettingItem.ToString());
+            BaseData bdMkvToolPath = dbDapper.QuerySingleOrDefault<BaseData>(ssql, q);
+            sResult = bdMkvToolPath == null ? "" : bdMkvToolPath.data1;
+
+            return sResult;
+        }
+
+        public string SetSetting(CTsConst.SettingList SettingItem, string sData)
+        {
+            string sResult = "";
+
+            //取得預設值
+            ssql = "select * from basedata where type = @type";
+            var q = dbDapper.GetNewDynamicParameters();
+            q.Add("type", SettingItem.ToString());
+            BaseData bdMkvToolPath = dbDapper.QuerySingleOrDefault<BaseData>(ssql, q);
+            if (bdMkvToolPath == null)
+            {
+                bdMkvToolPath = new BaseData();
+                bdMkvToolPath.type = SettingItem.ToString();
+                bdMkvToolPath.data1 = sData;
+                dbDapper.Insert(bdMkvToolPath);
+            }
+            else
+            {
+                bdMkvToolPath.data1 = sData;
+                dbDapper.Update(bdMkvToolPath);
+            }
+
+            return sResult;
+        }
+
     }
 
-    public string SetSetting(CTsConst.SettingList SettingItem,string sData)
+    public static class CTsConst
     {
-      string sResult = "";
+        public static string StockAfterTseUrl = "http://www.tse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999";
+        public static string StockAfterOtcUrl = "http://www.tpex.org.tw/web/stock/aftertrading/daily_close_quotes/stk_quote_download.php?l=zh-tw&d={0}&s=0,asc,0";
 
-      //取得預設值
-      ssql = "select * from basedata where type = @type";
-      var q = dbDapper.GetNewDynamicParameters();
-      q.Add("type", SettingItem.ToString());
-      BaseData bdMkvToolPath = dbDapper.QuerySingleOrDefault<BaseData>(ssql, q);
-      if (bdMkvToolPath == null)
-      {
-        bdMkvToolPath = new BaseData();
-        bdMkvToolPath.type = SettingItem.ToString();
-        bdMkvToolPath.data1 = sData;
-        dbDapper.Insert(bdMkvToolPath);
-      }
-      else
-      {
-        bdMkvToolPath.data1 = sData;
-        dbDapper.Update(bdMkvToolPath);
-      }
 
-      return sResult;
+
+        //public static class SettingList
+        //{
+
+        //  public const string Tool005_MkvToolPath = "Tool005_MkvToolPath";
+        //  public const string Tool005_TransPath = "Tool005_TransPath";
+
+        //}
+
+
+        public enum SettingList
+        {
+            Tool005_MkvToolPath,
+            Tool005_TransPath,
+            Tool007_FFMpegPath,
+            Tool007_TransPath,
+        }
+
     }
 
-  }
 
-  public static class CTsConst
-  {
-    public static string StockAfterTseUrl = "http://www.tse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999";
-    public static string StockAfterOtcUrl = "http://www.tpex.org.tw/web/stock/aftertrading/daily_close_quotes/stk_quote_download.php?l=zh-tw&d={0}&s=0,asc,0";
-
-
-
-    //public static class SettingList
-    //{
-     
-    //  public const string Tool005_MkvToolPath = "Tool005_MkvToolPath";
-    //  public const string Tool005_TransPath = "Tool005_TransPath";
-    
-    //}
-
-
-    public enum SettingList
-    {
-      Tool005_MkvToolPath,
-      Tool005_TransPath,
-    }
-
-  }
-
-
-  }
+}
