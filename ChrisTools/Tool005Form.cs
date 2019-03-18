@@ -534,7 +534,7 @@ namespace ChrisTools
             {
                 string sNewFileName = item.Name.Replace(" ", "").Replace("(1)", "").Replace("(2)", "")
                   .Replace("(ass)", "").Replace("(srt)", "").Replace("-1", "").Replace("(Encoded)", "")
-                  .Replace("(DTS)", "");
+                  .Replace("(dts)", "").Replace("(ac3)", "").Replace("(aac)", "");
 
                 //1070909 預防RClone同步會出現判斷異常的問題。
                 sNewFileName.Replace("：", "-");
