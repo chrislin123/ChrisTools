@@ -11,6 +11,7 @@ using System.IO;
 using System.Diagnostics;
 using M10.lib.modelChrisTools;
 using M10.lib;
+using Microsoft.VisualBasic;
 
 namespace ChrisTools
 {
@@ -27,13 +28,7 @@ namespace ChrisTools
 
         private void Tool005Form_Load(object sender, EventArgs e)
         {
-
-
-
-
-            txtMkvToolPath.Text = Comm.GetSetting(CTsConst.SettingList.Tool005_MkvToolPath);
-            txtTransPath.Text = Comm.GetSetting(CTsConst.SettingList.Tool005_TransPath);
-
+            
             //取得預設值
             //ssql = "select * from basedata where type = @type";
             //var q = dbDapper.GetNewDynamicParameters();
@@ -532,13 +527,22 @@ namespace ChrisTools
             progressBar2.Maximum = tttt.Count;
             foreach (FileInfo item in tttt)
             {
+                if (item.Name != Strings.StrConv(item.Name, VbStrConv.Narrow))
+                {
+                    ShowRichTextStatus1(string.Format("{0} => {1}", item.Name, Strings.StrConv(item.Name, VbStrConv.Narrow)));
+                }
+
+
                 string sNewFileName = item.Name.Replace(" ", "").Replace("(1)", "").Replace("(2)", "")
                   .Replace("(ass)", "").Replace("(srt)", "").Replace("-1", "").Replace("(Encoded)", "")
                   .Replace("(dts)", "").Replace("(ac3)", "").Replace("(aac)", "");
 
                 //1070909 預防RClone同步會出現判斷異常的問題。
-                sNewFileName.Replace("：", "-");
+                sNewFileName = sNewFileName.Replace("：", "-").Replace("？", "").Replace("「", "").Replace("」", "")
+                    .Replace("【", "").Replace("】", "");
 
+                //全形轉半形
+                sNewFileName = Strings.StrConv(sNewFileName, VbStrConv.Narrow);
 
                 string sFullRename = Path.Combine(item.DirectoryName, sNewFileName);
                 if (File.Exists(sFullRename) == false)
@@ -558,7 +562,19 @@ namespace ChrisTools
             {
                 DirectoryInfo disub = DiList[i];
 
+                if (disub.Name != Strings.StrConv(disub.Name, VbStrConv.Narrow))
+                {
+                    ShowRichTextStatus1(string.Format("{0} => {1}", disub.Name, Strings.StrConv(disub.Name, VbStrConv.Narrow)));
+                }
+
                 string sNewFullName = Path.Combine(disub.Parent.FullName, disub.Name.Replace("：", "-"));
+
+                sNewFullName = sNewFullName.Replace("？", "").Replace("「", "").Replace("」", "")
+                    .Replace("【", "").Replace("】", "");
+
+                //全形轉半形
+                sNewFullName = Strings.StrConv(sNewFullName, VbStrConv.Narrow);
+
                 if (Directory.Exists(sNewFullName) == false)
                 {
                     //資料夾名稱，名稱"："取代"-"
@@ -582,6 +598,12 @@ namespace ChrisTools
 
             //最後處理目前的資料夾名稱
             string sNewFullName1 = Path.Combine(di.Parent.FullName, di.Name.Replace("：", "-"));
+            sNewFullName1 = sNewFullName1.Replace("？", "").Replace("「", "").Replace("」", "")
+                    .Replace("【", "").Replace("】", ""); ;
+            //全形轉半形
+            sNewFullName1 = Strings.StrConv(sNewFullName1, VbStrConv.Narrow);
+
+
             if (Directory.Exists(sNewFullName1) == false)
             {
                 //資料夾名稱，名稱"："取代"-"
