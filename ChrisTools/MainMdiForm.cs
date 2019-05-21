@@ -19,9 +19,17 @@ namespace ChrisTools
             InitializeComponent();
         }
 
+        private void MainMdiForm_Load(object sender, EventArgs e)
+        {
+            Tool005Form tf = new Tool005Form();
+            tf.MdiParent = this;
+            tf.WindowState = FormWindowState.Maximized;
+            tf.Show();
+        }
+
         private void ShowNewForm(object sender, EventArgs e)
         {
-
+            
 
 
 
@@ -182,6 +190,8 @@ namespace ChrisTools
             tf.WindowState = FormWindowState.Maximized;
             tf.Show();
         }
+
+        
     }
 
 

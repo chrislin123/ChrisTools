@@ -52,13 +52,13 @@
             this.MenuItemTool004 = new System.Windows.Forms.ToolStripMenuItem();
             this.媒體相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemTool005 = new System.Windows.Forms.ToolStripMenuItem();
+            this.fFMpeg音訊轉檔ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.轉換相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.白馬去除之後文字ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.fFMpeg音訊轉檔ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -247,6 +247,13 @@
             this.MenuItemTool005.Text = "Mkv提取";
             this.MenuItemTool005.Click += new System.EventHandler(this.MenuItemTool005_Click);
             // 
+            // fFMpeg音訊轉檔ToolStripMenuItem
+            // 
+            this.fFMpeg音訊轉檔ToolStripMenuItem.Name = "fFMpeg音訊轉檔ToolStripMenuItem";
+            this.fFMpeg音訊轉檔ToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.fFMpeg音訊轉檔ToolStripMenuItem.Text = "FFMpeg音訊轉檔";
+            this.fFMpeg音訊轉檔ToolStripMenuItem.Click += new System.EventHandler(this.fFMpeg音訊轉檔ToolStripMenuItem_Click);
+            // 
             // 轉換相關ToolStripMenuItem
             // 
             this.轉換相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -285,13 +292,6 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(128, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
-            // fFMpeg音訊轉檔ToolStripMenuItem
-            // 
-            this.fFMpeg音訊轉檔ToolStripMenuItem.Name = "fFMpeg音訊轉檔ToolStripMenuItem";
-            this.fFMpeg音訊轉檔ToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.fFMpeg音訊轉檔ToolStripMenuItem.Text = "FFMpeg音訊轉檔";
-            this.fFMpeg音訊轉檔ToolStripMenuItem.Click += new System.EventHandler(this.fFMpeg音訊轉檔ToolStripMenuItem_Click);
-            // 
             // MainMdiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -303,6 +303,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainMdiForm";
             this.Text = "小工具主畫面";
+            this.Load += new System.EventHandler(this.MainMdiForm_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);
