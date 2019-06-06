@@ -243,14 +243,14 @@
             // MenuItemTool005
             // 
             this.MenuItemTool005.Name = "MenuItemTool005";
-            this.MenuItemTool005.Size = new System.Drawing.Size(169, 22);
+            this.MenuItemTool005.Size = new System.Drawing.Size(180, 22);
             this.MenuItemTool005.Text = "Mkv提取";
             this.MenuItemTool005.Click += new System.EventHandler(this.MenuItemTool005_Click);
             // 
             // fFMpeg音訊轉檔ToolStripMenuItem
             // 
             this.fFMpeg音訊轉檔ToolStripMenuItem.Name = "fFMpeg音訊轉檔ToolStripMenuItem";
-            this.fFMpeg音訊轉檔ToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.fFMpeg音訊轉檔ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fFMpeg音訊轉檔ToolStripMenuItem.Text = "FFMpeg音訊轉檔";
             this.fFMpeg音訊轉檔ToolStripMenuItem.Click += new System.EventHandler(this.fFMpeg音訊轉檔ToolStripMenuItem_Click);
             // 
@@ -274,7 +274,7 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel,
             this.toolStripStatusLabel1});
-            this.statusStrip.Location = new System.Drawing.Point(0, 384);
+            this.statusStrip.Location = new System.Drawing.Point(0, 477);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(927, 22);
             this.statusStrip.TabIndex = 2;
@@ -296,7 +296,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(927, 406);
+            this.ClientSize = new System.Drawing.Size(927, 499);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
             this.IsMdiContainer = true;

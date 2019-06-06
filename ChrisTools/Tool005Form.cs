@@ -28,7 +28,10 @@ namespace ChrisTools
 
         private void Tool005Form_Load(object sender, EventArgs e)
         {
-            
+
+            ddlFormatFile.SelectedIndex = 0;
+
+
             //取得預設值
             //ssql = "select * from basedata where type = @type";
             //var q = dbDapper.GetNewDynamicParameters();
@@ -1047,9 +1050,9 @@ namespace ChrisTools
             {
                 ShowRichTextStatus(string.Format("複製：{0}", item.FullName));
 
-                
-                
-                item.CopyTo(Path.Combine(sDirectoryPath,item.Name), true);
+
+
+                item.CopyTo(Path.Combine(sDirectoryPath, item.Name), true);
 
                 //item.Attributes = FileAttributes.Normal;
                 //item.Delete();
@@ -1070,10 +1073,76 @@ namespace ChrisTools
 
             DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
 
-            
-
-
             ShowStatus("檔案及資料夾名稱，修正完成");
+        }
+
+        private void BtnFormatFile_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+            //if (MessageBox.Show("確定要批次更新檔案名稱?", "提示", MessageBoxButtons.YesNo) == DialogResult.No)
+            //{
+            //    return;
+            //}
+
+            DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
+            if (di.Exists == false)
+            {
+                ShowRichTextStatus("資料夾不存在");
+                return;
+            }
+
+            //取得所有資料夾
+            DirectoryInfo[] diAll = di.GetDirectories("*", SearchOption.AllDirectories);
+            List<DirectoryInfo> liAll = diAll.ToList();
+            liAll.Add(di);
+
+
+            foreach (DirectoryInfo diSub in liAll)
+            {
+                //取得該資料夾中的檔案(副檔名mkv、mp4、ass、srt)
+                List<FileInfo> fiAllFiles = diSub.GetFiles("*.*", SearchOption.TopDirectoryOnly)
+                .Where(s => s.Extension.ToLower() == ".mkv" || s.Extension.ToLower() == ".mp4"
+                         || s.Extension.ToLower() == ".ass" || s.Extension.ToLower() == ".srt").ToList<FileInfo>();
+
+                //判斷資料夾是否已經格式化，如果不符合則不執行修改程序
+                if (diSub.Name.Contains("[") == false || diSub.Name.Contains("]") == false)
+                {
+                    continue;
+                }
+
+                //解析資料夾轉成檔案名稱
+                string sYear = diSub.Name.Substring(1, 4);
+                string sMovieNameMain = diSub.Name.Substring(6, diSub.Name.Length - 6);
+                string sMovieNameSub = "";
+
+                if (sMovieNameMain.Contains("-") == true)
+                {
+                    sMovieNameSub = sMovieNameMain.Split('-')[1];
+                    sMovieNameMain = sMovieNameMain.Split('-')[0];
+                }
+
+                //[歐美]巧克力冒險工廠(2005)[英語][官譯]
+                string sFileNameFull = string.Format("{0}{1}({2}){3}{4}"
+                    , ddlFormatFile.SelectedItem.ToString().Split('-')[0]
+                    , sMovieNameMain
+                    , sYear
+                    , sMovieNameSub == "" ? "" : "-" + sMovieNameSub
+                    , ddlFormatFile.SelectedItem.ToString().Split('-')[1]);
+
+                //重新命名所有檔案
+                foreach (FileInfo item in fiAllFiles)
+                {
+                    string sFullRename = Path.Combine(item.DirectoryName, sFileNameFull + item.Extension);
+                    if (File.Exists(sFullRename) == false)
+                    {
+                        item.MoveTo(sFullRename);
+                    }
+                }
+            }
+
+
+            ShowRichTextStatus1("檔案及資料夾名稱，修正完成");
+
         }
     }
 
