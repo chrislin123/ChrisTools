@@ -12,73 +12,77 @@ using M10.lib;
 
 namespace ChrisTools
 {
-  public partial class BaseForm : Form
-  {
-    public string ssql = string.Empty;
-    private string _ConnectionString;
-    //public ODAL oDal;
-    private DALDapper _dbDapper;
-    private Comm _Comm;
-
-    public BaseForm()
+    public partial class BaseForm : Form
     {
-      //InitializeComponent();
-    }
+        public string ssql = string.Empty;
+        private string _ConnectionString;
+        //public ODAL oDal;
+        private DALDapper _dbDapper;
+        private Comm _Comm;
 
-
-    public void InitForm()
-    {
-      _ConnectionString = ConfigurationManager.ConnectionStrings[Properties.Settings.Default.DBDefault].ConnectionString;
-      _dbDapper = new DALDapper(_ConnectionString);
-      ////oDal = new ODAL(Properties.Settings.Default.DBDefault);
-      //logger = NLog.LogManager.GetCurrentClassLogger();
-    }
-
-    public void BaseShowStatus(string sMessage)
-    {
-      ((MainMdiForm)this.ParentForm).ShowStatusBar(sMessage);      
-    }
-
-   
-    public DALDapper dbDapper
-    {
-      get
-      {
-        if (_dbDapper == null)
+        public BaseForm()
         {
-          _dbDapper = new DALDapper(ConnectionString);
+            //InitializeComponent();
         }
 
-        return _dbDapper;
-      }
-    }
 
-    public string ConnectionString
-    {
-      get
-      {
-        if (string.IsNullOrEmpty(_ConnectionString))
+        public void InitForm()
         {
-          _ConnectionString = ConfigurationManager.ConnectionStrings[Properties.Settings.Default.DBDefault].ConnectionString;
+            //_ConnectionString = ConfigurationManager.ConnectionStrings[Properties.Settings.Default.DBDefault].ConnectionString;
+            //修改從App.config中取得預設連線字串
+            _ConnectionString = ConfigurationManager.ConnectionStrings[ConfigurationManager.AppSettings["DBDefault"]].ConnectionString;
+            _dbDapper = new DALDapper(_ConnectionString);
+            ////oDal = new ODAL(Properties.Settings.Default.DBDefault);
+            //logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
-        return _ConnectionString;
-      }
-    }
-
-    public Comm Comm
-    {
-      get
-      {
-        if (_Comm == null)
+        public void BaseShowStatus(string sMessage)
         {
-          _Comm = new Comm(dbDapper);
+            ((MainMdiForm)this.ParentForm).ShowStatusBar(sMessage);
         }
 
-        return _Comm;
-      }
+
+        public DALDapper dbDapper
+        {
+            get
+            {
+                if (_dbDapper == null)
+                {
+                    _dbDapper = new DALDapper(ConnectionString);
+                }
+
+                return _dbDapper;
+            }
+        }
+
+        public string ConnectionString
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_ConnectionString))
+                {
+                    //_ConnectionString = ConfigurationManager.ConnectionStrings[Properties.Settings.Default.DBDefault].ConnectionString;
+                    //修改從App.config中取得預設連線字串
+                    _ConnectionString = ConfigurationManager.ConnectionStrings[ConfigurationManager.AppSettings["DBDefault"]].ConnectionString;
+                }
+                
+                return _ConnectionString;
+            }
+        }
+
+        public Comm Comm
+        {
+            get
+            {
+                if (_Comm == null)
+                {
+                    _Comm = new Comm(dbDapper);
+                }
+
+                return _Comm;
+            }
+        }
+
+
     }
-
-
-  }
 }

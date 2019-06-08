@@ -43,6 +43,14 @@ namespace ChrisTools
             //q1.Add("type", constTransPath);
             //BaseData bdTransPath = dbDapper.QuerySingleOrDefault<BaseData>(ssql, q1);
             //txtTransPath.Text = bdTransPath == null ? "" : bdTransPath.data1;
+
+            //取得Sqlite中記錄的資料
+            txtMkvToolPath.Text = Comm.GetSetting(CTsConst.SettingList.Tool005_MkvToolPath);
+            txtTransPath.Text = Comm.GetSetting(CTsConst.SettingList.Tool005_TransPath);
+
+
+
+
         }
 
         private void button1_Click(object sender, EventArgs e)
