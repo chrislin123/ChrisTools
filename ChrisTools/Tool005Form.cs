@@ -518,6 +518,23 @@ namespace ChrisTools
         }
 
 
+        private string FormatFileName(string FileName)
+        {
+            string sResult = FileName;
+
+            sResult = sResult.Replace(" ", "").Replace("(1)", "").Replace("(2)", "")
+                  .Replace("(ass)", "").Replace("(srt)", "").Replace("-1", "").Replace("(Encoded)", "")
+                  .Replace("(dts)", "").Replace("(ac3)", "").Replace("(aac)", "");
+
+            //1070909 預防RClone同步會出現判斷異常的問題。
+            sResult = sResult.Replace("：", "-").Replace("？", "").Replace("「", "").Replace("」", "")
+                .Replace("【", "").Replace("】", "");
+
+            //全形轉半形
+            sResult = Strings.StrConv(sResult, VbStrConv.Narrow);
+
+            return sResult;
+        }
 
         private void btnFileNameTune_Click(object sender, EventArgs e)
         {
@@ -543,17 +560,7 @@ namespace ChrisTools
                     ShowRichTextStatus1(string.Format("{0} => {1}", item.Name, Strings.StrConv(item.Name, VbStrConv.Narrow)));
                 }
 
-
-                string sNewFileName = item.Name.Replace(" ", "").Replace("(1)", "").Replace("(2)", "")
-                  .Replace("(ass)", "").Replace("(srt)", "").Replace("-1", "").Replace("(Encoded)", "")
-                  .Replace("(dts)", "").Replace("(ac3)", "").Replace("(aac)", "");
-
-                //1070909 預防RClone同步會出現判斷異常的問題。
-                sNewFileName = sNewFileName.Replace("：", "-").Replace("？", "").Replace("「", "").Replace("」", "")
-                    .Replace("【", "").Replace("】", "");
-
-                //全形轉半形
-                sNewFileName = Strings.StrConv(sNewFileName, VbStrConv.Narrow);
+                string sNewFileName = FormatFileName(item.Name);
 
                 string sFullRename = Path.Combine(item.DirectoryName, sNewFileName);
                 if (File.Exists(sFullRename) == false)
@@ -815,6 +822,13 @@ namespace ChrisTools
 
             ri.Msg = "";
             bw.ReportProgress(1, ri);
+            var oResult = new
+            {
+                path = p.path
+            };
+
+            e.Result = oResult;
+
 
         }
 
@@ -880,7 +894,9 @@ namespace ChrisTools
         private void Proc_DoWorkRAR(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker bw = sender as BackgroundWorker;
-            string sPath = e.Argument as string;
+            dynamic p = e.Argument as dynamic;
+            string sPath = p.path;
+            //string sPath = e.Argument as string;
             ReportInfo ri = new ReportInfo();
 
             DirectoryInfo di = new DirectoryInfo(sPath);
@@ -943,6 +959,9 @@ namespace ChrisTools
             ri.Msg = "";
             bw.ReportProgress(1, ri);
 
+            //參數傳遞到Completed中
+            e.Result = e.Argument;
+
         }
 
         private void Proc_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -970,10 +989,105 @@ namespace ChrisTools
 
 
         }
+
         private void Proc_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             ShowRichTextStatus1(string.Format("[完成]{0}", ""));
         }
+
+        private void Proc_RunWorkerRARCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            dynamic p = e.Result as dynamic;
+            string sPath = p.path;
+            string scaller = p.caller;
+
+            //特定呼叫程序處理方法
+            if (scaller == "Finish256MKVSRT")
+            {
+                //完成壓縮檔移除非RAR檔案
+                FileInfo[] FileList = new DirectoryInfo(sPath).GetFiles("*.*", SearchOption.TopDirectoryOnly);
+                foreach (FileInfo item in FileList)
+                {   
+                    if (item.Extension.ToLower() == ".rar" == false)
+                    {
+                        item.Delete();
+                    }
+                }
+            }
+
+            ShowRichTextStatus1(string.Format("[完成]壓縮檔案完成：{0}", sPath));
+        }
+
+        private void Proc_RunWorkerFinish256MKVSRTCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            dynamic p = e.Result as dynamic;
+            string sPath = p.path;
+
+            //整理預備壓縮資料夾的內容
+            FileInfo[] FileList = new DirectoryInfo(sPath).GetFiles("*.*", SearchOption.TopDirectoryOnly);
+
+            //移除非MKV檔案
+            foreach (FileInfo item in FileList)
+            {
+                if (item.Extension.ToLower() != ".mkv")
+                {
+                    item.Delete();
+                }
+            }
+
+            FileList = new DirectoryInfo(sPath).GetFiles("*.*", SearchOption.TopDirectoryOnly);
+            //如果MKV不只有一個檔案，代表已經合併過，才進行篩選檔案
+            if (FileList.Length > 1)
+            {
+                foreach (FileInfo item in FileList)
+                {
+                    if (item.Name.Contains("(srt)") == false)
+                    {
+                        item.Delete();
+                    }
+                }
+            }
+            
+
+            //重新命名檔案
+            FileList = new DirectoryInfo(sPath).GetFiles("*.*", SearchOption.TopDirectoryOnly);
+            foreach (FileInfo item in FileList)
+            {
+                string sFullRename = Path.Combine(item.DirectoryName, FormatFileName(item.Name));
+                if (File.Exists(sFullRename) == false)
+                {
+                    item.MoveTo(sFullRename);
+                }
+            }
+
+            ShowRichTextStatus1(string.Format("[完成]MKV與SRT合併：{0}", sPath));
+
+            BackgroundWorker bw = new BackgroundWorker();
+            //回報進程
+            bw.WorkerReportsProgress = true;
+            //加入DoWork
+            bw.DoWork += new DoWorkEventHandler(Proc_DoWorkRAR);
+            //加入ProgressChanged
+            bw.ProgressChanged += new ProgressChangedEventHandler(Proc_ProgressChanged);
+            //加入RunWorkerCompleted
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerRARCompleted);
+            //傳遞參數
+            //object i = new object();
+            var op = new
+            {
+                path = sPath,
+                caller = "Finish256MKVSRT"
+            };
+
+
+            //執行程序
+            bw.RunWorkerAsync(op);
+
+
+        }
+
+        
 
         private void btnSplit_Click(object sender, EventArgs e)
         {
@@ -1019,7 +1133,175 @@ namespace ChrisTools
 
         private void btnFinish265_Click(object sender, EventArgs e)
         {
+            ClearForm();
 
+            DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
+            if (di.Exists == false)
+            {
+                ShowRichTextStatus("資料夾不存在");
+                return;
+            }
+
+
+            string sPathMp4 = Path.Combine(di.Parent.FullName, "MP4");
+            string sPathRar = Path.Combine(di.Parent.FullName, "RAR");
+            //建立MP4資料夾
+            Directory.CreateDirectory(sPathMp4);
+            //建立RAR資料夾
+            Directory.CreateDirectory(sPathRar);
+
+
+            //取得所有資料夾
+            DirectoryInfo[] diAll = di.GetDirectories("*", SearchOption.AllDirectories);
+            List<DirectoryInfo> liAll = diAll.ToList();
+            liAll.Add(di);
+
+            //處理MP4
+            foreach (DirectoryInfo diSub in liAll)
+            {
+                //取得該資料夾中的檔案(副檔名mkv、mp4、ass、srt)
+                List<FileInfo> fiAllFiles = diSub.GetFiles("*.*", SearchOption.TopDirectoryOnly)
+                .Where(s => s.Extension.ToLower() == ".mp4").ToList<FileInfo>();
+
+                foreach (FileInfo item in fiAllFiles)
+                {
+                    DirectoryInfo ItemDi = new DirectoryInfo(item.DirectoryName);
+                    string sMoveToPath = Path.Combine(sPathMp4, ItemDi.Name);
+                    Directory.CreateDirectory(sMoveToPath);
+
+                    string sFullRename = Path.Combine(sMoveToPath, FormatFileName(item.Name));
+                    if (File.Exists(sFullRename) == false)
+                    {
+                        item.MoveTo(sFullRename);
+                    }
+
+                }
+            }
+
+
+
+
+            //處理MKV與SRT移動到RAR資料夾
+            foreach (DirectoryInfo diSub in liAll)
+            {
+                //取得該資料夾中的檔案(副檔名mkv、mp4、ass、srt)
+                List<FileInfo> fiAllFiles = diSub.GetFiles("*.*", SearchOption.TopDirectoryOnly)
+                .Where(s => s.Extension.ToLower() == ".mkv" || s.Extension.ToLower() == ".srt").ToList<FileInfo>();
+
+                foreach (FileInfo item in fiAllFiles)
+                {
+                    DirectoryInfo ItemDi = new DirectoryInfo(item.DirectoryName);
+                    string sMoveToPath = Path.Combine(sPathRar, ItemDi.Name);
+                    Directory.CreateDirectory(sMoveToPath);
+
+                    if (item.Extension.ToLower() == ".mkv")
+                    {
+                        if (item.Name.Contains("(ass)") == true)
+                        {
+                            continue;
+                        }
+
+                        string sFullRename = Path.Combine(sMoveToPath, FormatFileName(item.Name));
+                        if (File.Exists(sFullRename) == false)
+                        {
+                            item.MoveTo(sFullRename);
+                        }
+                    }
+
+                    if (item.Extension.ToLower() == ".srt")
+                    {
+                        string sFullRename = Path.Combine(sMoveToPath, FormatFileName(item.Name));
+                        if (File.Exists(sFullRename) == false)
+                        {
+                            item.MoveTo(sFullRename);
+                        }
+                    }
+
+
+                }
+            }
+
+
+
+            //處理MKV與SRT合併
+            //取得所有資料夾
+            DirectoryInfo[] diRAR = new DirectoryInfo(sPathRar).GetDirectories("*", SearchOption.TopDirectoryOnly);
+
+            foreach (DirectoryInfo info in diRAR)
+            {
+
+                BackgroundWorker bw = new BackgroundWorker();
+                //回報進程
+                bw.WorkerReportsProgress = true;
+                //加入DoWork
+                bw.DoWork += new DoWorkEventHandler(Proc_DoWorkMergeMkvSrt);
+                //加入ProgressChanged
+                bw.ProgressChanged += new ProgressChangedEventHandler(Proc_ProgressChanged);
+                //加入RunWorkerCompleted
+                bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerFinish256MKVSRTCompleted);
+                //傳遞參數
+                //object i = new object();
+                //執行程序
+
+                var p = new
+                {
+                    path = info.FullName,
+                    chksrt = true,
+                    chkass = false,
+                    chkmp4 = false,
+                    chkmkv = true
+                };
+                bw.RunWorkerAsync(p);
+            }
+
+
+            return;
+            //處理MKV To RAR
+            foreach (DirectoryInfo diSub in liAll)
+            {
+                //取得該資料夾中的檔案(副檔名mkv、mp4、ass、srt)
+                List<FileInfo> fiAllFiles = diSub.GetFiles("*.*", SearchOption.TopDirectoryOnly)
+                .Where(s => s.Extension.ToLower() == ".mkv" || s.Extension.ToLower() == ".mp4"
+                         || s.Extension.ToLower() == ".ass" || s.Extension.ToLower() == ".srt").ToList<FileInfo>();
+
+                //判斷資料夾是否已經格式化，如果不符合則不執行修改程序
+                if (diSub.Name.Contains("[") == false || diSub.Name.Contains("]") == false)
+                {
+                    continue;
+                }
+
+                //解析資料夾轉成檔案名稱
+                string sYear = diSub.Name.Substring(1, 4);
+                string sMovieNameMain = diSub.Name.Substring(6, diSub.Name.Length - 6);
+                string sMovieNameSub = "";
+
+                if (sMovieNameMain.Contains("-") == true)
+                {
+                    sMovieNameSub = sMovieNameMain.Split('-')[1];
+                    sMovieNameMain = sMovieNameMain.Split('-')[0];
+                }
+
+                //[歐美]巧克力冒險工廠(2005)[英語][官譯]
+                string sFileNameFull = string.Format("{0}{1}({2}){3}{4}"
+                    , ddlFormatFile.SelectedItem.ToString().Split('-')[0]
+                    , sMovieNameMain
+                    , sYear
+                    , sMovieNameSub == "" ? "" : "-" + sMovieNameSub
+                    , ddlFormatFile.SelectedItem.ToString().Split('-')[1]);
+
+                //重新命名所有檔案
+                foreach (FileInfo item in fiAllFiles)
+                {
+                    string sFullRename = Path.Combine(item.DirectoryName, sFileNameFull + item.Extension);
+                    if (File.Exists(sFullRename) == false)
+                    {
+                        item.MoveTo(sFullRename);
+                    }
+                }
+            }
+
+
+            ShowRichTextStatus1("檔案及資料夾名稱，修正完成");
         }
 
         private void btnAddRAR_Click(object sender, EventArgs e)
@@ -1036,11 +1318,16 @@ namespace ChrisTools
             //加入ProgressChanged
             bw.ProgressChanged += new ProgressChangedEventHandler(Proc_ProgressChanged);
             //加入RunWorkerCompleted
-            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerCompleted);
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerRARCompleted);
             //傳遞參數
             //object i = new object();
+            var op = new
+            {
+                path = txtTransPath.Text,
+                caller = ""
+            };
             //執行程序
-            bw.RunWorkerAsync(txtTransPath.Text);
+            bw.RunWorkerAsync(op);
 
         }
 

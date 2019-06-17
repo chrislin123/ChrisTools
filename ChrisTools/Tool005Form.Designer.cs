@@ -322,9 +322,9 @@
             this.btnFinish265.Location = new System.Drawing.Point(596, 128);
             this.btnFinish265.Margin = new System.Windows.Forms.Padding(6);
             this.btnFinish265.Name = "btnFinish265";
-            this.btnFinish265.Size = new System.Drawing.Size(79, 46);
+            this.btnFinish265.Size = new System.Drawing.Size(96, 46);
             this.btnFinish265.TabIndex = 41;
-            this.btnFinish265.Text = "265轉檔完成處理";
+            this.btnFinish265.Text = "轉檔完成處理(256-MP4-RAR)";
             this.btnFinish265.UseVisualStyleBackColor = true;
             this.btnFinish265.Click += new System.EventHandler(this.btnFinish265_Click);
             // 
