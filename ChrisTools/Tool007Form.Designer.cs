@@ -42,9 +42,9 @@
             this.radDTS = new System.Windows.Forms.RadioButton();
             this.radAC3 = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.radAAC = new System.Windows.Forms.RadioButton();
             this.progressBar2 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
-            this.radAAC = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -161,18 +161,17 @@
             // radDTS
             // 
             this.radDTS.AutoSize = true;
-            this.radDTS.Checked = true;
             this.radDTS.Location = new System.Drawing.Point(6, 3);
             this.radDTS.Name = "radDTS";
             this.radDTS.Size = new System.Drawing.Size(44, 16);
             this.radDTS.TabIndex = 33;
-            this.radDTS.TabStop = true;
             this.radDTS.Text = "DTS";
             this.radDTS.UseVisualStyleBackColor = true;
             // 
             // radAC3
             // 
             this.radAC3.AutoSize = true;
+            this.radAC3.Checked = true;
             this.radAC3.Location = new System.Drawing.Point(61, 3);
             this.radAC3.Name = "radAC3";
             this.radAC3.Size = new System.Drawing.Size(45, 16);
@@ -191,6 +190,16 @@
             this.panel1.Size = new System.Drawing.Size(183, 22);
             this.panel1.TabIndex = 37;
             // 
+            // radAAC
+            // 
+            this.radAAC.AutoSize = true;
+            this.radAAC.Location = new System.Drawing.Point(112, 3);
+            this.radAAC.Name = "radAAC";
+            this.radAAC.Size = new System.Drawing.Size(47, 16);
+            this.radAAC.TabIndex = 35;
+            this.radAAC.Text = "AAC";
+            this.radAAC.UseVisualStyleBackColor = true;
+            // 
             // progressBar2
             // 
             this.progressBar2.Location = new System.Drawing.Point(205, 188);
@@ -207,17 +216,6 @@
             this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 40;
             this.label1.Text = "音訊格式：";
-            // 
-            // radAAC
-            // 
-            this.radAAC.AutoSize = true;
-            this.radAAC.Location = new System.Drawing.Point(112, 3);
-            this.radAAC.Name = "radAAC";
-            this.radAAC.Size = new System.Drawing.Size(47, 16);
-            this.radAAC.TabIndex = 35;
-            this.radAAC.TabStop = true;
-            this.radAAC.Text = "AAC";
-            this.radAAC.UseVisualStyleBackColor = true;
             // 
             // Tool007Form
             // 

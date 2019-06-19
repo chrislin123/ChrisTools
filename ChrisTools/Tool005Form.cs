@@ -1229,6 +1229,9 @@ namespace ChrisTools
 
             foreach (DirectoryInfo info in diRAR)
             {
+                //資料夾如果存在RAR檔案，則不處理
+                List<FileInfo> listFiRar = info.GetFiles("*.*", SearchOption.TopDirectoryOnly).Where(s => s.Extension.ToLower() == ".rar").ToList<FileInfo>();
+                if (listFiRar.Count > 0) continue;
 
                 BackgroundWorker bw = new BackgroundWorker();
                 //回報進程
