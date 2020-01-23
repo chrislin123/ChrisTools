@@ -373,7 +373,8 @@
             "[日本]-[日語][官譯]",
             "[韓國]-[韓語][官譯]",
             "[德國]-[德語][官譯]",
-            "[法國]-[法語][官譯]"});
+            "[法國]-[法語][官譯]",
+            "[中國]-[國語][官譯]"});
             this.ddlFormatFile.Location = new System.Drawing.Point(178, 339);
             this.ddlFormatFile.Name = "ddlFormatFile";
             this.ddlFormatFile.Size = new System.Drawing.Size(315, 20);
