@@ -1442,6 +1442,37 @@ namespace ChrisTools
             ShowRichTextStatus1("檔案及資料夾名稱，修正完成");
 
         }
+
+        private void test_Click(object sender, EventArgs e)
+        {
+
+
+            //最後處理目前的資料夾名稱
+            //string sNewFullName1 = Path.Combine(di.Parent.FullName, di.Name.Replace("：", "-"));
+            //sNewFullName1 = sNewFullName1.Replace("？", "").Replace("「", "").Replace("」", "")
+            //        .Replace("【", "").Replace("】", ""); ;
+
+
+            string sNewFullName1 = "：？「」【】";
+            //全形轉半形
+            sNewFullName1 = Strings.StrConv(sNewFullName1, VbStrConv.Narrow, 1028);
+
+
+
+
+            sNewFullName1 = "";
+
+
+
+
+
+
+
+
+
+
+
+        }
     }
 
     public class ReportInfo
