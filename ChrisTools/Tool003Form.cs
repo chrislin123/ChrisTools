@@ -73,22 +73,32 @@ namespace ChrisTools
         }
 
         private void TestButton_Click(object sender, EventArgs e)
-        {
-
-            int iStartIndex = Convert.ToInt16(startindexText.Text);
-            int iLength = Convert.ToInt16(lengthText.Text);
-            string sFileNameTemp = NewNameText.Text;
-
-            string sfileFullName = string.Empty;
-            foreach (FileInfo fi in new DirectoryInfo(txtFrom.Text).GetFiles("*.*", SearchOption.TopDirectoryOnly))
+        {  
+            try
             {
-                string sIDent = fi.Name.Substring(iStartIndex, iLength);
+                int iStartIndex = Convert.ToInt16(startindexText.Text);
+                int iLength = Convert.ToInt16(lengthText.Text);
+                string sFileNameTemp = NewNameText.Text;
 
-                MessageBox.Show(sIDent);
+                string sfileFullName = string.Empty;
+                foreach (FileInfo fi in new DirectoryInfo(txtFrom.Text).GetFiles("*.*", SearchOption.TopDirectoryOnly))
+                {
+                    string sIDent = fi.Name.Substring(iStartIndex, iLength);
 
-                break;
+
+                    lblResult.Text = sIDent;
+
+                    //MessageBox.Show(sIDent);
+
+                    break;
+                }
             }
-
+            catch
+            {
+                //轉換出現異常，則顯示空白
+                lblResult.Text = "";
+                //throw;
+            }
         }
 
         private void txtFrom_TextChanged(object sender, EventArgs e)
@@ -171,6 +181,16 @@ namespace ChrisTools
         private void txtFrom_MouseClick(object sender, MouseEventArgs e)
         {
             txtFrom.SelectAll();
+        }
+
+        private void startindexText_TextChanged(object sender, EventArgs e)
+        {
+            TestButton_Click(sender, e);
+        }
+
+        private void lengthText_TextChanged(object sender, EventArgs e)
+        {
+            TestButton_Click(sender, e);
         }
     }
 }

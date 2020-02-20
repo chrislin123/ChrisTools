@@ -1500,22 +1500,22 @@ namespace ChrisTools
 
                 //string sStoryName = Regex.Replace(item.Name.Replace(item.Extension, "").Replace("-",""), "[0-9]", "",RegexOptions.IgnoreCase);
 
-                string sFileName = item.Name.Replace(item.Extension, "");
-                string sDateName = item.Name.Substring(0,5);
+                string sFileName = item.Name.Replace(item.Extension, "").Replace(" Track", "");
+                //string sDateName = item.Name.Substring(0,5);
 
-                string sTempName = sFileName.Replace(sDateName, "");
+                //string sTempName = sFileName.Replace(sDateName, "");
                 
 
-                string[] sa = sTempName.Split('.');
-                string sStoryName = "";
-                if (sa.Length == 2)
-                {
-                    sStoryName = sa[1];
-                }
-                else if (sa.Length == 3)
-                {
-                    sStoryName = sa[1] + sa[2];
-                }
+                //string[] sa = sTempName.Split('.');
+                //string sStoryName = "";
+                //if (sa.Length == 2)
+                //{
+                //    sStoryName = sa[1];
+                //}
+                //else if (sa.Length == 3)
+                //{
+                //    sStoryName = sa[1] + sa[2];
+                //}
 
 
                 //string sM = sa[0].PadLeft(2,'0');
@@ -1527,7 +1527,8 @@ namespace ChrisTools
 
 
 
-                string sNewFileName = string.Format("{0}{1}", sDateName, sStoryName) + item.Extension;
+                //string sNewFileName = string.Format("{0}{1}", sDateName, sStoryName) + item.Extension;
+                string sNewFileName = string.Format("{0}{1}", sFileName, item.Extension)  ;
 
 
                 string sFullRename = Path.Combine(item.DirectoryName, sNewFileName);
