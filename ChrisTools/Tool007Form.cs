@@ -165,39 +165,7 @@ namespace ChrisTools
 
         private void txtMkvToolPath_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                string sFileExist = "";
-                //新增擋案名稱智能判斷
-                //1.資料夾名稱分析，預測檔名
-
-                //di.GetFiles().ToList<FileInfo>().Where(a => a.Name.ToUpper() == "mkvextract.exe");
-
-
-
-                //if (di.Name.Contains("]") == true)
-                //{
-                //  //取得"]"後的名稱
-                //  string TempString = di.Name.Substring(di.Name.IndexOf("]") + 1, di.Name.Length - di.Name.IndexOf("]") - 1);
-
-                //  txtTransPath.Text = TempString + ".E{0}";
-                //}
-                //else
-                //{
-                //  txtTransPath.Text = di.Name + ".E{0}";
-                //}
-
-
-
-
-
-            }
-            catch (Exception)
-            {
-                //MessageBox.Show("Test");
-                //解析錯誤，提供預設值
-                //txtTransPath.Text = "預設.E{0}";
-            }
+           
         }
 
         private void txtMkvToolPath_MouseClick(object sender, MouseEventArgs e)
@@ -241,9 +209,6 @@ namespace ChrisTools
             if (sAudioType == "ac3") sOutputmark = "(ac3)";
             if (sAudioType == "aac") sOutputmark = "(aac)";
 
-
-            
-
             FileInfo fiOutput = new FileInfo(Path.Combine(
                fiMKV.DirectoryName, fiMKV.Name.Replace(fiMKV.Extension, "") + sOutputmark + ".mkv"));
 
@@ -280,7 +245,6 @@ namespace ChrisTools
             Boolean bchkDTS = p.chkDTS;
             Boolean bchkAC3 = p.chkAC3;
             Boolean bchkAAC = p.chkAAC;
-            
 
             DirectoryInfo di = new DirectoryInfo(sPath);
 
@@ -304,55 +268,14 @@ namespace ChrisTools
                 bw.ReportProgress(1, ri);
                 //執行合併檔案
                 ProcMergeMkvSrt(VideoItem, sAudioType, bw);
-
-
-                //string sSubTitleType = "";
-                //if (bchkDTS == true)
-                //{
-                //    sSubTitleType = "ass";
-                //    //搜尋符合的SubTilte
-                //    DirectoryInfo diTemp = VideoItem.Directory;
-                //    FileInfo[] fiSubTitleList = diTemp.GetFiles(
-                //      string.Format("{0}*.{1}", VideoItem.Name.Replace(VideoItem.Extension, ""), sSubTitleType)
-                //      , SearchOption.TopDirectoryOnly);
-
-                //    if (fiSubTitleList.Length > 0)
-                //    {
-                        
-                //    }
-
-                //}
-
-                //if (bchkAC3 == true)
-                //{
-                //    sSubTitleType = "srt";
-                //    //搜尋符合的SubTilte
-                //    DirectoryInfo diTemp = VideoItem.Directory;
-                //    FileInfo[] fiSubTitleList = diTemp.GetFiles(
-                //      string.Format("{0}*.{1}", VideoItem.Name.Replace(VideoItem.Extension, ""), sSubTitleType)
-                //      , SearchOption.TopDirectoryOnly);
-
-                //    if (fiSubTitleList.Length > 0)
-                //    {
-                //        ri.Msg = VideoItem.Name;
-                //        bw.ReportProgress(1, ri);
-                //        //執行合併檔案
-                //        ProcMergeMkvSrt(VideoItem, fiSubTitleList[0], bw);
-                //    }
-
-                //}
             }
-
-
 
             ri.Msg = "";
             bw.ReportProgress(1, ri);
-
         }
 
         private void Proc_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-
             ReportInfo ri = e.UserState as ReportInfo;
 
             if (ri.Type == "sub")
@@ -372,8 +295,6 @@ namespace ChrisTools
                     ShowRichTextStatus1(ri.Msg);
                 }
             }
-
-
         }
         private void Proc_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -384,7 +305,6 @@ namespace ChrisTools
         {
             ClearForm();
 
-
             BackgroundWorker bw = new BackgroundWorker();
             //回報進程
             bw.WorkerReportsProgress = true;
@@ -394,10 +314,8 @@ namespace ChrisTools
             bw.ProgressChanged += new ProgressChangedEventHandler(Proc_ProgressChanged);
             //加入RunWorkerCompleted
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerCompleted);
-            //傳遞參數
-            //object i = new object();
-            //執行程序
 
+            //傳遞參數
             var p = new
             {
                 path = txtTransPath.Text,
@@ -405,6 +323,8 @@ namespace ChrisTools
                 chkDTS = radDTS.Checked,
                 chkAAC = radAAC.Checked
             };
+
+            //執行程序
             bw.RunWorkerAsync(p);
         }
     }
@@ -412,8 +332,6 @@ namespace ChrisTools
 
     public class Tool007Helper
     {
-
-
         public string checkMkvToolExe(string sMkvtoolPath)
         {
             string sResult = "";
@@ -428,8 +346,5 @@ namespace ChrisTools
 
             return sResult;
         }
-
-
-
     }
 }

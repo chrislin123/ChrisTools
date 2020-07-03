@@ -1008,7 +1008,7 @@ namespace ChrisTools
                 //完成壓縮檔移除非RAR檔案
                 FileInfo[] FileList = new DirectoryInfo(sPath).GetFiles("*.*", SearchOption.TopDirectoryOnly);
                 foreach (FileInfo item in FileList)
-                {   
+                {
                     if (item.Extension.ToLower() == ".rar" == false)
                     {
                         item.Delete();
@@ -1017,6 +1017,32 @@ namespace ChrisTools
             }
 
             ShowRichTextStatus1(string.Format("[完成]壓縮檔案完成：{0}", sPath));
+        }
+
+        public static bool IsFileInUse(string fileName)
+        {
+            bool inUse = true;
+
+            FileStream fs = null;
+            try
+            {
+
+                fs = new FileStream(fileName, FileMode.Open, FileAccess.Read,
+
+                FileShare.None);
+
+                inUse = false;
+            }
+            catch
+            {
+            }
+            finally
+            {
+                if (fs != null)
+
+                    fs.Close();
+            }
+            return inUse;//true表示正在使用,false沒有使用  
         }
 
         private void Proc_RunWorkerFinish256MKVSRTCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -1033,6 +1059,16 @@ namespace ChrisTools
             {
                 if (item.Extension.ToLower() != ".mkv")
                 {
+                    //int i = 0;
+                    //while (item.Exists)
+                    //{
+                    //    if (i > 10) break;
+                    //    if (IsFileInUse(item.FullName) == false) item.Delete();
+
+                    //    System.Threading.Thread.Sleep(500);
+                    //    i++;
+                    //}
+
                     item.Delete();
                 }
             }
@@ -1049,7 +1085,7 @@ namespace ChrisTools
                     }
                 }
             }
-            
+
 
             //重新命名檔案
             FileList = new DirectoryInfo(sPath).GetFiles("*.*", SearchOption.TopDirectoryOnly);
@@ -1088,7 +1124,7 @@ namespace ChrisTools
 
         }
 
-        
+
 
         private void btnSplit_Click(object sender, EventArgs e)
         {
@@ -1153,9 +1189,10 @@ namespace ChrisTools
 
 
             //取得所有資料夾
-            DirectoryInfo[] diAll = di.GetDirectories("*", SearchOption.AllDirectories);
+            DirectoryInfo[] diAll = di.GetDirectories("*", SearchOption.TopDirectoryOnly);
             List<DirectoryInfo> liAll = diAll.ToList();
-            liAll.Add(di);
+            //如果沒底下資料夾代表，本身資料夾進行程序
+            if (liAll.Count == 0) liAll.Add(di);
 
             //處理MP4
             foreach (DirectoryInfo diSub in liAll)
@@ -1477,7 +1514,32 @@ namespace ChrisTools
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
+
+            string path = @"d:\tblRainError_log.sql";
+
+            // This text is added only once to the file.
+            if (!File.Exists(path))
+            {
+                // Create a file to write to.
+                string createText = "Hello and Welcome" + Environment.NewLine;
+                File.WriteAllText(path, createText, Encoding.UTF8);
+            }
+
+            // This text is always added, making the file longer over time
+            // if it is not deleted.
+            string appendText = "This is extra text" + Environment.NewLine;
+            File.AppendAllText(path, appendText, Encoding.UTF8);
+
+            // Open the file to read from.
+            string readText = File.ReadAllText(path);
+            Console.WriteLine(readText);
+
+
+
+            return;
+
+
+
 
             FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.*", SearchOption.AllDirectories);
 
@@ -1504,7 +1566,7 @@ namespace ChrisTools
                 //string sDateName = item.Name.Substring(0,5);
 
                 //string sTempName = sFileName.Replace(sDateName, "");
-                
+
 
                 //string[] sa = sTempName.Split('.');
                 //string sStoryName = "";
@@ -1528,7 +1590,7 @@ namespace ChrisTools
 
 
                 //string sNewFileName = string.Format("{0}{1}", sDateName, sStoryName) + item.Extension;
-                string sNewFileName = string.Format("{0}{1}", sFileName, item.Extension)  ;
+                string sNewFileName = string.Format("{0}{1}", sFileName, item.Extension);
 
 
                 string sFullRename = Path.Combine(item.DirectoryName, sNewFileName);

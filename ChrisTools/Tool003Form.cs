@@ -108,17 +108,19 @@ namespace ChrisTools
                 //新增擋案名稱智能判斷
                 //1.資料夾名稱分析，預測檔名
                 DirectoryInfo di = new DirectoryInfo(txtFrom.Text);
-                if (di.Name.Contains("]") == true)
-                {
-                    //取得"]"後的名稱
-                    string TempString = di.Name.Substring(di.Name.IndexOf("]") + 1, di.Name.Length - di.Name.IndexOf("]") - 1);
+                //if (di.Name.Contains("]") == true)
+                //{
+                //    //取得"]"後的名稱
+                //    string TempString = di.Name.Substring(di.Name.IndexOf("]") + 1, di.Name.Length - di.Name.IndexOf("]") - 1);
 
-                    NewNameText.Text = TempString + ".E{0}";
-                }
-                else
-                {
-                    NewNameText.Text = di.Name + ".E{0}";
-                }
+                //    NewNameText.Text = TempString + ".E{0}";
+                //}
+                //else
+                //{
+                //    NewNameText.Text = di.Name + ".E{0}";
+                //}
+                // 1090703 直接使用資料夾名稱再進行編碼
+                NewNameText.Text = di.Name + ".E{0}";
 
                 int idx = 0;
                 int iTemp = 0;
