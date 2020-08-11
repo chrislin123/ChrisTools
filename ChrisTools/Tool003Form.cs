@@ -66,10 +66,25 @@ namespace ChrisTools
                 fi.MoveTo(Path.Combine(fi.DirectoryName, NewFileName + fi.Extension));
             }
 
+            //todo 最後一集的相關檔案都要加上.END的字樣
+            fiList = new DirectoryInfo(txtFrom.Text).GetFiles("*.END.*", SearchOption.TopDirectoryOnly);
+            foreach (FileInfo fi in fiList)
+            {
+                string EndFileName = fi.Name.Replace(fi.Extension, "").Replace(".END","");
+                FileInfo[] fiEndList = new DirectoryInfo(txtFrom.Text).GetFiles("*"  + EndFileName + ".*", SearchOption.TopDirectoryOnly);
+
+                foreach (FileInfo item in fiEndList)
+                {
+                    if (item.Name.Contains(".END") == false)
+                    {
+                        //清單中，如果不包含.END字樣，都要加上.END字樣
+                        string NewFileName = item.Name.Replace(item.Extension,"")+ ".END"+ item.Extension;
+                        item.MoveTo(Path.Combine(item.DirectoryName, NewFileName ));
+                    }
+                }
+            }
+
             BaseShowStatus("執行完畢！");
-
-
-
         }
 
         private void TestButton_Click(object sender, EventArgs e)
