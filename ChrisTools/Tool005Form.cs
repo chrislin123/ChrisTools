@@ -13,6 +13,9 @@ using M10.lib.modelChrisTools;
 using M10.lib;
 using Microsoft.VisualBasic;
 using System.Text.RegularExpressions;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ChrisTools
 {
@@ -680,7 +683,7 @@ namespace ChrisTools
 
 
 
-        private void ProcMergeMkvSrt(FileInfo fiMKV, FileInfo fiSubTitle, BackgroundWorker bw)
+        private void ProcMergeMkvSrt(FileInfo fiMKV, FileInfo fiSubTitle, string sPathSave, BackgroundWorker bw)
         {
             //建立轉檔資料夾
             //string sMkvTrans = "MkvTrans";
@@ -688,25 +691,20 @@ namespace ChrisTools
 
             string sMkvToolPath = txtMkvToolPath.Text;
             string sMkvtoolnixPath = Path.Combine(sMkvToolPath, "mkvmerge.exe");
-            //string sMkvextractPath = Path.Combine(sMkvToolPath, "mkvextract.exe");
-            //string sFilePath = pFileInfo.FullName;
-            //FileInfo fi = new FileInfo(sFilePath);
 
             string sSubTitleType = "";
             if (fiSubTitle.Extension.ToUpper() == ".ASS") sSubTitleType = "(ass)";
             if (fiSubTitle.Extension.ToUpper() == ".SRT") sSubTitleType = "(srt)";
 
-
+            //1090811 改存到指定資料夾中
             //FileInfo fiTarget = new FileInfo(Path.Combine(
-            //   fiMKV.DirectoryName, sMkvTrans, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
+            //   fiMKV.DirectoryName, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
             FileInfo fiTarget = new FileInfo(Path.Combine(
-               fiMKV.DirectoryName, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
+               sPathSave, fiMKV.Name.Replace(fiMKV.Extension, "") + sSubTitleType + ".mkv"));
 
             //取得資訊
             //string sGetInfoCommand = string.Format(@"{0} -i ""{1}"" ", sMkvtoolnixPath, fiMKV.FullName);
             //List<string> TempList = ExecuteCommandSync(sGetInfoCommand);
-
-
 
             string sGetInfoCommand = string.Format(@"{0} -o ""{1}"" -S ""{2}"" ""{3}""", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName, fiSubTitle.FullName);
             //sGetInfoCommand = string.Format(@"{0} -o {1} {2} {3}", sMkvtoolnixPath, fiTarget.FullName, fiMKV.FullName, fiSRT.FullName);
@@ -763,10 +761,18 @@ namespace ChrisTools
             Boolean bchkmp4 = p.chkmp4;
 
             DirectoryInfo di = new DirectoryInfo(sPath);
+            string sPathMkvASS = Path.Combine(sPath, "Mkv-Ass");
+            string sPathMkvSRT = Path.Combine(sPath, "Mkv-Srt");
+
 
             string sVideoType = "";
             if (bchkmp4 == true) sVideoType = "mp4";
-            if (bchkmkv == true) sVideoType = "mkv";
+            if (bchkmkv == true)
+            {
+                sVideoType = "mkv";
+                Directory.CreateDirectory(sPathMkvASS);
+                Directory.CreateDirectory(sPathMkvSRT);
+            }
 
             //取得所有影像資料
             FileInfo[] VideoList = di.GetFiles("*." + sVideoType, SearchOption.AllDirectories);
@@ -794,7 +800,7 @@ namespace ChrisTools
                         ri.Msg = VideoItem.Name;
                         bw.ReportProgress(1, ri);
                         //執行合併檔案
-                        ProcMergeMkvSrt(VideoItem, fiSubTitleList[0], bw);
+                        ProcMergeMkvSrt(VideoItem, fiSubTitleList[0], sPathMkvASS, bw);
                     }
 
                 }
@@ -813,7 +819,7 @@ namespace ChrisTools
                         ri.Msg = VideoItem.Name;
                         bw.ReportProgress(1, ri);
                         //執行合併檔案
-                        ProcMergeMkvSrt(VideoItem, fiSubTitleList[0], bw);
+                        ProcMergeMkvSrt(VideoItem, fiSubTitleList[0], sPathMkvSRT, bw);
                     }
 
                 }
@@ -1604,7 +1610,383 @@ namespace ChrisTools
                 lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
             }
         }
+
+        private async void btnProcSRTASS_Click(object sender, EventArgs e)
+        {
+
+            //var test = await ConvertToTC("test");
+            //using (var client = new HttpClient())
+            //{
+                
+            //    client.Timeout = TimeSpan.FromSeconds(3);
+            //    string ss = "http://api.zhconvert.org/convert?converter=Traditional&text=" + "test";
+            //    HttpResponseMessage response = await client.GetAsync(ss);
+
+            //    //回傳轉為JSON文字
+            //    var customerJsonString = response.Content.ReadAsStringAsync();
+
+            //    // Deserialise the data (include the Newtonsoft JSON Nuget package if you don't already have it)
+            //    //var deserialized = JsonConvert.DeserializeObject(customerJsonString);
+
+            //    JObject jobj = JObject.Parse(customerJsonString.Result);
+            //    string sResult = jobj["data"]["text"].ToString();
+            //}
+
+
+            //return;
+
+
+
+            List<string> FileList = new List<string>();
+
+            Dictionary<string, List<SrtInfo>> AllSrtCollection = new Dictionary<string, List<SrtInfo>>();
+
+            //判斷資料夾中的字幕檔格式(SRT)
+            FileInfo[] fiListSrt = new DirectoryInfo(txtTransPath.Text).GetFiles("*.srt", SearchOption.TopDirectoryOnly);
+
+            //解析SRT
+            foreach (FileInfo fi in fiListSrt)
+            {
+                //檔案名稱存在就不進行轉檔
+                if (AllSrtCollection.ContainsKey(fi.Name.Replace(fi.Extension, "")) == true) continue;
+
+                //string text = File.ReadAllText(fi.FullName, Encoding.GetEncoding(950));
+                string text = File.ReadAllText(fi.FullName, Encoding.UTF8);
+                List<string> StringList = text.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList<string>();
+
+                //字幕清單
+                List<SrtInfo> siList = new List<SrtInfo>();
+                SrtInfo si = new SrtInfo();
+                Boolean bIsStart = false;
+                foreach (string LoopItem in StringList)
+                {
+                    //空白代表一個字幕的內容，加入清單中
+                    if (LoopItem == "")
+                    {
+                        //有資料才新增到字幕清單中
+                        if (si.Start != "") siList.Add(si);
+
+                        si = new SrtInfo();
+                        bIsStart = false;
+                        continue;
+                    }
+
+                    //代表取得時間區間資料
+                    if (LoopItem.Contains(" --> ") == true)
+                    {
+                        //註記下一個為字幕起始
+                        bIsStart = true;
+
+                        string[] times = LoopItem.Split(new string[1] { " --> " }, StringSplitOptions.RemoveEmptyEntries);
+
+                        si.Start = times[0];
+                        si.End = times[1];
+                        continue;
+                    }
+                    //存入字幕序列中
+                    if (bIsStart == true)
+                    {
+                        si.ContentList.Add(LoopItem);
+                    }
+                }
+
+
+                AllSrtCollection.Add(fi.Name.Replace(fi.Extension, ""), siList);
+            }
+
+            //判斷資料夾中的字幕檔格式(ASS)
+            FileInfo[] fiListass = new DirectoryInfo(txtTransPath.Text).GetFiles("*.ass", SearchOption.TopDirectoryOnly);
+            //解析SRT
+            foreach (FileInfo fi in fiListass)
+            {
+                //檔案名稱存在就不進行轉檔
+                if (AllSrtCollection.ContainsKey(fi.Name.Replace(fi.Extension, "")) == true) continue;
+
+                string text = File.ReadAllText(fi.FullName, Encoding.UTF8);
+                //檢體轉繁體
+                //var sss = ConvertToTC(text);
+                //text = sss.Result;
+
+                List<string> StringList = text.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList<string>();
+
+                //字幕清單
+                List<SrtInfo> siList = new List<SrtInfo>();
+                SrtInfo si = new SrtInfo();
+                Boolean bIsStart = false;
+                foreach (string LoopItem in StringList)
+                {
+                    if (LoopItem == "") continue;
+
+                    //代表取得時間區間資料
+                    if (LoopItem.Contains("[Events]") == true)
+                    {
+                        //註記下一個為字幕起始
+                        bIsStart = true;
+                        continue;
+                    }
+
+                    //存入字幕序列中
+                    if (bIsStart == true)
+                    {
+                        si = new SrtInfo();
+
+                        string[] Formats = LoopItem.Split(',');
+
+                        //排除格式行
+                        if (Formats[0] == "Format: Layer") continue;
+
+                        //轉換為SRT時間格式(0:08:45.73 => 00:27:14,750)
+                        si.Start = ConvertToSrtTime(Formats[1]);
+                        si.End = ConvertToSrtTime(Formats[2]);
+
+                        string[] Contents = Formats[9].Split(new string[] { "\\N" }, StringSplitOptions.None);
+                        foreach (string item in Contents)
+                        {
+                            si.ContentList.Add(item);
+                        }
+
+                        //新增到清單中
+                        siList.Add(si);
+
+                    }
+                }
+
+
+                AllSrtCollection.Add(fi.Name.Replace(fi.Extension, ""), siList);
+            }
+
+           
+            //原始檔案移動到Old資料夾
+            string sPathTempOld = Path.Combine(txtTransPath.Text, "Old");
+            Directory.CreateDirectory(sPathTempOld);
+            foreach (FileInfo item in fiListSrt)
+            {
+                if (File.Exists(Path.Combine(sPathTempOld, item.Name)) == true)
+                {
+                    File.Delete(Path.Combine(sPathTempOld, item.Name));
+                }
+                item.MoveTo(Path.Combine(sPathTempOld, item.Name));
+            }
+            foreach (FileInfo item in fiListass)
+            {
+                if (File.Exists(Path.Combine(sPathTempOld, item.Name)) == true )
+                {
+                    File.Delete(Path.Combine(sPathTempOld, item.Name));
+                }
+                item.MoveTo(Path.Combine(sPathTempOld, item.Name));
+            }
+
+            //簡體轉繁體
+            int iIdxFile = 1;
+            foreach (var item in AllSrtCollection)
+            {
+                int iIdx = 1;
+                foreach (SrtInfo si in item.Value) 
+                {
+                    BaseShowStatus(string.Format("[檔案{3}/{4}][數量{0}/{1}]簡體轉繁體-{2}", 
+                        iIdx.ToString(), item.Value.Count.ToString(), item.Key, iIdxFile.ToString(),AllSrtCollection.Count()));
+                    List<string> TempList = new List<string>();
+
+                    foreach (string Content in si.ContentList)
+                    {
+                        TempList.Add(await ConvertToTC(Content));
+                    }
+
+                    si.ContentList = TempList;
+
+                    iIdx++;
+                }
+
+                iIdxFile++;
+            }
+
+
+            //建立暫存資料夾
+            //string sTempSrtPath = Path.Combine(txtTransPath.Text, "Srt");
+            //string sTempASSPath = Path.Combine(txtTransPath.Text, "Ass");
+            //Directory.CreateDirectory(sTempSrtPath);
+            //Directory.CreateDirectory(sTempASSPath);
+            string sTempSrtPath = txtTransPath.Text;
+            string sTempASSPath = txtTransPath.Text;
+
+
+            //字幕資料轉SRT格式
+            foreach (var item in AllSrtCollection)
+            {
+                //建立檔案
+                string sFullFileName = Path.Combine(sTempSrtPath, item.Key + ".srt");
+                using (FileStream fileStream = new FileStream(sFullFileName, FileMode.Create))
+                {
+                    //切記開了要關,不然會被佔用而無法修改喔!!!
+                    fileStream.Close();
+                }
+
+                //寫入SRT檔案
+                using (StreamWriter sw = new StreamWriter(sFullFileName))
+                {
+                    int iIndex = 1;
+                    foreach (SrtInfo si in item.Value)
+                    {
+                        sw.WriteLine(iIndex.ToString());
+
+                        string sTime = string.Format("{0} --> {1}", si.Start, si.End);
+                        sw.WriteLine(sTime);
+
+                        foreach (string content in si.ContentList)
+                        {
+                            sw.WriteLine(content);
+                        }
+                        //寫入空白當作每個字幕間格
+                        sw.WriteLine("");
+
+                        iIndex++;
+                    }
+                }
+            }
+
+
+            //字幕資料轉ASS格式
+            foreach (var item in AllSrtCollection)
+            {
+                //建立檔案
+                string sFullFileName = Path.Combine(sTempASSPath, item.Key + ".ass");
+                using (FileStream fileStream = new FileStream(sFullFileName, FileMode.Create))
+                {
+                    //切記開了要關,不然會被佔用而無法修改喔!!!
+                    fileStream.Close();
+                }
+
+                //寫入ASS檔案
+                using (StreamWriter sw = new StreamWriter(sFullFileName))
+                {
+                    //寫入表頭
+                    sw.WriteLine("[Script Info]");
+                    sw.WriteLine("; Script generated by Aegisub 3.2.2");
+                    sw.WriteLine("; http://www.aegisub.org/");
+                    sw.WriteLine("Title: Default Aegisub file");
+                    sw.WriteLine("ScriptType: v4.00+");
+                    sw.WriteLine("WrapStyle: 0");
+                    sw.WriteLine("ScaledBorderAndShadow: yes");
+                    sw.WriteLine("YCbCr Matrix: None");
+                    sw.WriteLine("");
+                    sw.WriteLine("[Aegisub Project Garbage]");
+                    sw.WriteLine("Active Line: 10");
+                    sw.WriteLine("");
+                    sw.WriteLine("[V4+ Styles]");
+                    sw.WriteLine("Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding");
+                    sw.WriteLine("Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1");
+                    sw.WriteLine("Style: DefaultMp4F28,微軟正黑體,28,&H00FFFFFF,&H0300FFFF,&H00000000,&H96000000,-1,0,0,0,100,100,0,0,1,0.5,0.3,2,10,10,1,1");
+                    sw.WriteLine("Style: DefaultMp4F26,微軟正黑體,26,&H00FFFFFF,&H0300FFFF,&H00000000,&H96000000,-1,0,0,0,100,100,0,0,1,0.5,0.3,2,10,10,1,1");
+                    sw.WriteLine("");
+                    sw.WriteLine("[Events]");
+                    sw.WriteLine("Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text");
+
+                    //寫入內容
+                    int iIndex = 1;
+                    foreach (SrtInfo si in item.Value)
+                    {
+                        //Dialogue: 0,0:00:04.49,0:00:05.91,DefaultMp4F26,,0,0,0,,[第1集]
+                        List<string> AssList = new List<string>();
+                        AssList.Add("Dialogue: 0");
+                        //開始時間
+                        AssList.Add(ConvertToAssTime(si.Start));
+                        //結束時間
+                        AssList.Add(ConvertToAssTime(si.End));
+                        //格式
+                        AssList.Add("DefaultMp4F26");
+                        AssList.Add("");
+                        AssList.Add("0");
+                        AssList.Add("0");
+                        AssList.Add("0");
+                        AssList.Add("");
+                        //串聯字幕
+                        AssList.Add(string.Join("\\N", si.ContentList));
+
+                        string s = string.Join(",", AssList);
+                        sw.WriteLine(s);
+                        iIndex++;
+                    }
+                }
+            }
+
+        }
+
+
+        /// <summary>
+        /// ASS時間格式轉換SRT時間格式(0:08:45.73 => 00:27:14,750)
+        /// </summary>
+        /// <param name="sAssTime"></param>
+        /// <returns></returns>
+        private string ConvertToSrtTime(string sAssTime)
+        {
+            string result = string.Empty;
+
+            string[] ass = sAssTime.Split(new char[] { ':', '.' });
+
+            result = string.Format("{0}:{1}:{2},{3}", ass[0].PadLeft(2, '0'), ass[1], ass[2], ass[3].PadRight(3, '0'));
+
+            return result;
+        }
+
+        /// <summary>
+        /// SRT時間格式轉換ASS時間格式(00:27:14,750 => 0:08:45.73)
+        /// </summary>
+        /// <param name="sSrtTime"></param>
+        /// <returns></returns>
+        private string ConvertToAssTime(string sSrtTime)
+        {
+            string result = string.Empty;
+
+            string[] Srt = sSrtTime.Split(new char[] { ':', ',' });
+
+            result = string.Format("{0}:{1}:{2}.{3}", Srt[0].Substring(1, 1), Srt[1], Srt[2], Srt[3].Substring(0, 2));
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// 簡體轉繁體 Call API From 繁化姬 
+        /// </summary>
+        /// <param name="sSource"></param>
+        /// <returns></returns>
+        private async Task<string> ConvertToTC(string sSource)
+        {
+            string sResult = "";
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    //client.Timeout = TimeSpan.FromSeconds(3);
+                    string ss = "http://api.zhconvert.org/convert1?converter=Traditional&text=" + sSource;
+                    HttpResponseMessage response = await client.GetAsync(ss);
+
+                    //如果失敗會錯誤
+                    response.EnsureSuccessStatusCode();
+                        
+                    //回傳轉為JSON文字
+                    var customerJsonString = response.Content.ReadAsStringAsync();
+
+                    // Deserialise the data (include the Newtonsoft JSON Nuget package if you don't already have it)
+                    //var deserialized = JsonConvert.DeserializeObject(customerJsonString);
+
+                    JObject jobj = JObject.Parse(customerJsonString.Result);
+                    sResult = jobj["data"]["text"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {   
+                sResult = sSource;
+                throw new Exception("[呼叫繁化姬轉檔異常]無法連線至，請確認連線狀態");
+            }
+            
+
+            return sResult;
+        }
     }
+
+
 
     public class ReportInfo
     {
@@ -1677,6 +2059,15 @@ namespace ChrisTools
             _Msg = string.Empty;
         }
     }
+
+    public class SrtInfo
+    {
+        public string Start = string.Empty;
+        public string End = string.Empty;
+        public string Style = string.Empty;
+        public List<string> ContentList = new List<string>();
+    }
+
 
     public class Tool005Helper
     {

@@ -59,6 +59,7 @@
             this.btnFormatFile = new System.Windows.Forms.Button();
             this.ddlFormatFile = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.btnProcSRTASS = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -151,7 +152,7 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(23, 208);
+            this.lblStatus.Location = new System.Drawing.Point(23, 273);
             this.lblStatus.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(29, 12);
@@ -160,7 +161,7 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(17, 228);
+            this.richTextBox1.Location = new System.Drawing.Point(17, 293);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(606, 101);
             this.richTextBox1.TabIndex = 25;
@@ -169,7 +170,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(213, 206);
+            this.progressBar1.Location = new System.Drawing.Point(213, 271);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(410, 16);
             this.progressBar1.TabIndex = 26;
@@ -177,7 +178,7 @@
             // lbltotal
             // 
             this.lbltotal.AutoSize = true;
-            this.lbltotal.Location = new System.Drawing.Point(23, 186);
+            this.lbltotal.Location = new System.Drawing.Point(23, 251);
             this.lbltotal.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbltotal.Name = "lbltotal";
             this.lbltotal.Size = new System.Drawing.Size(29, 12);
@@ -302,7 +303,7 @@
             // 
             // progressBar2
             // 
-            this.progressBar2.Location = new System.Drawing.Point(213, 184);
+            this.progressBar2.Location = new System.Drawing.Point(213, 249);
             this.progressBar2.Name = "progressBar2";
             this.progressBar2.Size = new System.Drawing.Size(410, 16);
             this.progressBar2.TabIndex = 39;
@@ -353,7 +354,7 @@
             // 
             // btnFormatFile
             // 
-            this.btnFormatFile.Location = new System.Drawing.Point(17, 338);
+            this.btnFormatFile.Location = new System.Drawing.Point(17, 403);
             this.btnFormatFile.Margin = new System.Windows.Forms.Padding(6);
             this.btnFormatFile.Name = "btnFormatFile";
             this.btnFormatFile.Size = new System.Drawing.Size(138, 23);
@@ -376,7 +377,7 @@
             "[德國]-[德語][官譯]",
             "[法國]-[法語][官譯]",
             "[中國]-[國語][官譯]"});
-            this.ddlFormatFile.Location = new System.Drawing.Point(178, 339);
+            this.ddlFormatFile.Location = new System.Drawing.Point(178, 404);
             this.ddlFormatFile.Name = "ddlFormatFile";
             this.ddlFormatFile.Size = new System.Drawing.Size(315, 20);
             this.ddlFormatFile.TabIndex = 45;
@@ -392,11 +393,23 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // btnProcSRTASS
+            // 
+            this.btnProcSRTASS.Location = new System.Drawing.Point(15, 183);
+            this.btnProcSRTASS.Margin = new System.Windows.Forms.Padding(6);
+            this.btnProcSRTASS.Name = "btnProcSRTASS";
+            this.btnProcSRTASS.Size = new System.Drawing.Size(79, 46);
+            this.btnProcSRTASS.TabIndex = 47;
+            this.btnProcSRTASS.Text = "字幕轉換及處理";
+            this.btnProcSRTASS.UseVisualStyleBackColor = true;
+            this.btnProcSRTASS.Click += new System.EventHandler(this.btnProcSRTASS_Click);
+            // 
             // Tool005Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(759, 444);
+            this.ClientSize = new System.Drawing.Size(759, 476);
+            this.Controls.Add(this.btnProcSRTASS);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.ddlFormatFile);
             this.Controls.Add(this.btnFormatFile);
@@ -470,5 +483,6 @@
         private System.Windows.Forms.Button btnFormatFile;
         private System.Windows.Forms.ComboBox ddlFormatFile;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnProcSRTASS;
     }
 }
