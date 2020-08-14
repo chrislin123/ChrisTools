@@ -1613,29 +1613,20 @@ namespace ChrisTools
 
         private async void btnProcSRTASS_Click(object sender, EventArgs e)
         {
+            ProcSRTASS(true);
+        }
 
-            //var test = await ConvertToTC("test");
-            //using (var client = new HttpClient())
-            //{
-                
-            //    client.Timeout = TimeSpan.FromSeconds(3);
-            //    string ss = "http://api.zhconvert.org/convert?converter=Traditional&text=" + "test";
-            //    HttpResponseMessage response = await client.GetAsync(ss);
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ProcSRTASS(false);
+        }
 
-            //    //回傳轉為JSON文字
-            //    var customerJsonString = response.Content.ReadAsStringAsync();
-
-            //    // Deserialise the data (include the Newtonsoft JSON Nuget package if you don't already have it)
-            //    //var deserialized = JsonConvert.DeserializeObject(customerJsonString);
-
-            //    JObject jobj = JObject.Parse(customerJsonString.Result);
-            //    string sResult = jobj["data"]["text"].ToString();
-            //}
-
-
-            //return;
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="IsTransToTC">是否簡體轉繁體</param>
+        private async void ProcSRTASS(bool IsTransToTC)         
+        {
 
             List<string> FileList = new List<string>();
 
@@ -1755,7 +1746,7 @@ namespace ChrisTools
                 AllSrtCollection.Add(fi.Name.Replace(fi.Extension, ""), siList);
             }
 
-           
+
             //原始檔案移動到Old資料夾
             string sPathTempOld = Path.Combine(txtTransPath.Text, "Old");
             Directory.CreateDirectory(sPathTempOld);
@@ -1769,7 +1760,7 @@ namespace ChrisTools
             }
             foreach (FileInfo item in fiListass)
             {
-                if (File.Exists(Path.Combine(sPathTempOld, item.Name)) == true )
+                if (File.Exists(Path.Combine(sPathTempOld, item.Name)) == true)
                 {
                     File.Delete(Path.Combine(sPathTempOld, item.Name));
                 }
@@ -1777,29 +1768,31 @@ namespace ChrisTools
             }
 
             //簡體轉繁體
-            int iIdxFile = 1;
-            foreach (var item in AllSrtCollection)
+            if (IsTransToTC == true)
             {
-                int iIdx = 1;
-                foreach (SrtInfo si in item.Value) 
+                int iIdxFile = 1;
+                foreach (var item in AllSrtCollection)
                 {
-                    BaseShowStatus(string.Format("[檔案{3}/{4}][數量{0}/{1}]簡體轉繁體-{2}", 
-                        iIdx.ToString(), item.Value.Count.ToString(), item.Key, iIdxFile.ToString(),AllSrtCollection.Count()));
-                    List<string> TempList = new List<string>();
-
-                    foreach (string Content in si.ContentList)
+                    int iIdx = 1;
+                    foreach (SrtInfo si in item.Value)
                     {
-                        TempList.Add(await ConvertToTC(Content));
+                        BaseShowStatus(string.Format("[檔案{3}/{4}][數量{0}/{1}]簡體轉繁體-{2}",
+                            iIdx.ToString(), item.Value.Count.ToString(), item.Key, iIdxFile.ToString(), AllSrtCollection.Count()));
+                        List<string> TempList = new List<string>();
+
+                        foreach (string Content in si.ContentList)
+                        {
+                            TempList.Add(await ConvertToTC(Content));
+                        }
+
+                        si.ContentList = TempList;
+
+                        iIdx++;
                     }
 
-                    si.ContentList = TempList;
-
-                    iIdx++;
+                    iIdxFile++;
                 }
-
-                iIdxFile++;
             }
-
 
             //建立暫存資料夾
             //string sTempSrtPath = Path.Combine(txtTransPath.Text, "Srt");
@@ -1912,6 +1905,7 @@ namespace ChrisTools
         }
 
 
+
         /// <summary>
         /// ASS時間格式轉換SRT時間格式(0:08:45.73 => 00:27:14,750)
         /// </summary>
@@ -1984,6 +1978,8 @@ namespace ChrisTools
 
             return sResult;
         }
+
+       
     }
 
 

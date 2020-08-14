@@ -60,6 +60,7 @@
             this.ddlFormatFile = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
             this.btnProcSRTASS = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -400,15 +401,27 @@
             this.btnProcSRTASS.Name = "btnProcSRTASS";
             this.btnProcSRTASS.Size = new System.Drawing.Size(79, 46);
             this.btnProcSRTASS.TabIndex = 47;
-            this.btnProcSRTASS.Text = "字幕轉換及處理";
+            this.btnProcSRTASS.Text = "字幕轉換及處理(網路轉繁體)";
             this.btnProcSRTASS.UseVisualStyleBackColor = true;
             this.btnProcSRTASS.Click += new System.EventHandler(this.btnProcSRTASS_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(106, 184);
+            this.button3.Margin = new System.Windows.Forms.Padding(6);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(79, 46);
+            this.button3.TabIndex = 48;
+            this.button3.Text = "字幕轉換及處理(產生SRT跟ASS)";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // Tool005Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 476);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.btnProcSRTASS);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.ddlFormatFile);
@@ -484,5 +497,6 @@
         private System.Windows.Forms.ComboBox ddlFormatFile;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnProcSRTASS;
+        private System.Windows.Forms.Button button3;
     }
 }
