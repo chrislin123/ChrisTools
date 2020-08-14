@@ -1959,7 +1959,7 @@ namespace ChrisTools
                 using (var client = new HttpClient())
                 {
                     //client.Timeout = TimeSpan.FromSeconds(3);
-                    string ss = "http://api.zhconvert.org/convert1?converter=Traditional&text=" + sSource;
+                    string ss = "http://api.zhconvert.org/convert?converter=Traditional&text=" + sSource;
                     HttpResponseMessage response = await client.GetAsync(ss);
 
                     //如果失敗會錯誤
