@@ -256,6 +256,12 @@ namespace ChrisTools
                     string sTrackID = TrackSplit[0].Replace("Track ID ", "").Trim();
                     string sTrackType = TrackSplit[1].Replace("subtitles (", "").Replace(")", "").Trim();
 
+                    //指定
+                    if (TraceIDText.Text != "")
+                    {
+                        sTrackID = TraceIDText.Text;
+                    }
+
                     string sCommandExt = string.Format(@"{0} tracks ""{1}"" {2}:""{3}.{4}"" "
                                                 , sMkvextractPath
                                                 , sFilePath
@@ -264,6 +270,9 @@ namespace ChrisTools
                                                 , TransExtension(sTrackType));
 
                     ExecuteCommandSync(sCommandExt, bw);
+
+                    //只擷取一個字幕檔案
+                    return;
                 }
             }
 
@@ -548,7 +557,21 @@ namespace ChrisTools
                 return;
             }
 
-            DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
+            //調整資料夾及檔案名稱
+            ProcFileNameTune(txtTransPath.Text);
+
+            ShowStatus("批次更新檔案名稱 完成");
+        }
+
+
+        /// <summary>
+        /// 調整資料夾及檔案名稱
+        /// </summary>
+        /// <param name="sFilePath"></param>
+        private void ProcFileNameTune(string sFilePath)
+        {
+            //DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
+            DirectoryInfo di = new DirectoryInfo(sFilePath);
 
             List<FileInfo> tttt = di.GetFiles("*.*", SearchOption.AllDirectories)
               .Where(s => s.Extension.ToLower() == ".mkv" || s.Extension.ToLower() == ".mp4").ToList<FileInfo>();
@@ -632,7 +655,6 @@ namespace ChrisTools
                 Directory.Move(di.FullName, sNewFullName1);
             }
 
-            ShowStatus("批次更新檔案名稱 完成");
         }
 
         private void btnRemoveMKV_Click(object sender, EventArgs e)
@@ -761,8 +783,9 @@ namespace ChrisTools
             Boolean bchkmp4 = p.chkmp4;
 
             DirectoryInfo di = new DirectoryInfo(sPath);
+            
             string sPathMkvASS = Path.Combine(sPath, "Mkv-Ass");
-            string sPathMkvSRT = Path.Combine(sPath, "Mkv-Srt");
+            string sPathMkvSRT = Path.Combine(sPath, "Mkv-Srt", di.Name);
 
 
             string sVideoType = "";
@@ -825,7 +848,9 @@ namespace ChrisTools
                 }
             }
 
-
+            //最後進行檔案名稱正規劃
+            ProcFileNameTune(sPathMkvASS);
+            ProcFileNameTune(sPathMkvSRT);
 
             ri.Msg = "";
             bw.ReportProgress(1, ri);

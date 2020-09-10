@@ -61,6 +61,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.btnProcSRTASS = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.TraceIDText = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -188,7 +190,7 @@
             // 
             // btnBatUnZip
             // 
-            this.btnBatUnZip.Location = new System.Drawing.Point(303, 70);
+            this.btnBatUnZip.Location = new System.Drawing.Point(324, 70);
             this.btnBatUnZip.Margin = new System.Windows.Forms.Padding(6);
             this.btnBatUnZip.Name = "btnBatUnZip";
             this.btnBatUnZip.Size = new System.Drawing.Size(76, 46);
@@ -199,7 +201,7 @@
             // 
             // btnGetSrt
             // 
-            this.btnGetSrt.Location = new System.Drawing.Point(183, 70);
+            this.btnGetSrt.Location = new System.Drawing.Point(155, 70);
             this.btnGetSrt.Margin = new System.Windows.Forms.Padding(6);
             this.btnGetSrt.Name = "btnGetSrt";
             this.btnGetSrt.Size = new System.Drawing.Size(90, 46);
@@ -416,11 +418,31 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // TraceIDText
+            // 
+            this.TraceIDText.Location = new System.Drawing.Point(257, 94);
+            this.TraceIDText.Margin = new System.Windows.Forms.Padding(6);
+            this.TraceIDText.Name = "TraceIDText";
+            this.TraceIDText.Size = new System.Drawing.Size(53, 22);
+            this.TraceIDText.TabIndex = 49;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(257, 76);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 50;
+            this.label1.Text = "擷取軌道";
+            // 
             // Tool005Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 476);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.TraceIDText);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.btnProcSRTASS);
             this.Controls.Add(this.button2);
@@ -498,5 +520,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnProcSRTASS;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox TraceIDText;
+        private System.Windows.Forms.Label label1;
     }
 }
