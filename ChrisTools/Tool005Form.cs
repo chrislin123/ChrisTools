@@ -784,7 +784,7 @@ namespace ChrisTools
 
             DirectoryInfo di = new DirectoryInfo(sPath);
             
-            string sPathMkvASS = Path.Combine(sPath, "Mkv-Ass");
+            string sPathMkvASS = Path.Combine(sPath, "Mkv-Ass", di.Name);
             string sPathMkvSRT = Path.Combine(sPath, "Mkv-Srt", di.Name);
 
 
