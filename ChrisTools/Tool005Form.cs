@@ -1702,7 +1702,11 @@ namespace ChrisTools
                     //存入字幕序列中
                     if (bIsStart == true)
                     {
-                        si.ContentList.Add(LoopItem);
+                        string sTemp = LoopItem;
+                        //排除文字內容異常格式，導致轉檔異常
+                        sTemp = sTemp.Replace("&lrm;", "");
+
+                        si.ContentList.Add(sTemp);
                     }
                 }
 
@@ -1758,7 +1762,11 @@ namespace ChrisTools
                         string[] Contents = Formats[9].Split(new string[] { "\\N" }, StringSplitOptions.None);
                         foreach (string item in Contents)
                         {
-                            si.ContentList.Add(item);
+                            string sTemp = item;
+                            //排除文字內容異常格式，導致轉檔異常
+                            sTemp = sTemp.Replace("&lrm;", "");
+
+                            si.ContentList.Add(sTemp);
                         }
 
                         //新增到清單中
