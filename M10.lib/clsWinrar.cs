@@ -112,8 +112,8 @@ namespace M10.lib
     /// <summary>
     /// 單一檔案打包成Rar，依照設定檔
     /// </summary>
-    /// <param name="RARpatch"></param>
-    /// <param name="SourcePatch">檔案路徑</param>
+    /// <param name="RARpatch">生成RAR的檔案路徑</param>
+    /// <param name="SourcePatch">要壓縮的檔案或資料夾路徑</param>
     /// <param name="SetName">設定檔名稱</param>
     public void CompressRAR(string RARName, string SourcePatch,string SetName)
     {

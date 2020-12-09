@@ -1,21 +1,16 @@
-﻿using System;
+﻿using M10.lib;
+using Microsoft.VisualBasic;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
-using M10.lib.modelChrisTools;
-using M10.lib;
-using Microsoft.VisualBasic;
-using System.Text.RegularExpressions;
-using System.Net.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ChrisTools
 {
@@ -852,6 +847,11 @@ namespace ChrisTools
             ProcFileNameTune(sPathMkvASS);
             ProcFileNameTune(sPathMkvSRT);
 
+
+            //壓縮資料夾
+            RarFolderAll(sPathMkvSRT);
+
+
             ri.Msg = "";
             bw.ReportProgress(1, ri);
             var oResult = new
@@ -860,8 +860,6 @@ namespace ChrisTools
             };
 
             e.Result = oResult;
-
-
         }
 
         private void Proc_DoWorkUnRAR(object sender, DoWorkEventArgs e)
@@ -996,6 +994,24 @@ namespace ChrisTools
 
         }
 
+        private void Proc_DoWorkRARAllFolder(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker bw = sender as BackgroundWorker;
+            dynamic p = e.Argument as dynamic;
+            string sPath = p.path;
+            //string sPath = e.Argument as string;
+            ReportInfo ri = new ReportInfo();
+
+            //壓縮資料夾內容
+            RarFolderAll(sPath);
+
+            ri.Msg = "";
+            bw.ReportProgress(1, ri);
+
+            //參數傳遞到Completed中
+            e.Result = e.Argument;
+        }
+
         private void Proc_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
 
@@ -1034,7 +1050,7 @@ namespace ChrisTools
             string scaller = p.caller;
 
             //特定呼叫程序處理方法
-            if (scaller == "Finish256MKVSRT")
+            if (scaller == "Finish256MKVSRT" || scaller == "RarFolderAll")
             {
                 //完成壓縮檔移除非RAR檔案
                 FileInfo[] FileList = new DirectoryInfo(sPath).GetFiles("*.*", SearchOption.TopDirectoryOnly);
@@ -1090,16 +1106,6 @@ namespace ChrisTools
             {
                 if (item.Extension.ToLower() != ".mkv")
                 {
-                    //int i = 0;
-                    //while (item.Exists)
-                    //{
-                    //    if (i > 10) break;
-                    //    if (IsFileInUse(item.FullName) == false) item.Delete();
-
-                    //    System.Threading.Thread.Sleep(500);
-                    //    i++;
-                    //}
-
                     item.Delete();
                 }
             }
@@ -1116,7 +1122,6 @@ namespace ChrisTools
                     }
                 }
             }
-
 
             //重新命名檔案
             FileList = new DirectoryInfo(sPath).GetFiles("*.*", SearchOption.TopDirectoryOnly);
@@ -1148,20 +1153,13 @@ namespace ChrisTools
                 caller = "Finish256MKVSRT"
             };
 
-
             //執行程序
             bw.RunWorkerAsync(op);
-
-
         }
-
-
 
         private void btnSplit_Click(object sender, EventArgs e)
         {
             DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
-
-
             DirectoryInfo[] DiList = di.GetDirectories("*", SearchOption.AllDirectories);
 
             int idx = 0;
@@ -1210,14 +1208,12 @@ namespace ChrisTools
                 return;
             }
 
-
             string sPathMp4 = Path.Combine(di.Parent.FullName, "MP4");
             string sPathRar = Path.Combine(di.Parent.FullName, "RAR");
             //建立MP4資料夾
             Directory.CreateDirectory(sPathMp4);
             //建立RAR資料夾
             Directory.CreateDirectory(sPathRar);
-
 
             //取得所有資料夾
             DirectoryInfo[] diAll = di.GetDirectories("*", SearchOption.TopDirectoryOnly);
@@ -1246,9 +1242,6 @@ namespace ChrisTools
 
                 }
             }
-
-
-
 
             //處理MKV與SRT移動到RAR資料夾
             foreach (DirectoryInfo diSub in liAll)
@@ -1290,8 +1283,6 @@ namespace ChrisTools
                 }
             }
 
-
-
             //處理MKV與SRT合併
             //取得所有資料夾
             DirectoryInfo[] diRAR = new DirectoryInfo(sPathRar).GetDirectories("*", SearchOption.TopDirectoryOnly);
@@ -1325,55 +1316,6 @@ namespace ChrisTools
                 };
                 bw.RunWorkerAsync(p);
             }
-
-
-            return;
-            //處理MKV To RAR
-            foreach (DirectoryInfo diSub in liAll)
-            {
-                //取得該資料夾中的檔案(副檔名mkv、mp4、ass、srt)
-                List<FileInfo> fiAllFiles = diSub.GetFiles("*.*", SearchOption.TopDirectoryOnly)
-                .Where(s => s.Extension.ToLower() == ".mkv" || s.Extension.ToLower() == ".mp4"
-                         || s.Extension.ToLower() == ".ass" || s.Extension.ToLower() == ".srt").ToList<FileInfo>();
-
-                //判斷資料夾是否已經格式化，如果不符合則不執行修改程序
-                if (diSub.Name.Contains("[") == false || diSub.Name.Contains("]") == false)
-                {
-                    continue;
-                }
-
-                //解析資料夾轉成檔案名稱
-                string sYear = diSub.Name.Substring(1, 4);
-                string sMovieNameMain = diSub.Name.Substring(6, diSub.Name.Length - 6);
-                string sMovieNameSub = "";
-
-                if (sMovieNameMain.Contains("-") == true)
-                {
-                    sMovieNameSub = sMovieNameMain.Split('-')[1];
-                    sMovieNameMain = sMovieNameMain.Split('-')[0];
-                }
-
-                //[歐美]巧克力冒險工廠(2005)[英語][官譯]
-                string sFileNameFull = string.Format("{0}{1}({2}){3}{4}"
-                    , ddlFormatFile.SelectedItem.ToString().Split('-')[0]
-                    , sMovieNameMain
-                    , sYear
-                    , sMovieNameSub == "" ? "" : "-" + sMovieNameSub
-                    , ddlFormatFile.SelectedItem.ToString().Split('-')[1]);
-
-                //重新命名所有檔案
-                foreach (FileInfo item in fiAllFiles)
-                {
-                    string sFullRename = Path.Combine(item.DirectoryName, sFileNameFull + item.Extension);
-                    if (File.Exists(sFullRename) == false)
-                    {
-                        item.MoveTo(sFullRename);
-                    }
-                }
-            }
-
-
-            ShowRichTextStatus1("檔案及資料夾名稱，修正完成");
         }
 
         private void btnAddRAR_Click(object sender, EventArgs e)
@@ -1402,6 +1344,75 @@ namespace ChrisTools
             bw.RunWorkerAsync(op);
 
         }
+
+        /// <summary>
+        /// 多執行緒進行壓縮資料夾中的內容
+        /// </summary>
+        /// <param name="sFolderPath">目標資料夾路徑</param>
+        private void RarFolderAllByThread(string sFolderPath) 
+        {
+            BackgroundWorker bw = new BackgroundWorker();
+            //回報進程
+            bw.WorkerReportsProgress = true;
+            //加入DoWork
+            bw.DoWork += new DoWorkEventHandler(Proc_DoWorkRARAllFolder);
+            //加入ProgressChanged
+            bw.ProgressChanged += new ProgressChangedEventHandler(Proc_ProgressChanged);
+            //加入RunWorkerCompleted
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Proc_RunWorkerRARCompleted);
+            //傳遞參數
+            //object i = new object();
+            var op = new
+            {
+                path = sFolderPath,
+                caller = "RarFolderAll"
+            };
+            //執行程序
+            bw.RunWorkerAsync(op);
+        }
+
+        /// <summary>
+        /// 壓縮資料夾中的內容
+        /// </summary>
+        /// <param name="sFolderPath">目標資料夾路徑</param>
+        private void RarFolderAll(string sFolderPath)
+        {
+            DirectoryInfo di = new DirectoryInfo(sFolderPath);
+            clsWinrar rar = new clsWinrar();
+
+            //目標資料夾
+            string sPathTarget = Path.Combine(di.FullName, di.Name);
+
+            //取得原本存在資料夾清單
+            List<string> AllDirectoryList = Directory.GetDirectories(di.FullName, "*", SearchOption.TopDirectoryOnly).ToList<string>();
+
+            //取得原本存在檔案清單
+            List<string> AllFileList = Directory.GetFiles(di.FullName, "*.*", SearchOption.TopDirectoryOnly).ToList<string>();
+
+            //建立相同名稱資料夾
+            Directory.CreateDirectory(sPathTarget);
+
+            //移動所有資料夾到目標資料夾中
+            foreach (string SubString in AllDirectoryList)
+            {
+                DirectoryInfo diSub = new DirectoryInfo(SubString);
+                Directory.Move(SubString, Path.Combine(sPathTarget, diSub.Name));
+            }
+
+            //移動所有檔案到目標資料夾中
+            foreach (string SubString in AllFileList)
+            {
+                FileInfo fiSub = new FileInfo(SubString);
+                File.Move(SubString, Path.Combine(sPathTarget, fiSub.Name));
+            }
+
+            //壓縮資料夾
+            rar.CompressRAR(Path.Combine(di.FullName, di.Name), sPathTarget, "5g");
+
+            //刪除資料夾
+            Utils.DeleteDirectory(sPathTarget);
+        }
+
 
         private void btnSaveAsSrt_Click(object sender, EventArgs e)
         {
@@ -1514,38 +1525,57 @@ namespace ChrisTools
 
         private void test_Click(object sender, EventArgs e)
         {
-
-
             //最後處理目前的資料夾名稱
             //string sNewFullName1 = Path.Combine(di.Parent.FullName, di.Name.Replace("：", "-"));
             //sNewFullName1 = sNewFullName1.Replace("？", "").Replace("「", "").Replace("」", "")
             //        .Replace("【", "").Replace("】", ""); ;
 
-
             string sNewFullName1 = "：？「」【】";
             //全形轉半形
             sNewFullName1 = Strings.StrConv(sNewFullName1, VbStrConv.Narrow, 1028);
 
-
-
-
             sNewFullName1 = "";
-
-
-
-
-
-
-
-
-
-
-
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
 
+            DirectoryInfo di = new DirectoryInfo(txtTransPath.Text);
+            clsWinrar rar = new clsWinrar();
+
+            //目標資料夾
+            string sPathTarget = Path.Combine(di.FullName, di.Name);
+
+            //取得原本存在資料夾清單
+            List<string> AllDirectoryList = Directory.GetDirectories(di.FullName, "*", SearchOption.TopDirectoryOnly).ToList<string>();
+
+            //取得原本存在檔案清單
+            List<string> AllFileList = Directory.GetFiles(di.FullName, "*.*", SearchOption.TopDirectoryOnly).ToList<string>();
+
+            //建立相同名稱資料夾
+            Directory.CreateDirectory(sPathTarget);
+
+            //移動所有資料夾到目標資料夾中
+            foreach (string SubString in AllDirectoryList)
+            {
+                DirectoryInfo diSub = new DirectoryInfo(SubString);
+                Directory.Move(SubString, Path.Combine(sPathTarget, diSub.Name));
+            }
+
+            //移動所有檔案到目標資料夾中
+            foreach (string SubString in AllFileList)
+            {
+                FileInfo fiSub = new FileInfo(SubString);
+                File.Move(SubString, Path.Combine(sPathTarget, fiSub.Name));
+            }
+
+
+            rar.CompressRAR(Path.Combine(di.FullName, di.Name), sPathTarget, "5g");
+
+
+            Utils.DeleteDirectory(sPathTarget);
+            
+
+            return;
             string path = @"d:\tblRainError_log.sql";
 
             // This text is added only once to the file.
@@ -1565,75 +1595,7 @@ namespace ChrisTools
             string readText = File.ReadAllText(path);
             Console.WriteLine(readText);
 
-
-
             return;
-
-
-
-
-            FileInfo[] fiList = new DirectoryInfo(txtTransPath.Text).GetFiles("*.*", SearchOption.AllDirectories);
-
-            int idx = 0;
-            lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
-            progressBar2.Maximum = fiList.Length;
-            foreach (FileInfo item in fiList)
-            {
-                ShowRichTextStatus(string.Format("修改：{0}", item.FullName));
-
-                //item.Attributes = FileAttributes.Normal;
-                //item.Delete();
-
-                //string sNewFileName = FormatFileName(item.Name);
-
-                //string[] sa = item.Name.Split(' ');
-
-
-                //string sNewFileName = sa[1];
-
-                //string sStoryName = Regex.Replace(item.Name.Replace(item.Extension, "").Replace("-",""), "[0-9]", "",RegexOptions.IgnoreCase);
-
-                string sFileName = item.Name.Replace(item.Extension, "").Replace(" Track", "");
-                //string sDateName = item.Name.Substring(0,5);
-
-                //string sTempName = sFileName.Replace(sDateName, "");
-
-
-                //string[] sa = sTempName.Split('.');
-                //string sStoryName = "";
-                //if (sa.Length == 2)
-                //{
-                //    sStoryName = sa[1];
-                //}
-                //else if (sa.Length == 3)
-                //{
-                //    sStoryName = sa[1] + sa[2];
-                //}
-
-
-                //string sM = sa[0].PadLeft(2,'0');
-                //string sD = sa[1].PadLeft(2, '0');
-
-
-
-
-
-
-
-                //string sNewFileName = string.Format("{0}{1}", sDateName, sStoryName) + item.Extension;
-                string sNewFileName = string.Format("{0}{1}", sFileName, item.Extension);
-
-
-                string sFullRename = Path.Combine(item.DirectoryName, sNewFileName);
-                if (File.Exists(sFullRename) == false)
-                {
-                    item.MoveTo(sFullRename);
-                }
-
-                idx++;
-                progressBar2.Value = idx;
-                lbltotal.Text = string.Format("{0} / {1}", idx, fiList.Length);
-            }
         }
 
         private async void btnProcSRTASS_Click(object sender, EventArgs e)

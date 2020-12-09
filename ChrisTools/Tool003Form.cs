@@ -100,10 +100,19 @@ namespace ChrisTools
                 {
                     string sIDent = fi.Name.Substring(iStartIndex, iLength);
 
+                    if (iLength != 3)
+                    {
+                        //1091209 新增嘗試分析集數是否為三位數，如果是，則提示
+                        string sTestIDIs3 = fi.Name.Substring(iStartIndex, 3);
+                        int iTest = 0;
+                        if (int.TryParse(sTestIDIs3, out iTest))
+                        {
+                            MessageBox.Show("偵測到檔案名稱，可能為三位數的集數，所以請注意的集數是否為三位數，如果是則需要修改字串長度為[3]");
+                        }
+                    }
+                    
 
                     lblResult.Text = sIDent;
-
-                    //MessageBox.Show(sIDent);
 
                     break;
                 }
