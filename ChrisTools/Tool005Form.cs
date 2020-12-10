@@ -1619,8 +1619,8 @@ namespace ChrisTools
         {
 
             List<string> FileList = new List<string>();
-
-            Dictionary<string, List<SrtInfo>> AllSrtCollection = new Dictionary<string, List<SrtInfo>>();
+            List<SubTitleInfo> AllSubTitleFileList = new List<SubTitleInfo>();
+            //Dictionary<string, List<SrtInfo>> AllSrtCollection = new Dictionary<string, List<SrtInfo>>();
 
             //判斷資料夾中的字幕檔格式(SRT)
             FileInfo[] fiListSrt = new DirectoryInfo(txtTransPath.Text).GetFiles("*.srt", SearchOption.TopDirectoryOnly);
@@ -1629,9 +1629,14 @@ namespace ChrisTools
             foreach (FileInfo fi in fiListSrt)
             {
                 //檔案名稱存在就不進行轉檔
-                if (AllSrtCollection.ContainsKey(fi.Name.Replace(fi.Extension, "")) == true) continue;
+                if (AllSubTitleFileList.Find(r => r.SubTitleFileName == fi.Name.Replace(fi.Extension, "")) != null)
+                {
+                    continue;
+                }
 
-                //string text = File.ReadAllText(fi.FullName, Encoding.GetEncoding(950));
+                SubTitleInfo oSubTitleInfo = new SubTitleInfo();
+                oSubTitleInfo.SubTitleFileName = fi.Name.Replace(fi.Extension, "");
+                
                 string text = File.ReadAllText(fi.FullName, Encoding.UTF8);
                 List<string> StringList = text.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList<string>();
 
@@ -1675,23 +1680,26 @@ namespace ChrisTools
                     }
                 }
 
-
-                AllSrtCollection.Add(fi.Name.Replace(fi.Extension, ""), siList);
+                oSubTitleInfo.SrtInfoList = siList;
+                AllSubTitleFileList.Add(oSubTitleInfo);
+                
             }
 
             //判斷資料夾中的字幕檔格式(ASS)
             FileInfo[] fiListass = new DirectoryInfo(txtTransPath.Text).GetFiles("*.ass", SearchOption.TopDirectoryOnly);
-            //解析SRT
+            //解析ASS
             foreach (FileInfo fi in fiListass)
             {
                 //檔案名稱存在就不進行轉檔
-                if (AllSrtCollection.ContainsKey(fi.Name.Replace(fi.Extension, "")) == true) continue;
+                if (AllSubTitleFileList.Find(r => r.SubTitleFileName == fi.Name.Replace(fi.Extension, "")) != null)
+                {
+                    continue;
+                }
+
+                SubTitleInfo oSubTitleInfo = new SubTitleInfo();
+                oSubTitleInfo.SubTitleFileName = fi.Name.Replace(fi.Extension, "");
 
                 string text = File.ReadAllText(fi.FullName, Encoding.UTF8);
-                //檢體轉繁體
-                //var sss = ConvertToTC(text);
-                //text = sss.Result;
-
                 List<string> StringList = text.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList<string>();
 
                 //字幕清單
@@ -1740,7 +1748,8 @@ namespace ChrisTools
                     }
                 }
 
-                AllSrtCollection.Add(fi.Name.Replace(fi.Extension, ""), siList);
+                oSubTitleInfo.SrtInfoList = siList;
+                AllSubTitleFileList.Add(oSubTitleInfo);                
             }
 
 
@@ -1772,33 +1781,40 @@ namespace ChrisTools
             if (IsTransToTC == true)
             {
                 int iIdxFile = 1;
-                foreach (var item in AllSrtCollection)
+                foreach (SubTitleInfo item in AllSubTitleFileList)
                 {
-                    //簡體轉繁體
-                    int iIdx = 1;
-                    foreach (SrtInfo si in item.Value)
+                    try
                     {
-                        BaseShowStatus(string.Format("[檔案{3}/{4}][數量{0}/{1}]簡體轉繁體-{2}",
-                            iIdx.ToString(), item.Value.Count.ToString(), item.Key, iIdxFile.ToString(), AllSrtCollection.Count()));
-                        List<string> TempList = new List<string>();
-
-                        foreach (string Content in si.ContentList)
+                        //簡體轉繁體
+                        int iIdx = 1;
+                        foreach (SrtInfo si in item.SrtInfoList)
                         {
-                            TempList.Add(await ConvertToTC(Content));
+                            BaseShowStatus(string.Format("[檔案{3}/{4}][數量{0}/{1}]簡體轉繁體-{2}",
+                            iIdx.ToString(), item.SrtInfoList.Count(), item.SubTitleFileName
+                            , iIdxFile.ToString(), AllSubTitleFileList.Count()));
+                            List<string> TempList = new List<string>();
+
+                            foreach (string Content in si.ContentList)
+                            {
+                                TempList.Add(await ConvertToTC(Content));
+                            }
+
+                            si.ContentList = TempList;
                         }
-
-                        si.ContentList = TempList;
-
-                        iIdx++;
+                    }
+                    catch (Exception ex)
+                    {
+                        iIdxFile++;
+                        continue;
                     }
 
                     //產生SrtAss
                     //建立Srt檔案
-                    string sFullFileName = Path.Combine(sTempSrtPath, item.Key + ".srt");
-                    SrtHelper.DoSrtDataToSrtFile(sFullFileName, item.Value);
+                    string sFullFileName = Path.Combine(sTempSrtPath, item.SubTitleFileName + ".srt");
+                    SrtHelper.DoSrtDataToSrtFile(sFullFileName, item.SrtInfoList);
                     //建立Ass檔案
-                    sFullFileName = Path.Combine(sTempASSPath, item.Key + ".ass");
-                    SrtHelper.DoAssDataToAssFile(sFullFileName, item.Value);
+                    sFullFileName = Path.Combine(sTempASSPath, item.SubTitleFileName + ".ass");
+                    SrtHelper.DoAssDataToAssFile(sFullFileName, item.SrtInfoList);
 
                     iIdxFile++;
                 }
@@ -1808,20 +1824,20 @@ namespace ChrisTools
             if (IsTransToTC == false)
             {
                 //字幕資料轉SRT格式
-                foreach (var item in AllSrtCollection)
+                foreach (SubTitleInfo item in AllSubTitleFileList)
                 {
                     //建立檔案
-                    string sFullFileName = Path.Combine(sTempSrtPath, item.Key + ".srt");
-                    SrtHelper.DoSrtDataToSrtFile(sFullFileName, item.Value);
+                    string sFullFileName = Path.Combine(sTempSrtPath, item.SubTitleFileName + ".srt");
+                    SrtHelper.DoSrtDataToSrtFile(sFullFileName, item.SrtInfoList);
                 }
 
 
                 //字幕資料轉ASS格式
-                foreach (var item in AllSrtCollection)
+                foreach (SubTitleInfo item in AllSubTitleFileList)
                 {
                     //建立檔案
-                    string sFullFileName = Path.Combine(sTempASSPath, item.Key + ".ass");
-                    SrtHelper.DoAssDataToAssFile(sFullFileName, item.Value);
+                    string sFullFileName = Path.Combine(sTempASSPath, item.SubTitleFileName + ".ass");
+                    SrtHelper.DoAssDataToAssFile(sFullFileName, item.SrtInfoList);
                 }
             }
         }

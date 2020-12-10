@@ -71,6 +71,17 @@ namespace M10.lib.modelChrisTools
     }
 
 
+    
+    [Table("SubTitleInfo")]
+    public class SubTitleInfo
+    {
+        //字幕檔案名稱
+        public string SubTitleFileName = string.Empty;
+        //轉檔狀態，預設為N
+        public string SubTitleTransYN = "N";
+        //字幕內容序列
+        public List<SrtInfo> SrtInfoList = new List<SrtInfo>();
+    }
 
 
 
