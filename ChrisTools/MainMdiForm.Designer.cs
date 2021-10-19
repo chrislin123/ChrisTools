@@ -48,8 +48,10 @@
             this.MenuItemTool003 = new System.Windows.Forms.ToolStripMenuItem();
             this.照片相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemTool001 = new System.Windows.Forms.ToolStripMenuItem();
+            this.篩除資料夾特定副檔名ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.雲端相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemTool004 = new System.Windows.Forms.ToolStripMenuItem();
+            this.gClone介面工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.媒體相關ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemTool005 = new System.Windows.Forms.ToolStripMenuItem();
             this.fFMpeg音訊轉檔ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,6 +67,7 @@
             // 
             // menuStrip
             // 
+            this.menuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileMenu,
             this.檔案相關ToolStripMenuItem,
@@ -74,6 +77,7 @@
             this.轉換相關ToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
             this.menuStrip.Size = new System.Drawing.Size(927, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "MenuStrip";
@@ -94,7 +98,7 @@
             this.exitToolStripMenuItem});
             this.fileMenu.ImageTransparentColor = System.Drawing.SystemColors.ActiveBorder;
             this.fileMenu.Name = "fileMenu";
-            this.fileMenu.Size = new System.Drawing.Size(57, 20);
+            this.fileMenu.Size = new System.Drawing.Size(57, 22);
             this.fileMenu.Text = "檔案(&F)";
             // 
             // newToolStripMenuItem
@@ -184,7 +188,7 @@
             this.MenuItemTool002,
             this.MenuItemTool003});
             this.檔案相關ToolStripMenuItem.Name = "檔案相關ToolStripMenuItem";
-            this.檔案相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.檔案相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             this.檔案相關ToolStripMenuItem.Text = "檔案相關";
             // 
             // MenuItemTool002
@@ -204,32 +208,48 @@
             // 照片相關ToolStripMenuItem
             // 
             this.照片相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemTool001});
+            this.MenuItemTool001,
+            this.篩除資料夾特定副檔名ToolStripMenuItem});
             this.照片相關ToolStripMenuItem.Name = "照片相關ToolStripMenuItem";
-            this.照片相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.照片相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             this.照片相關ToolStripMenuItem.Text = "照片相關";
             // 
             // MenuItemTool001
             // 
             this.MenuItemTool001.Name = "MenuItemTool001";
-            this.MenuItemTool001.Size = new System.Drawing.Size(170, 22);
+            this.MenuItemTool001.Size = new System.Drawing.Size(182, 22);
             this.MenuItemTool001.Text = "照片整理歸檔功能";
             this.MenuItemTool001.Click += new System.EventHandler(this.MenuItemTool001_Click);
+            // 
+            // 篩除資料夾特定副檔名ToolStripMenuItem
+            // 
+            this.篩除資料夾特定副檔名ToolStripMenuItem.Name = "篩除資料夾特定副檔名ToolStripMenuItem";
+            this.篩除資料夾特定副檔名ToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.篩除資料夾特定副檔名ToolStripMenuItem.Text = "照片資料夾檔案處理";
+            this.篩除資料夾特定副檔名ToolStripMenuItem.Click += new System.EventHandler(this.篩除資料夾特定副檔名ToolStripMenuItem_Click);
             // 
             // 雲端相關ToolStripMenuItem
             // 
             this.雲端相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemTool004});
+            this.MenuItemTool004,
+            this.gClone介面工具ToolStripMenuItem});
             this.雲端相關ToolStripMenuItem.Name = "雲端相關ToolStripMenuItem";
-            this.雲端相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.雲端相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             this.雲端相關ToolStripMenuItem.Text = "雲端相關";
             // 
             // MenuItemTool004
             // 
             this.MenuItemTool004.Name = "MenuItemTool004";
-            this.MenuItemTool004.Size = new System.Drawing.Size(158, 22);
+            this.MenuItemTool004.Size = new System.Drawing.Size(163, 22);
             this.MenuItemTool004.Text = "MEGA批次登入";
             this.MenuItemTool004.Click += new System.EventHandler(this.MenuItemTool004_Click);
+            // 
+            // gClone介面工具ToolStripMenuItem
+            // 
+            this.gClone介面工具ToolStripMenuItem.Name = "gClone介面工具ToolStripMenuItem";
+            this.gClone介面工具ToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.gClone介面工具ToolStripMenuItem.Text = "gClone介面工具";
+            this.gClone介面工具ToolStripMenuItem.Click += new System.EventHandler(this.gClone介面工具ToolStripMenuItem_Click);
             // 
             // 媒體相關ToolStripMenuItem
             // 
@@ -237,20 +257,20 @@
             this.MenuItemTool005,
             this.fFMpeg音訊轉檔ToolStripMenuItem});
             this.媒體相關ToolStripMenuItem.Name = "媒體相關ToolStripMenuItem";
-            this.媒體相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.媒體相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             this.媒體相關ToolStripMenuItem.Text = "媒體相關";
             // 
             // MenuItemTool005
             // 
             this.MenuItemTool005.Name = "MenuItemTool005";
-            this.MenuItemTool005.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemTool005.Size = new System.Drawing.Size(169, 22);
             this.MenuItemTool005.Text = "Mkv提取";
             this.MenuItemTool005.Click += new System.EventHandler(this.MenuItemTool005_Click);
             // 
             // fFMpeg音訊轉檔ToolStripMenuItem
             // 
             this.fFMpeg音訊轉檔ToolStripMenuItem.Name = "fFMpeg音訊轉檔ToolStripMenuItem";
-            this.fFMpeg音訊轉檔ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fFMpeg音訊轉檔ToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.fFMpeg音訊轉檔ToolStripMenuItem.Text = "FFMpeg音訊轉檔";
             this.fFMpeg音訊轉檔ToolStripMenuItem.Click += new System.EventHandler(this.fFMpeg音訊轉檔ToolStripMenuItem_Click);
             // 
@@ -259,7 +279,7 @@
             this.轉換相關ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.白馬去除之後文字ToolStripMenuItem});
             this.轉換相關ToolStripMenuItem.Name = "轉換相關ToolStripMenuItem";
-            this.轉換相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.轉換相關ToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             this.轉換相關ToolStripMenuItem.Text = "轉換相關";
             // 
             // 白馬去除之後文字ToolStripMenuItem
@@ -271,6 +291,7 @@
             // 
             // statusStrip
             // 
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel,
             this.toolStripStatusLabel1});
@@ -344,6 +365,8 @@
         private System.Windows.Forms.ToolStripMenuItem 轉換相關ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 白馬去除之後文字ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fFMpeg音訊轉檔ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gClone介面工具ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 篩除資料夾特定副檔名ToolStripMenuItem;
     }
 }
 

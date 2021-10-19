@@ -427,6 +427,7 @@
             this.TraceIDText.Name = "TraceIDText";
             this.TraceIDText.Size = new System.Drawing.Size(53, 22);
             this.TraceIDText.TabIndex = 49;
+            this.TraceIDText.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TraceIDText_MouseClick);
             // 
             // label1
             // 

@@ -184,7 +184,21 @@ namespace ChrisTools
             tf.Show();
         }
 
-        
+        private void gClone介面工具ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tool008Form tf = new Tool008Form();
+            tf.MdiParent = this;
+            tf.WindowState = FormWindowState.Maximized;
+            tf.Show();
+        }
+
+        private void 篩除資料夾特定副檔名ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tool009Form tf = new Tool009Form();
+            tf.MdiParent = this;
+            tf.WindowState = FormWindowState.Maximized;
+            tf.Show();
+        }
     }
 
 

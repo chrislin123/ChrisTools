@@ -84,6 +84,15 @@ namespace ChrisTools
             Tool005_TransPath,
             Tool007_FFMpegPath,
             Tool007_TransPath,
+            /// <summary>
+            /// gClone程式路徑
+            /// </summary>
+            Tool008_PathGClone,
+            /// <summary>
+            /// gClone指令碼樣板
+            /// </summary>
+            Tool008_GCloneCommString,
+
         }
 
     }

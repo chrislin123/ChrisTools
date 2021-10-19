@@ -97,6 +97,18 @@
     <Compile Include="Tool001Form.Designer.cs">
       <DependentUpon>Tool001Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tool009Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tool009Form.Designer.cs">
+      <DependentUpon>Tool009Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tool008Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tool008Form.Designer.cs">
+      <DependentUpon>Tool008Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tool007Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +160,12 @@
     </Compile>
     <EmbeddedResource Include="Tool001Form.resx">
       <DependentUpon>Tool001Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tool009Form.resx">
+      <DependentUpon>Tool009Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tool008Form.resx">
+      <DependentUpon>Tool008Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tool007Form.resx">
       <DependentUpon>Tool007Form.cs</DependentUpon>

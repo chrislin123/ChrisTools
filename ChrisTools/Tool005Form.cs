@@ -1800,6 +1800,8 @@ namespace ChrisTools
                             }
 
                             si.ContentList = TempList;
+
+                            iIdx++;
                         }
                     }
                     catch (Exception ex)
@@ -1903,7 +1905,10 @@ namespace ChrisTools
             return sResult;
         }
 
-       
+        private void TraceIDText_MouseClick(object sender, MouseEventArgs e)
+        {
+            TraceIDText.SelectAll();
+        }
     }
 
 
