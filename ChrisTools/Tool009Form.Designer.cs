@@ -41,7 +41,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(41, 9);
+            this.label2.Location = new System.Drawing.Point(18, 9);
             this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 12);
@@ -51,7 +51,7 @@
             // txtFFMpegPath
             // 
             this.txtFFMpegPath.Location = new System.Drawing.Point(112, 4);
-            this.txtFFMpegPath.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txtFFMpegPath.Margin = new System.Windows.Forms.Padding(6);
             this.txtFFMpegPath.Name = "txtFFMpegPath";
             this.txtFFMpegPath.Size = new System.Drawing.Size(407, 22);
             this.txtFFMpegPath.TabIndex = 8;
@@ -62,7 +62,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(531, 4);
-            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(84, 22);
             this.button1.TabIndex = 7;
@@ -73,7 +73,7 @@
             // btnFFMpegAudio
             // 
             this.btnFFMpegAudio.Location = new System.Drawing.Point(21, 115);
-            this.btnFFMpegAudio.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnFFMpegAudio.Margin = new System.Windows.Forms.Padding(6);
             this.btnFFMpegAudio.Name = "btnFFMpegAudio";
             this.btnFFMpegAudio.Size = new System.Drawing.Size(144, 43);
             this.btnFFMpegAudio.TabIndex = 32;
@@ -94,7 +94,7 @@
             // SourceFoldIDText
             // 
             this.SourceFoldIDText.Location = new System.Drawing.Point(112, 42);
-            this.SourceFoldIDText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.SourceFoldIDText.Margin = new System.Windows.Forms.Padding(6);
             this.SourceFoldIDText.Name = "SourceFoldIDText";
             this.SourceFoldIDText.Size = new System.Drawing.Size(407, 22);
             this.SourceFoldIDText.TabIndex = 46;
@@ -114,7 +114,7 @@
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(177, 115);
-            this.button2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button2.Margin = new System.Windows.Forms.Padding(6);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(144, 43);
             this.button2.TabIndex = 48;

@@ -44,18 +44,18 @@ namespace ChrisTools
 
         
 
-        private void ShowStatus(string msg)
-        {
+        //private void ShowStatus(string msg)
+        //{
 
-            lblStatus.Text = msg;
-            Application.DoEvents();
+        //    //lblStatus.Text = msg;
+        //    Application.DoEvents();
 
-        }
+        //}
 
         private void ShowRichTextStatus1(string pMsg)
         {
             //取消不顯示細部內容
-            richTextBox1.AppendText("\r\n" + pMsg);
+            //richTextBox1.AppendText("\r\n" + pMsg);
 
             //this.Update();
             //Application.DoEvents();
@@ -176,8 +176,8 @@ namespace ChrisTools
 
         private void Tool009Form_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Comm.SetSetting(CTsConst.SettingList.Tool008_PathGClone, txtFFMpegPath.Text);
-            Comm.SetSetting(CTsConst.SettingList.Tool008_GCloneCommString, richTextBox1.Text);
+            //Comm.SetSetting(CTsConst.SettingList.Tool008_PathGClone, txtFFMpegPath.Text);
+            //Comm.SetSetting(CTsConst.SettingList.Tool008_GCloneCommString, richTextBox1.Text);
         }
 
         private void ProcMergeMkvSrt(FileInfo fiMKV, string sAudioType, BackgroundWorker bw)
